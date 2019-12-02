@@ -3,3 +3,6 @@
 ################################################################################
 
 /.vs/Mathema/v16
+/Mathema/obj
+/Mathema.Interfaces/obj
+/Mathema.Shared/obj
