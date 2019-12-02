@@ -9,3 +9,7 @@
 /Mathema.Algorithms/obj
 /Mathema.Models/obj
 /Mathema/bin/Debug/netcoreapp3.0
+/Mathema.Algorithms/bin/Debug/netcoreapp3.0
+/Mathema.Models/bin/Debug/netcoreapp3.0
+/Mathema.RPNTests/bin/Debug/netcoreapp3.0
+/Mathema.RPNTests/obj
