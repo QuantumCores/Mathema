@@ -23,7 +23,7 @@ namespace Mathema.Models.Expressions
         }
         public override string ToString()
         {
-            return "(" + op.ToString() + this.rhe.Value() + ")";
+            return Operators.Operators.Get(op).Symbol + "(" + this.rhe.Value() + ")";
         }
     }
 }

@@ -31,7 +31,7 @@ namespace Mathema.Algorithms.Parsers
                     {
                         if (previousType == SymbolTypes.Number)
                         {
-                            output.Last().Value += c.ToString();
+                            output.Last().Value += symbol.Value;
                         }
                         else
                         {
@@ -59,15 +59,15 @@ namespace Mathema.Algorithms.Parsers
                     }
                     else if (symbol.Type == SymbolTypes.BinaryOperator || symbol.Type == SymbolTypes.UnaryOperator)
                     {
-                        if (previousType == SymbolTypes.BinaryOperator && (operators.Last().Value == "+" || operators.Last().Value == "-") && symbol.Value == "-")
+                        if (previousType != SymbolTypes.Number && symbol.Value == "-")
                         {
                             symbol.Type = SymbolTypes.UnaryOperator;
-                            symbol.Value = "Sign";
+                            symbol.Value = OperatorTypes.Sign.ToString();
                         }
 
                         while (operators.Count > 0 &&
-                            (Operators.All[operators.Last().Value].Precedence > Operators.All[c.ToString()].Precedence ||
-                            ((Operators.All[operators.Last().Value].Precedence == Operators.All[c.ToString()].Precedence) && (Operators.All[operators.Last().Value].AssociativityType == AssociativityTypes.Left))) &&
+                            (Operators.Get(operators.Last().Value).Precedence > Operators.Get(symbol.Value).Precedence ||
+                            ((Operators.Get(operators.Last().Value).Precedence == Operators.Get(symbol.Value).Precedence) && (Operators.Get(operators.Last().Value).AssociativityType == AssociativityTypes.Left))) &&
                             operators[operators.Count - 1].Value != "(")
                         {
                             Pop(output, operators);
