@@ -1,6 +1,7 @@
 ﻿using Mathema.Interfaces;
 using Mathema.Models.Exceptions;
 using Mathema.Models.Expressions;
+using Mathema.Models.Functions;
 using Mathema.Models.Operators;
 using Mathema.Models.Symbols;
 using System;
@@ -32,6 +33,12 @@ namespace Mathema.Algorithms.Handlers
                         else if (s.Type == SymbolTypes.UnaryOperator)
                         {
                             var tmp = new UnaryExpression(Operators.Get(s.Value).Type, stack[stack.Count - 1]);
+                            stack.RemoveAt(stack.Count - 1);
+                            stack.Add(tmp);
+                        }
+                        else if (s.Type == SymbolTypes.Function)
+                        {
+                            var tmp = new FunctionExpression(Functions.Get(s.Value).Type, stack[stack.Count - 1]);
                             stack.RemoveAt(stack.Count - 1);
                             stack.Add(tmp);
                         }

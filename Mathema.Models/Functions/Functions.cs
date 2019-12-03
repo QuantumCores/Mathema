@@ -39,7 +39,12 @@ namespace Mathema.Models.Functions
 
         public static Function Get(FunctionTypes type)
         {
-            return All[type.ToString()];
+            return All[type.ToString().ToLower()];
+        }
+
+        public static Function Get(string function)
+        {
+            return All[function.ToLower()];
         }
     }
 }
