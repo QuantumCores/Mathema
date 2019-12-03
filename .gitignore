@@ -13,3 +13,9 @@
 /Mathema.Models/bin/Debug/netcoreapp3.0
 /Mathema.RPNTests/bin/Debug/netcoreapp3.0
 /Mathema.RPNTests/obj
+/Mathema/bin/Debug/netcoreapp2.1
+/Mathema.Algorithms/bin/Debug/netcoreapp2.1
+/Mathema.Interfaces/bin/Debug/netcoreapp2.1
+/Mathema.Models/bin/Debug/netcoreapp2.1
+/Mathema.RPNTests/bin/Debug/netcoreapp2.1
+/Mathema.Shared/bin/Debug/netcoreapp2.1
