@@ -13,7 +13,7 @@ namespace Mathema.RPNTests.ParsingTests
         {
             //Arrange
             var text = "Sin(3.14)";
-            var expected = " 3.14 Sin";
+            var expected = " 3.14 sin";
 
             //Act
             var rpn = RPNParser.Parse(text);
