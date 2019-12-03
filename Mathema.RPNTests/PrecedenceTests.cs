@@ -37,5 +37,33 @@ namespace Mathema.RPNTests
             //Assert
             Assert.IsTrue(RPNComparer.Compare(rpn, output));
         }
+
+        [Test]
+        public void AddThenMultiplyThenMultiplyThenAdd()
+        {
+            //Arrange
+            var text = "2 + 3 * 4 * 1 + 5";
+            var output = " 2 3 4 * 1 * + 5 +";
+
+            //Act
+            var rpn = RPNParser.Parse(text);
+
+            //Assert
+            Assert.IsTrue(RPNComparer.Compare(rpn, output));
+        }
+
+        [Test]
+        public void AddThenMultiplyThenPower()
+        {
+            //Arrange
+            var text = "2 + 3 * 4 ^ 1";
+            var output = " 2 3 4 1 ^ * +";
+
+            //Act
+            var rpn = RPNParser.Parse(text);
+
+            //Assert
+            Assert.IsTrue(RPNComparer.Compare(rpn, output));
+        }
     }
 }
