@@ -15,5 +15,6 @@ Mathema was created to read and solve simple equations
     * 'cos' Cosinus
   
  **Plans**
+   - constants
    - variables
    - equations
