@@ -20,13 +20,13 @@ namespace Mathema.RPNTests
         {
             //Arrange
             var text = "2 + 3";
-            var output = " 2 3 +";
+            var expected = " 2 3 +";
 
             //Act
             var rpn = RPNParser.Parse(text);
 
             //Assert
-            Assert.IsTrue(RPNComparer.Compare(rpn, output));
+            Assert.IsTrue(RPNComparer.Compare(rpn, expected));
         }
 
         [Test]
@@ -34,13 +34,13 @@ namespace Mathema.RPNTests
         {
             //Arrange
             var text = "12 + 13";
-            var output = " 12 13 +";
+            var expected = " 12 13 +";
 
             //Act
             var rpn = RPNParser.Parse(text);
 
             //Assert
-            Assert.IsTrue(RPNComparer.Compare(rpn, output));
+            Assert.IsTrue(RPNComparer.Compare(rpn, expected));
         }
 
         [Test]
@@ -48,13 +48,13 @@ namespace Mathema.RPNTests
         {
             //Arrange
             var text = 12.5.ToString() + "+" + 13.5.ToString();
-            var output = 12.5.ToString() + 13.5.ToString() + "+";
+            var expected = 12.5.ToString() + 13.5.ToString() + "+";
 
             //Act
             var rpn = RPNParser.Parse(text);
 
             //Assert
-            Assert.IsTrue(RPNComparer.Compare(rpn, output));
+            Assert.IsTrue(RPNComparer.Compare(rpn, expected));
         }
     }
 }
