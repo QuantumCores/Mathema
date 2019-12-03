@@ -29,7 +29,7 @@ namespace Mathema.RPNTests
         {
             //Arrange
             var text = "2 + 3 * 4 + 1";
-            var output = " 2 3 4 * 1 + +";
+            var output = " 2 3 4 * + 1 +";
 
             //Act
             var rpn = RPNParser.Parse(text);

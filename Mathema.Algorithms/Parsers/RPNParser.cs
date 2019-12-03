@@ -59,16 +59,13 @@ namespace Mathema.Algorithms.Parsers
                     }
                     else if (symbol.Type == SymbolTypes.BinaryOperator || symbol.Type == SymbolTypes.UnaryOperator)
                     {
-                        if (operators.Count > 0)
+                        while (operators.Count > 0 &&
+                            (Operators.All[operators.Last().Value].Precedence > Operators.All[c.ToString()].Precedence ||
+                            ((Operators.All[operators.Last().Value].Precedence == Operators.All[c.ToString()].Precedence) && (Operators.All[operators.Last().Value].AssociativityType == AssociativityTypes.Left))) &&
+                            operators[operators.Count - 1].Value != "(")
                         {
-                            while ((Operators.All[operators.Last().Value].Precedence > Operators.All[c.ToString()].Precedence ||
-                                ((Operators.All[operators.Last().Value].Precedence == Operators.All[c.ToString()].Precedence) && (Operators.All[operators.Last().Value].AssociativityType == AssociativityTypes.Left))) &&
-                                operators[operators.Count - 1].Value != "(")
-                            {
-                                Pop(output, operators);
-                            }
+                            Pop(output, operators);
                         }
-
                         operators.Add(symbol);
                     }
 
