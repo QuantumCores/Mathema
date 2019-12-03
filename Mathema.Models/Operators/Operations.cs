@@ -17,6 +17,7 @@ namespace Mathema.Models.Operators
             result.Add(OperatorTypes.Subtract, (lhe, rhe) => lhe.Value() - rhe.Value());
             result.Add(OperatorTypes.Multiply, (lhe, rhe) => lhe.Value() * rhe.Value());
             result.Add(OperatorTypes.Divide, (lhe, rhe) => lhe.Value() / rhe.Value());
+            result.Add(OperatorTypes.Power, (lhe, rhe) => Math.Pow(lhe.Value(), rhe.Value()));
 
             return result;
         }

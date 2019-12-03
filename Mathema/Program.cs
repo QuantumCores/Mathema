@@ -13,7 +13,7 @@ namespace Mathema
             Console.WriteLine("Your decimal delimeter is '" + del + "'");
 
 
-            var rpn = RPNParser.Parse("5,1 - 1 * 3");
+            var rpn = RPNParser.Parse("5^2 - 1 * 3");
             foreach (var d in rpn)
             {
                 Console.Write(d.Value + " ");
