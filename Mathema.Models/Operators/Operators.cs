@@ -54,8 +54,8 @@ namespace Mathema.Models.Operators
             result.Add(new Operator("-", OperatorTypes.Subtract, 2, AssociativityTypes.Left, OperationTypes.Binary));
             result.Add(new Operator("*", OperatorTypes.Multiply, 3, AssociativityTypes.Left, OperationTypes.Binary));
             result.Add(new Operator("/", OperatorTypes.Divide, 3, AssociativityTypes.Left, OperationTypes.Binary));
-            result.Add(new Operator(OperatorTypes.Sign.ToString(), OperatorTypes.Sign, 3, AssociativityTypes.Left, OperationTypes.Unary));
-            result.Add(new Operator("^", OperatorTypes.Power, 4, AssociativityTypes.Right, OperationTypes.Unary));
+            result.Add(new Operator(OperatorTypes.Sign.ToString(), OperatorTypes.Sign, 4, AssociativityTypes.Left, OperationTypes.Unary));
+            result.Add(new Operator("^", OperatorTypes.Power, 5, AssociativityTypes.Right, OperationTypes.Unary));
 
             return result;
         }

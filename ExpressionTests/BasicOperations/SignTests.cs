@@ -1,6 +1,7 @@
 ﻿using Mathema.Algorithms.Handlers;
 using Mathema.Algorithms.Parsers;
 using NUnit.Framework;
+using System;
 
 namespace ExpressionTests.BasicOperations
 {
@@ -57,7 +58,7 @@ namespace ExpressionTests.BasicOperations
         {
             //Arrange
             var text = "3*-6";
-            var expected = 18;
+            var expected = -18;
 
             //Act
             var rpn = RPNParser.Parse(text);
@@ -66,5 +67,50 @@ namespace ExpressionTests.BasicOperations
             //Assert
             Assert.AreEqual(expected, actual);
         }
+
+        [Test]
+        public void ChangeWhenMultiplyingAndPower()
+        {
+            //Arrange
+            var text = "3*-2^2";
+            var expected = -12;
+
+            //Act
+            var rpn = RPNParser.Parse(text);
+            var actual = ExpressionBuilder.Build(rpn).Value();
+
+            //Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void ChangeInPower()
+        {
+            //Arrange
+            var text = "4^(-2)";
+            var expected = 0.0625;
+
+            //Act
+            var rpn = RPNParser.Parse(text);
+            var actual = ExpressionBuilder.Build(rpn).Value();
+
+            //Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        //[Test]
+        //public void ChangeInPowerWithoutParents()
+        //{
+        //    //Arrange
+        //    var text = "4^-2";
+        //    var expected = 0.0625;
+
+        //    //Act
+        //    var rpn = RPNParser.Parse(text);
+        //    var actual = ExpressionBuilder.Build(rpn).Value();
+
+        //    //Assert
+        //    Assert.That(() => ExpressionBuilder.Build(rpn), Throws.ArgumentException);
+        //}
     }
 }

@@ -41,7 +41,7 @@ namespace ExpressionTests.BasicOperations
         public void MultiplyDecimals()
         {
             //Arrange
-            var text = 4.0d.ToString() + "*" + 2.5d.ToString();
+            var text = 4.0m.ToString() + "*" + 2.5m.ToString();
             var expected = 10;
 
             //Act

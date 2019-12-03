@@ -42,7 +42,7 @@ namespace ExpressionTests.BasicOperations
         public void AddDecimals()
         {
             //Arrange
-            var text = 2.2d.ToString() + "+" + 4.3d.ToString();
+            var text = 2.2m.ToString() + "+" + 4.3m.ToString();
             var expected = 6.5;
 
             //Act

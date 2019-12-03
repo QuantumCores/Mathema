@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Mathema.Interfaces;
+using System;
 
 namespace Mathema.Models.Symbols
 {
-    public class Symbol
+    public class Symbol : ISymbol
     {
         public Symbol(string value, SymbolTypes type)
         {

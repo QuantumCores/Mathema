@@ -41,7 +41,7 @@ namespace ExpressionTests.BasicOperations
         public void PowDecimals()
         {
             //Arrange
-            var text = 2d.ToString() + "^" + 4d.ToString();
+            var text = 2m.ToString() + "^" + 4m.ToString();
             var expected = 16;
 
             //Act

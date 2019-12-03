@@ -41,7 +41,7 @@ namespace ExpressionTests.BasicOperations
         public void SubtractDecimals()
         {
             //Arrange
-            var text = 5.2d.ToString() + "-" + 1.3d.ToString();
+            var text = 5.2m.ToString() + "-" + 1.3m.ToString();
             var expected = 3.9;
 
             //Act

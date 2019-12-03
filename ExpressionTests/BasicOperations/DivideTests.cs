@@ -41,7 +41,7 @@ namespace ExpressionTests.BasicOperations
         public void DivideDecimals()
         {
             //Arrange
-            var text = 7.5d.ToString() + "/" + 2.5d.ToString();
+            var text = 7.5m.ToString() + "/" + 2.5m.ToString();
             var expected = 3;
 
             //Act
