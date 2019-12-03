@@ -17,10 +17,6 @@ namespace Mathema.Models.Operators
         LeftParenthesis = 8,
         RightParenthesis = 9,
         Sign = 10,
-        Sin = 11,
-        Cos = 12,
-        Tan = 13,
-        Ctan = 14
     }
 
     public enum AssociativityTypes
@@ -54,7 +50,7 @@ namespace Mathema.Models.Operators
             result.Add(new Operator("-", OperatorTypes.Subtract, 2, AssociativityTypes.Left, OperationTypes.Binary));
             result.Add(new Operator("*", OperatorTypes.Multiply, 3, AssociativityTypes.Left, OperationTypes.Binary));
             result.Add(new Operator("/", OperatorTypes.Divide, 3, AssociativityTypes.Left, OperationTypes.Binary));
-            result.Add(new Operator(OperatorTypes.Sign.ToString(), OperatorTypes.Sign, 4, AssociativityTypes.Left, OperationTypes.Unary));
+            result.Add(new Operator(OperatorTypes.Sign.ToString(), OperatorTypes.Sign, 4, AssociativityTypes.Right, OperationTypes.Unary));
             result.Add(new Operator("^", OperatorTypes.Power, 5, AssociativityTypes.Right, OperationTypes.Unary));
 
             return result;
