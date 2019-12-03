@@ -17,7 +17,7 @@ namespace Mathema.Models.Expressions
             this.op = op;
         }
 
-        public double Value()
+        public decimal Value()
         {
             return Operations.UnaryOperations[op](rhe);
         }

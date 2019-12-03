@@ -5,7 +5,7 @@ using NUnit.Framework;
 namespace Mathema.RPNTests
 {
     [TestFixture]
-    public class AddTests
+    public class ParsingTests
     {
 
         string d = System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;

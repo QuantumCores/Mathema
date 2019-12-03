@@ -7,18 +7,18 @@ namespace Mathema.Models.Expressions
 {
     public class NumberExpression : IExpression
     {
-        private double val;
+        private decimal val;
 
         public NumberExpression(string val)
         {
-            if (double.TryParse(val, out var conv))
+            if (decimal.TryParse(val, out var conv))
             {
                 this.val = conv;
             }
             //TODO
         }
 
-        public double Value()
+        public decimal Value()
         {
             return val;
         }

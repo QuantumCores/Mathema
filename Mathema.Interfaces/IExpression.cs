@@ -4,6 +4,6 @@ namespace Mathema.Interfaces
 {
     public interface IExpression
     {
-        double Value();
+        decimal Value();
     }
 }
