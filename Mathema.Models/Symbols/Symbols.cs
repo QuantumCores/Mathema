@@ -12,6 +12,7 @@ namespace Mathema.Models.Symbols
         BinaryOperator = 3,
         LeftParenthesis = 4,
         RightParenthesis = 5,
+        Function = 6
     }
 
     public class Symbols

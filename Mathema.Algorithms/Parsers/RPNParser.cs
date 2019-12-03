@@ -1,4 +1,5 @@
-﻿using Mathema.Models.Operators;
+﻿using Mathema.Models.Functions;
+using Mathema.Models.Operators;
 using Mathema.Models.Symbols;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace Mathema.Algorithms.Parsers
             var output = new List<Symbol>();
             var operators = new List<Symbol>();
 
-            var previousType = SymbolTypes.Undefined;
+            var previousSymbol = new Symbol("", SymbolTypes.Undefined);
 
             var calc = text.ToLower();
             for (int i = 0; i < calc.Length; i++)
@@ -29,7 +30,7 @@ namespace Mathema.Algorithms.Parsers
                 {
                     if (symbol.Type == SymbolTypes.Number)
                     {
-                        if (previousType == SymbolTypes.Number)
+                        if (previousSymbol.Type == SymbolTypes.Number)
                         {
                             output.Last().Value += symbol.Value;
                         }
@@ -59,14 +60,15 @@ namespace Mathema.Algorithms.Parsers
                     }
                     else if (symbol.Type == SymbolTypes.BinaryOperator || symbol.Type == SymbolTypes.UnaryOperator)
                     {
-                        if (previousType != SymbolTypes.Number && symbol.Value == "-")
+                        if (previousSymbol.Type != SymbolTypes.Number && symbol.Value == "-")
                         {
                             symbol.Type = SymbolTypes.UnaryOperator;
                             symbol.Value = OperatorTypes.Sign.ToString();
                         }
 
                         while (operators.Count > 0 &&
-                            (Operators.Get(operators.Last().Value).Precedence > Operators.Get(symbol.Value).Precedence ||
+                            (operators.Last().Type == SymbolTypes.Function ||
+                            Operators.Get(operators.Last().Value).Precedence > Operators.Get(symbol.Value).Precedence ||
                             ((Operators.Get(operators.Last().Value).Precedence == Operators.Get(symbol.Value).Precedence) && (Operators.Get(operators.Last().Value).AssociativityType == AssociativityTypes.Left))) &&
                             operators[operators.Count - 1].Value != "(")
                         {
@@ -75,11 +77,24 @@ namespace Mathema.Algorithms.Parsers
                         operators.Add(symbol);
                     }
 
-                    previousType = symbol.Type;
+                    previousSymbol = symbol;
                 }
                 else
                 {
-                    //probably expression
+                    if (previousSymbol.Type == SymbolTypes.Undefined)
+                    {
+                        previousSymbol.Value += c.ToString();
+                        if (Functions.TryGetValue(previousSymbol.Value, out var f))
+                        {
+                            symbol = new Symbol(previousSymbol.Value, SymbolTypes.Function);
+                            operators.Add(symbol);
+                            previousSymbol = symbol;
+                        }
+                    }
+                    else
+                    {
+                        previousSymbol = new Symbol(c.ToString(), SymbolTypes.Undefined);
+                    }
                 }
             }
 

@@ -2,7 +2,7 @@ using Mathema.Algorithms.Helpers;
 using Mathema.Algorithms.Parsers;
 using NUnit.Framework;
 
-namespace Mathema.RPNTests
+namespace Mathema.RPNTests.ParsingTests
 {
     [TestFixture]
     public class ParsingTests
