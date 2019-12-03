@@ -19,10 +19,19 @@ namespace Mathema.Algorithms.Handlers
                 var s = RPNStack[i];
                 if (s.Type != SymbolTypes.Number)
                 {
-                    var tmp = new BinaryExpression(stack[stack.Count - 2], Operators.All[s.Value].Type, stack[stack.Count - 1]);
-                    stack.RemoveAt(stack.Count - 1);
-                    stack.RemoveAt(stack.Count - 1);
-                    stack.Add(tmp);
+                    if (s.Type == SymbolTypes.BinaryOperator)
+                    {
+                        var tmp = new BinaryExpression(stack[stack.Count - 2], Operators.All[s.Value].Type, stack[stack.Count - 1]);
+                        stack.RemoveAt(stack.Count - 1);
+                        stack.RemoveAt(stack.Count - 1);
+                        stack.Add(tmp);
+                    }
+                    else if (s.Type == SymbolTypes.UnaryOperator)
+                    {
+                        var tmp = new UnaryExpression(Operators.All[s.Value].Type, stack[stack.Count - 1]);
+                        stack.RemoveAt(stack.Count - 1);
+                        stack.Add(tmp);
+                    }
                 }
                 else
                 {

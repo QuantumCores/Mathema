@@ -47,9 +47,10 @@ namespace Mathema.Models.Operators
             result.Add("(", new Operator("(", OperatorTypes.LeftParenthesis, 1, AssociativityTypes.None, OperationTypes.None));
             result.Add(")", new Operator(")", OperatorTypes.RightParenthesis, 1, AssociativityTypes.None, OperationTypes.None));
             result.Add("+", new Operator("+", OperatorTypes.Add, 2, AssociativityTypes.Left, OperationTypes.Binary));
-            result.Add("-", new Operator("-", OperatorTypes.Subtract, 2, AssociativityTypes.Left, OperationTypes.Binary));
+            result.Add("-", new Operator("-", OperatorTypes.Subtract, 2, AssociativityTypes.Left, OperationTypes.Binary));            
             result.Add("*", new Operator("*", OperatorTypes.Multiply, 3, AssociativityTypes.Left, OperationTypes.Binary));
             result.Add("/", new Operator("/", OperatorTypes.Divide, 3, AssociativityTypes.Left, OperationTypes.Binary));
+            result.Add("Sign", new Operator("Sign", OperatorTypes.Sign, 3, AssociativityTypes.Left, OperationTypes.Unary));
             result.Add("^", new Operator("^", OperatorTypes.Power, 4, AssociativityTypes.Right, OperationTypes.Unary));
 
             return result;

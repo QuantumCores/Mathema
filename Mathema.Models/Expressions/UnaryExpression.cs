@@ -6,27 +6,24 @@ using System.Text;
 
 namespace Mathema.Models.Expressions
 {
-    public class BinaryExpression : IExpression
+    public class UnaryExpression : IExpression
     {
-        private IExpression lhe;
         private OperatorTypes op;
         private IExpression rhe;
 
-        public BinaryExpression(IExpression lhe, OperatorTypes op, IExpression rhe)
+        public UnaryExpression(OperatorTypes op, IExpression rhe)
         {
-            this.lhe = lhe;
             this.rhe = rhe;
             this.op = op;
         }
 
         public double Value()
         {
-            return Operations.BinaryOperations[op](lhe, rhe);
+            return Operations.UnaryOperations[op](rhe);
         }
-
         public override string ToString()
         {
-            return "(" + this.lhe.Value() + op.ToString() + this.rhe.Value() + ")";
+            return "(" + op.ToString() + this.rhe.Value() + ")";
         }
     }
 }

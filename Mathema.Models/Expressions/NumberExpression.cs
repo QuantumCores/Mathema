@@ -15,11 +15,17 @@ namespace Mathema.Models.Expressions
             {
                 this.val = conv;
             }
+            //TODO
         }
 
         public double Value()
         {
             return val;
+        }
+
+        public override string ToString()
+        {
+            return val.ToString();
         }
     }
 }
