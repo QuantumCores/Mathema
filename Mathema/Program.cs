@@ -15,9 +15,13 @@ namespace Mathema
             Console.ForegroundColor = ConsoleColor.Green;
             //Console.Clear();
             Console.Write(@"https://github.com/QunatumCore/Mathema" + Environment.NewLine);
+            //Console.ResetColor();
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write("Your decimal delimeter is '" + del + "'. ");
             Console.ResetColor();
-            Console.WriteLine("For help type '@h'");
-            Console.WriteLine("Your decimal delimeter is '" + del + "'");
+            Console.Write("For more help type '@h'" + Environment.NewLine);
+            Console.WriteLine("Type your equation below. Example: 1+2*3^4/(Cos(0)+2)");
+            Console.WriteLine();
             Console.WriteLine();
 
             var line = "";
