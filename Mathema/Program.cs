@@ -11,6 +11,11 @@ namespace Mathema
         static void Main(string[] args)
         {
             string del = System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
+            Console.Write("You can find solution here: ");
+            Console.ForegroundColor = ConsoleColor.Green;
+            //Console.Clear();
+            Console.Write(@"https://github.com/QunatumCore/Mathema" + Environment.NewLine);
+            Console.ResetColor();
             Console.WriteLine("For help type '@h'");
             Console.WriteLine("Your decimal delimeter is '" + del + "'");
 
