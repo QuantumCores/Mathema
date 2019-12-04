@@ -14,8 +14,6 @@ namespace Mathema
             Console.WriteLine("For help type '@h'");
             Console.WriteLine("Your decimal delimeter is '" + del + "'");
 
-
-
             var line = "";
             do
             {
