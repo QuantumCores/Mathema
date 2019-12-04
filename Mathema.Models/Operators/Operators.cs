@@ -35,7 +35,7 @@ namespace Mathema.Models.Operators
 
     public class Operators
     {
-        private static List<Operator> All { get; } = GetAllOperators();
+        public static List<Operator> All { get; } = GetAllOperators();
 
         private static Dictionary<string, Operator> AllByString = All.ToDictionary(o => o.Symbol, o => o);
         private static Dictionary<OperatorTypes, Operator> AllByType = All.ToDictionary(o => o.Type, o => o);

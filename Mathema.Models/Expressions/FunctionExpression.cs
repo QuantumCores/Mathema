@@ -21,5 +21,10 @@ namespace Mathema.Models.Expressions
         {
             return Functions.Functions.Get(type).Projection(argument.Value());
         }
+
+        public override string ToString()
+        {
+            return " " + type.ToString() + "(" + argument.ToString() + ")";
+        }
     }
 }

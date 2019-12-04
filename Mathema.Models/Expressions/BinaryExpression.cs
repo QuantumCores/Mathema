@@ -26,7 +26,7 @@ namespace Mathema.Models.Expressions
 
         public override string ToString()
         {
-            return "(" + this.lhe.Value().ToString() + Operators.Operators.Get(op).Symbol + this.rhe.Value() + ")";
+            return " (" + this.lhe.ToString() + Operators.Operators.Get(op).Symbol + this.rhe.ToString() + ")";
         }
     }
 }

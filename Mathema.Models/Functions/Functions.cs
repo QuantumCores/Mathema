@@ -14,7 +14,7 @@ namespace Mathema.Models.Functions
 
     public class Functions
     {
-        private static Dictionary<string, Function> All { get; } = GetAllFunctions();
+        public static Dictionary<string, Function> All { get; } = GetAllFunctions();
 
         private static Dictionary<string, Function> GetAllFunctions()
         {
