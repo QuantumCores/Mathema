@@ -18,6 +18,7 @@ namespace Mathema
             Console.ResetColor();
             Console.WriteLine("For help type '@h'");
             Console.WriteLine("Your decimal delimeter is '" + del + "'");
+            Console.WriteLine();
 
             var line = "";
             do
@@ -70,12 +71,12 @@ namespace Mathema
             var output = RPNParser.Parse(equation);
 
             Console.WriteLine();
-            Console.WriteLine("Parsed: " + string.Join("", output.Select(o => o.Value)));
+            Console.WriteLine("Parsed  : " + string.Join("", output.Select(o => o.Value)));
             var expr = ExpressionBuilder.Build(output);
-            Console.WriteLine();
+            //Console.WriteLine();
             Console.WriteLine("Equation: " + expr.ToString());
-            Console.WriteLine();
-            Console.WriteLine("Result: " + expr.Value());
+            //Console.WriteLine();
+            Console.WriteLine("Result  : " + expr.Value());
 
         }
     }
