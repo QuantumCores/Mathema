@@ -11,21 +11,35 @@ namespace Mathema
             string del = System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
             Console.WriteLine("For help type '@h'");
             Console.WriteLine("Your decimal delimeter is '" + del + "'");
-
-            var rpn = RPNParser.Parse("5^2 --1 * 3");
-            foreach (var d in rpn)
+            //var output = Parser.Convert("3 + 4 * (2 - 3)");
+            var equation = "";
+            do
             {
-                Console.Write(d.Value + " ");
-            }
+                equation = Console.ReadLine();
+                DoWork(equation);
+                Console.WriteLine();
+                Console.WriteLine();
 
-            var exp = ExpressionBuilder.Build(rpn);
-            Console.WriteLine();
-            Console.WriteLine("Expr:" + exp.ToString());
-            Console.WriteLine();
-            var res = exp.Value();
-            Console.WriteLine("Result:" + res);
+            } while (!string.IsNullOrWhiteSpace(equation));
+
 
             Console.ReadLine();
+        }
+
+        private static void DoWork(string equation)
+        {
+            var output = RPNParser.Parse(equation);
+            foreach (var o in output)
+            {
+                Console.Write(o.Value + ",");
+            }
+
+            var expr = ExpressionBuilder.Build(output);
+            Console.WriteLine();
+            Console.WriteLine(expr.ToString());
+            Console.WriteLine();
+            Console.WriteLine(expr.Value());
+
         }
     }
 }
