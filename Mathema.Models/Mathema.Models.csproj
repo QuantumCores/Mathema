@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Mathema.Interfaces\Mathema.Interfaces.csproj" />
+    <ProjectReference Include="..\Mathema.Shared\Mathema.Shared.csproj" />
   </ItemGroup>
 
 </Project>

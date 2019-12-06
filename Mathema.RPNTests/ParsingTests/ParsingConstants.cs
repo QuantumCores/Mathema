@@ -1,20 +1,23 @@
 ﻿using Mathema.Algorithms.Helpers;
 using Mathema.Algorithms.Parsers;
+using Mathema.Shared.Constants;
 using NUnit.Framework;
-
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace Mathema.RPNTests.ParsingTests
 {
     [TestFixture]
-    public class ParsingFunctions
+    public class ParsingConstants
     {
         [Test]
-        public void ParseSin()
+        public void Parse_Pi()
         {
             //Arrange
-            
-            var text = "Sin("+3.14m.ToString() +")";
-            var expected = 3.14m.ToString() +" sin";
+
+            var text = "Sin(Pi)";
+            var expected = Constants.PI.ToString() + " sin";
 
             //Act
             var rpn = RPNParser.Parse(text);
@@ -24,12 +27,12 @@ namespace Mathema.RPNTests.ParsingTests
         }
 
         [Test]
-        public void ParseCos()
+        public void Parse_e()
         {
             //Arrange
 
-            var text = "Cos(" + 3.14m.ToString() + ")";
-            var expected = 3.14m.ToString() + " cos";
+            var text = "Sin(e)";
+            var expected = Constants.e + " sin";
 
             //Act
             var rpn = RPNParser.Parse(text);

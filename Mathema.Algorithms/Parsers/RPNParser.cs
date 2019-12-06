@@ -1,4 +1,5 @@
-﻿using Mathema.Models.Functions;
+﻿using Mathema.Models.Constants;
+using Mathema.Models.Functions;
 using Mathema.Models.Operators;
 using Mathema.Models.Symbols;
 using System;
@@ -28,6 +29,11 @@ namespace Mathema.Algorithms.Parsers
 
                 if (Symbols.TryGetValue(c.ToString(), out var symbol))
                 {
+                    if (previousSymbol.Type ==  SymbolTypes.Undefined)
+                    {
+                        FindSymbolForUndefined(ref previousSymbol, operators, output);                        
+                    }
+
                     if (symbol.Type == SymbolTypes.Number)
                     {
                         if (previousSymbol.Type == SymbolTypes.Number)
@@ -83,13 +89,7 @@ namespace Mathema.Algorithms.Parsers
                 {
                     if (previousSymbol.Type == SymbolTypes.Undefined)
                     {
-                        previousSymbol.Value += c.ToString();
-                        if (Functions.TryGetValue(previousSymbol.Value, out var f))
-                        {
-                            symbol = new Symbol(previousSymbol.Value, SymbolTypes.Function);
-                            operators.Add(symbol);
-                            previousSymbol = symbol;
-                        }
+                        previousSymbol.Value += c.ToString();                        
                     }
                     else
                     {
@@ -108,6 +108,20 @@ namespace Mathema.Algorithms.Parsers
             }
 
             return output;
+        }
+
+        private static void FindSymbolForUndefined(ref Symbol previousSymbol, List<Symbol> operators, List<Symbol> output)
+        {
+            if (Constants.TryGetValue(previousSymbol.Value, out var c))
+            {
+                previousSymbol = new Symbol(c.Value.ToString(), SymbolTypes.Number);
+                output.Add(previousSymbol);
+            }
+            else if(Functions.TryGetValue(previousSymbol.Value, out var f))
+            {
+                previousSymbol = new Symbol(previousSymbol.Value, SymbolTypes.Function);
+                operators.Add(previousSymbol);
+            }             
         }
 
         private static void Pop(List<Symbol> numbers, List<Symbol> operators)

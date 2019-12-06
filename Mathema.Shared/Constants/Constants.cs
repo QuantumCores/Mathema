@@ -6,15 +6,19 @@ namespace Mathema.Shared.Constants
     {
         PI,
         e,
-        E,
+        EM,
         Phi
     }
 
 
     public class Constants
     {
-        public double PI = Math.PI;
+        public static double PI { get; } = Math.PI;
 
+        public static double e { get; } = Math.E;
 
+        public static double EM { get; } = 0.577215664901532860606512090082402431042159335;
+
+        public static double Phi { get; } = (1.0 * Math.Sqrt(5)) / 2.0;
     }
 }
