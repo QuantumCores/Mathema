@@ -17,9 +17,9 @@ namespace Mathema.Models.Expressions
             this.value = value;
         }
 
-        public decimal Value()
+        public IExpressionResult Value()
         {
-            throw new NotImplementedException();
+            return new ExpressionResult(this.symbol, this.value);
         }
     }
 }

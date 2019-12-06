@@ -17,7 +17,7 @@ namespace Mathema.Models.Expressions
             this.argument = argument;
         }
 
-        public decimal Value()
+        public IExpressionResult Value()
         {
             return Functions.Functions.Get(type).Projection(argument.Value());
         }

@@ -18,7 +18,7 @@ namespace Mathema.Models.Expressions
             //TODO
         }
 
-        public decimal Value()
+        public IExpressionResult Value()
         {
             return val;
         }

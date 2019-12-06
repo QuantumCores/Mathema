@@ -19,7 +19,7 @@ namespace Mathema.Models.Expressions
             this.op = op;
         }
 
-        public decimal Value()
+        public IExpressionResult Value()
         {
             return Operations.BinaryOperations[op](lhe, rhe);
         }
