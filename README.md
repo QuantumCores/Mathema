@@ -18,8 +18,11 @@ gives
   * Functions
     * 'sin' Sinus
     * 'cos' Cosinus
-  
+  * Constants
+    * 'Pi' - ratio of a circle's circumference to its diameter
+    * 'e' - natural logarithm base
+	* 'EM' - Euler–Mascheroni constant
+	
  **Plans**
-   - constants
    - variables
    - equations
