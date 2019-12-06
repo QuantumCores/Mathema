@@ -42,6 +42,12 @@ namespace Mathema.Algorithms.Handlers
                             stack.RemoveAt(stack.Count - 1);
                             stack.Add(tmp);
                         }
+                        else if (s.Type == SymbolTypes.Variable)
+                        {
+                            var tmp = new VariableExpression(s.Value, 1m);
+                            stack.RemoveAt(stack.Count - 1);
+                            stack.Add(tmp);
+                        }
                     }
                     else
                     {

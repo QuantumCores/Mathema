@@ -21,6 +21,7 @@ namespace Mathema.Models.Expressions
         {
             return Operations.UnaryOperations[op](rhe);
         }
+
         public override string ToString()
         {
             return " " + Operators.Operators.Get(op).Symbol + "(" + this.rhe.Value() + ")";

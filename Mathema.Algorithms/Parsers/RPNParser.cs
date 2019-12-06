@@ -29,9 +29,9 @@ namespace Mathema.Algorithms.Parsers
 
                 if (Symbols.TryGetValue(c.ToString(), out var symbol))
                 {
-                    if (previousSymbol.Type ==  SymbolTypes.Undefined)
+                    if (previousSymbol.Type == SymbolTypes.Undefined && previousSymbol.Value != "")
                     {
-                        FindSymbolForUndefined(ref previousSymbol, operators, output);                        
+                        FindSymbolForUndefined(ref previousSymbol, operators, output);
                     }
 
                     if (symbol.Type == SymbolTypes.Number)
@@ -89,7 +89,7 @@ namespace Mathema.Algorithms.Parsers
                 {
                     if (previousSymbol.Type == SymbolTypes.Undefined)
                     {
-                        previousSymbol.Value += c.ToString();                        
+                        previousSymbol.Value += c.ToString();
                     }
                     else
                     {
@@ -117,11 +117,16 @@ namespace Mathema.Algorithms.Parsers
                 previousSymbol = new Symbol(c.Value.ToString(), SymbolTypes.Number);
                 output.Add(previousSymbol);
             }
-            else if(Functions.TryGetValue(previousSymbol.Value, out var f))
+            else if (Functions.TryGetValue(previousSymbol.Value, out var f))
             {
                 previousSymbol = new Symbol(previousSymbol.Value, SymbolTypes.Function);
                 operators.Add(previousSymbol);
-            }             
+            }
+            else
+            {
+                previousSymbol = new Symbol(previousSymbol.Value, SymbolTypes.Variable);
+                output.Add(previousSymbol);
+            }
         }
 
         private static void Pop(List<Symbol> numbers, List<Symbol> operators)
