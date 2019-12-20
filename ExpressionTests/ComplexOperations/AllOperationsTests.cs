@@ -1,5 +1,6 @@
 ﻿using Mathema.Algorithms.Handlers;
 using Mathema.Algorithms.Parsers;
+using Mathema.Interfaces;
 using NUnit.Framework;
 using System;
 
@@ -17,7 +18,7 @@ namespace ExpressionTests.ComplexOperations
 
             //Act
             var rpn = RPNParser.Parse(text);
-            var actual = ExpressionBuilder.Build(rpn).Value();
+            var actual = ((INumberExpression)ExpressionBuilder.Build(rpn).Value()).Val;
 
             //Assert
             Assert.AreEqual(expected, actual);
@@ -32,7 +33,7 @@ namespace ExpressionTests.ComplexOperations
 
             //Act
             var rpn = RPNParser.Parse(text);
-            var actual = ExpressionBuilder.Build(rpn).Value();
+            var actual = ((INumberExpression)ExpressionBuilder.Build(rpn).Value()).Val;
 
             //Assert
             Assert.AreEqual(expected, actual);

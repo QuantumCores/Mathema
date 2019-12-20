@@ -5,27 +5,54 @@ using System.Text;
 
 namespace Mathema.Models.Expressions
 {
-    public class NumberExpression : IExpression
+    public class NumberExpression : IExpression , INumberExpression
     {
-        private decimal val;
+        public decimal Val { get; }
+
+        public string DimensionType { get; } = "";
 
         public NumberExpression(string val)
         {
             if (decimal.TryParse(val, out var conv))
             {
-                this.val = conv;
+                this.Val = conv;
             }
             //TODO
         }
 
-        public IExpressionResult Value()
+        public NumberExpression(decimal val)
         {
-            return val;
+            this.Val = val;
+        }
+
+        public IExpression Value()
+        {
+            return this;
         }
 
         public override string ToString()
         {
-            return val.ToString();
+            return Val.ToString();
+        }
+
+        public static INumberExpression operator +(NumberExpression lhn, INumberExpression rhn)
+        {
+            return new NumberExpression(lhn.Val + lhn.Val);
+        }
+
+        public static INumberExpression operator +(INumberExpression lhn, NumberExpression rhn)
+        {
+            return new NumberExpression(lhn.Val + lhn.Val);
+        }
+
+        public static INumberExpression operator *(NumberExpression lhn, INumberExpression rhn)
+        {
+            return new NumberExpression(lhn.Val * lhn.Val);
+        }
+
+        public static INumberExpression operator /(NumberExpression lhn, INumberExpression rhn)
+        {
+            return new NumberExpression(lhn.Val / lhn.Val);
         }
     }
 }

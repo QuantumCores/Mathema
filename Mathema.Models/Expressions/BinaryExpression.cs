@@ -12,6 +12,8 @@ namespace Mathema.Models.Expressions
         private OperatorTypes op;
         private IExpression rhe;
 
+        public string DimensionType { get; } = "BinaryExpression";
+
         public BinaryExpression(IExpression lhe, OperatorTypes op, IExpression rhe)
         {
             this.lhe = lhe;
@@ -19,9 +21,18 @@ namespace Mathema.Models.Expressions
             this.op = op;
         }
 
-        public IExpressionResult Value()
+        public IExpression Value()
         {
-            return Operations.BinaryOperations[op](lhe, rhe);
+            var arg1 = this.lhe.Value();
+            var arg2 = this.rhe.Value();
+            if (arg1 is INumberExpression && arg2 is INumberExpression)
+            {
+                return new NumberExpression(Operations.BinaryOperations[op](((INumberExpression)arg1).Val, ((INumberExpression)arg2).Val));
+            }
+            else
+            {
+                return this;
+            }
         }
 
         public override string ToString()

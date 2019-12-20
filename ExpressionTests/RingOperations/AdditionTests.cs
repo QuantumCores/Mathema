@@ -1,5 +1,6 @@
 ﻿using Mathema.Algorithms.Handlers;
 using Mathema.Algorithms.Parsers;
+using Mathema.Interfaces;
 using NUnit.Framework;
 
 
@@ -18,10 +19,10 @@ namespace ExpressionTests.RingOperations
 
             //Act
             var rpn1 = RPNParser.Parse(text1);
-            var actual1 = ExpressionBuilder.Build(rpn1).Value();
+            var actual1 = ((INumberExpression)ExpressionBuilder.Build(rpn1).Value()).Val;
 
             var rpn2 = RPNParser.Parse(text2);
-            var actual2 = ExpressionBuilder.Build(rpn2).Value();
+            var actual2 = ((INumberExpression)ExpressionBuilder.Build(rpn2).Value()).Val;
 
             //Assert
             Assert.AreEqual(expected, actual1);
@@ -38,10 +39,10 @@ namespace ExpressionTests.RingOperations
 
             //Act
             var rpn1 = RPNParser.Parse(text1);
-            var actual1 = ExpressionBuilder.Build(rpn1).Value();
+            var actual1 = ((INumberExpression)ExpressionBuilder.Build(rpn1).Value()).Val;
 
             var rpn2 = RPNParser.Parse(text2);
-            var actual2 = ExpressionBuilder.Build(rpn2).Value();
+            var actual2 = ((INumberExpression)ExpressionBuilder.Build(rpn2).Value()).Val;
 
             //Assert
             Assert.AreEqual(expected, actual1);

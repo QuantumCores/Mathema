@@ -1,5 +1,6 @@
 ﻿using Mathema.Algorithms.Handlers;
 using Mathema.Algorithms.Parsers;
+using Mathema.Interfaces;
 using NUnit.Framework;
 
 namespace ExpressionTests.BasicOperations
@@ -12,11 +13,11 @@ namespace ExpressionTests.BasicOperations
         {
             //Arrange
             var text = "4-6";
-            var expected = -2;
+            var expected = -2m;
 
             //Act
             var rpn = RPNParser.Parse(text);
-            var actual = ExpressionBuilder.Build(rpn).Value();
+            var actual = ((INumberExpression)ExpressionBuilder.Build(rpn).Value()).Val;
 
             //Assert
             Assert.AreEqual(expected, actual);
@@ -27,11 +28,11 @@ namespace ExpressionTests.BasicOperations
         {
             //Arrange
             var text = 5.2.ToString() + "-" + 1.3.ToString();
-            var expected = 3.9;
+            var expected = 3.9m;
 
             //Act
             var rpn = RPNParser.Parse(text);
-            var actual = ExpressionBuilder.Build(rpn).Value();
+            var actual = ((INumberExpression)ExpressionBuilder.Build(rpn).Value()).Val;
 
             //Assert
             Assert.AreEqual(expected, actual);
@@ -42,11 +43,11 @@ namespace ExpressionTests.BasicOperations
         {
             //Arrange
             var text = 5.2m.ToString() + "-" + 1.3m.ToString();
-            var expected = 3.9;
+            var expected = 3.9m;
 
             //Act
             var rpn = RPNParser.Parse(text);
-            var actual = ExpressionBuilder.Build(rpn).Value();
+            var actual = ((INumberExpression)ExpressionBuilder.Build(rpn).Value()).Val;
 
             //Assert
             Assert.AreEqual(expected, actual);

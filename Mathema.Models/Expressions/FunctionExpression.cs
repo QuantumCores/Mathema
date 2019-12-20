@@ -11,15 +11,25 @@ namespace Mathema.Models.Expressions
         private FunctionTypes type;
         private IExpression argument;
 
+        public string DimensionType { get; } = "FunctionExpression";
+
         public FunctionExpression(FunctionTypes type, IExpression argument)
         {
             this.type = type;
             this.argument = argument;
         }
 
-        public IExpressionResult Value()
+        public IExpression Value()
         {
-            return Functions.Functions.Get(type).Projection(argument.Value());
+            var arg = this.argument.Value();
+            if (arg is INumberExpression)
+            {
+                return new NumberExpression(Functions.Functions.Get(type).Projection(((INumberExpression)arg).Val));
+            }
+            else
+            {
+                return this;
+            }
         }
 
         public override string ToString()

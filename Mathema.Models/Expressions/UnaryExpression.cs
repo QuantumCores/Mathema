@@ -11,15 +11,25 @@ namespace Mathema.Models.Expressions
         private OperatorTypes op;
         private IExpression rhe;
 
+        public string DimensionType { get; } = "UnaryExpression";
+
         public UnaryExpression(OperatorTypes op, IExpression rhe)
         {
             this.rhe = rhe;
             this.op = op;
         }
 
-        public IExpressionResult Value()
+        public IExpression Value()
         {
-            return Operations.UnaryOperations[op](rhe);
+            var arg = this.rhe.Value();
+            if (arg is INumberExpression)
+            {
+                return new NumberExpression(Operations.UnaryOperations[op](((INumberExpression)arg).Val));
+            }
+            else
+            {
+                return this;
+            }
         }
 
         public override string ToString()

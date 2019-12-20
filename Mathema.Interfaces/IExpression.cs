@@ -4,6 +4,8 @@ namespace Mathema.Interfaces
 {
     public interface IExpression
     {
-        IExpressionResult Value();
+        string DimensionType { get; }
+
+        IExpression Value();
     }
 }

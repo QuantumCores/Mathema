@@ -3,12 +3,12 @@ using Mathema.Algorithms.Parsers;
 using Mathema.Interfaces;
 using NUnit.Framework;
 
-namespace ExpressionTests.BasicOperations
+
+namespace Tests
 {
     [TestFixture]
     public class AddTests
     {
-
         [Test]
         public void AddIntegers()
         {
@@ -18,7 +18,7 @@ namespace ExpressionTests.BasicOperations
 
             //Act
             var rpn = RPNParser.Parse(text);
-            var actual = ((INumberExpression)ExpressionBuilder.Build(rpn).Value()).Val;
+            var actual = ((INumberExpression)ExpressionBuilder.BuildFlat(rpn).Value()).Val;
 
             //Assert
             Assert.AreEqual(expected, actual);
