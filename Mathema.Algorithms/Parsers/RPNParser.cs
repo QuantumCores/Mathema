@@ -1,5 +1,6 @@
 ﻿using Mathema.Enums.Operators;
 using Mathema.Enums.Symbols;
+using Mathema.Interfaces;
 using Mathema.Models.Constants;
 using Mathema.Models.Functions;
 using Mathema.Models.Operators;
@@ -12,12 +13,13 @@ namespace Mathema.Algorithms.Parsers
 {
     public class RPNParser
     {
-        public static List<Symbol> Parse(string text)
+        public static IRPN Parse(string text)
         {
-            var output = new List<Symbol>();
-            var operators = new List<Symbol>();
+            var output = new List<ISymbol>();
+            var operators = new List<ISymbol>();
+            var variables = new Dictionary<string, int>();
 
-            var previousSymbol = new Symbol("", SymbolTypes.Undefined);
+            ISymbol previousSymbol = new Symbol("", SymbolTypes.Undefined);
 
             var calc = text.ToLower();
             for (int i = 0; i < calc.Length; i++)
@@ -33,7 +35,7 @@ namespace Mathema.Algorithms.Parsers
                 {
                     if (previousSymbol.Type == SymbolTypes.Undefined && previousSymbol.Value != "")
                     {
-                        FindSymbolForUndefined(ref previousSymbol, operators, output);
+                        FindSymbolForUndefined(ref previousSymbol, operators, output, variables);
                     }
 
                     if (symbol.Type == SymbolTypes.Number)
@@ -104,7 +106,7 @@ namespace Mathema.Algorithms.Parsers
             {
                 if (previousSymbol.Type == SymbolTypes.Undefined)
                 {
-                    FindSymbolForUndefined(ref previousSymbol, operators, output);
+                    FindSymbolForUndefined(ref previousSymbol, operators, output, variables);
                 }
             }
 
@@ -117,10 +119,10 @@ namespace Mathema.Algorithms.Parsers
                 }
             }
 
-            return output;
+            return new RPN(output, variables.Select(d => d.Key).ToList());
         }
 
-        private static void FindSymbolForUndefined(ref Symbol previousSymbol, List<Symbol> operators, List<Symbol> output)
+        private static void FindSymbolForUndefined(ref ISymbol previousSymbol, List<ISymbol> operators, List<ISymbol> output, Dictionary<string, int> variables)
         {
             if (Constants.TryGetValue(previousSymbol.Value, out var c))
             {
@@ -136,10 +138,14 @@ namespace Mathema.Algorithms.Parsers
             {
                 previousSymbol = new Symbol(previousSymbol.Value, SymbolTypes.Variable);
                 output.Add(previousSymbol);
+                if (!variables.ContainsKey(previousSymbol.Value))
+                {
+                    variables.Add(previousSymbol.Value, 0);
+                }
             }
         }
 
-        private static void Pop(List<Symbol> numbers, List<Symbol> operators)
+        private static void Pop(List<ISymbol> numbers, List<ISymbol> operators)
         {
             numbers.Add(operators[operators.Count - 1]);
             operators.RemoveAt(operators.Count - 1);

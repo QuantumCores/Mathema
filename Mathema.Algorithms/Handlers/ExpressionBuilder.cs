@@ -15,7 +15,7 @@ namespace Mathema.Algorithms.Handlers
 {
     public class ExpressionBuilder
     {
-        public static IExpression Build(List<Symbol> RPNStack)
+        public static IExpression Build(List<ISymbol> RPNStack)
         {
             List<IExpression> stack = new List<IExpression>();
             var i = 0;
@@ -67,7 +67,7 @@ namespace Mathema.Algorithms.Handlers
             return stack[0];
         }
 
-        public static IExpression BuildFlat(List<Symbol> RPNStack)
+        public static IExpression BuildFlat(List<ISymbol> RPNStack)
         {
             List<IExpression> stack = new List<IExpression>();
             var i = 0;

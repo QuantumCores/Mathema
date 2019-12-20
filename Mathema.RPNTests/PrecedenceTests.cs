@@ -21,7 +21,7 @@ namespace Mathema.RPNTests
             var rpn = RPNParser.Parse(text);
 
             //Assert
-            Assert.IsTrue(RPNComparer.Compare(rpn, output));
+            Assert.IsTrue(RPNComparer.Compare(rpn.Output, output));
         }
 
         [Test]
@@ -35,7 +35,7 @@ namespace Mathema.RPNTests
             var rpn = RPNParser.Parse(text);
 
             //Assert
-            Assert.IsTrue(RPNComparer.Compare(rpn, output));
+            Assert.IsTrue(RPNComparer.Compare(rpn.Output, output));
         }
 
         [Test]
@@ -49,7 +49,7 @@ namespace Mathema.RPNTests
             var rpn = RPNParser.Parse(text);
 
             //Assert
-            Assert.IsTrue(RPNComparer.Compare(rpn, output));
+            Assert.IsTrue(RPNComparer.Compare(rpn.Output, output));
         }
 
         [Test]
@@ -63,7 +63,7 @@ namespace Mathema.RPNTests
             var rpn = RPNParser.Parse(text);
 
             //Assert
-            Assert.IsTrue(RPNComparer.Compare(rpn, output));
+            Assert.IsTrue(RPNComparer.Compare(rpn.Output, output));
         }
     }
 }

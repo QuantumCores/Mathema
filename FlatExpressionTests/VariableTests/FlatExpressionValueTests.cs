@@ -4,7 +4,7 @@ using Mathema.Interfaces;
 using NUnit.Framework;
 using System;
 
-namespace FlatExpressionTests.ComplexOperations
+namespace FlatExpressionTests.VariableTests
 {
     [TestFixture]
     public class FlatExpressionValueTests

@@ -75,8 +75,8 @@ namespace Mathema
             var output = RPNParser.Parse(equation);
 
             Console.WriteLine();
-            Console.WriteLine("Parsed  : " + string.Join("", output.Select(o => o.Value)));
-            var expr = ExpressionBuilder.Build(output);
+            Console.WriteLine("Parsed  : " + string.Join("", output.Output.Select(o => o.Value)));
+            var expr = ExpressionBuilder.Build(output.Output);
             //Console.WriteLine();
             Console.WriteLine("Equation: " + expr.ToString());
             //Console.WriteLine();

@@ -22,7 +22,7 @@ namespace Mathema.RPNTests.ParsingTests
             var rpn = RPNParser.Parse(text);
 
             //Assert
-            Assert.IsTrue(RPNComparer.Compare(rpn, expected));
+            Assert.IsTrue(RPNComparer.Compare(rpn.Output, expected));
         }
     }
 }
