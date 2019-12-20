@@ -11,13 +11,13 @@ namespace Mathema.Models.Expressions
 
         public decimal value;
 
-        public string DimensionType { get; private set; } = "x";
+        public string DimensionKey { get; private set; } = "x";
 
         public VariableExpression(string symbol, decimal value)
         {
             this.symbol = symbol;
             this.value = value;
-            this.DimensionType = symbol;
+            this.DimensionKey = symbol;
         }
 
         public IExpression Value()

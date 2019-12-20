@@ -4,7 +4,7 @@ namespace Mathema.Interfaces
 {
     public interface IExpression
     {
-        string DimensionType { get; }
+        string DimensionKey { get; }
 
         IExpression Value();
     }

@@ -1,20 +1,19 @@
-using Mathema.Algorithms.Handlers;
+﻿using Mathema.Algorithms.Handlers;
 using Mathema.Algorithms.Parsers;
 using Mathema.Interfaces;
 using NUnit.Framework;
 
-
-namespace Tests
+namespace FlatExpressionTests.BasicOperations
 {
     [TestFixture]
-    public class AddTests
+    public class SubtractTests
     {
         [Test]
-        public void AddIntegers()
+        public void SubtractIntegers()
         {
             //Arrange
-            var text = "2+2";
-            var expected = 4;
+            var text = "4-6";
+            var expected = -2m;
 
             //Act
             var rpn = RPNParser.Parse(text);
@@ -25,11 +24,11 @@ namespace Tests
         }
 
         [Test]
-        public void AddDoubles()
+        public void SubtractDoubles()
         {
             //Arrange
-            var text = 2.2.ToString() + "+" + 4.3.ToString();
-            var expected = 6.5;
+            var text = 5.2.ToString() + "-" + 1.3.ToString();
+            var expected = 3.9m;
 
             //Act
             var rpn = RPNParser.Parse(text);
@@ -40,11 +39,11 @@ namespace Tests
         }
 
         [Test]
-        public void AddDecimals()
+        public void SubtractDecimals()
         {
             //Arrange
-            var text = 2.2m.ToString() + "+" + 4.3m.ToString();
-            var expected = 6.5;
+            var text = 5.2m.ToString() + "-" + 1.3m.ToString();
+            var expected = 3.9m;
 
             //Act
             var rpn = RPNParser.Parse(text);

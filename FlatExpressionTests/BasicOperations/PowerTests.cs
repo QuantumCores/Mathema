@@ -1,54 +1,53 @@
-using Mathema.Algorithms.Handlers;
+﻿using Mathema.Algorithms.Handlers;
 using Mathema.Algorithms.Parsers;
 using Mathema.Interfaces;
 using NUnit.Framework;
 
-
-namespace Tests
+namespace FlatExpressionTests.BasicOperations
 {
     [TestFixture]
-    public class AddTests
+    public class PowerTests
     {
         [Test]
-        public void AddIntegers()
+        public void PowIntegers()
         {
             //Arrange
-            var text = "2+2";
+            var text = "2^2";
             var expected = 4;
 
             //Act
             var rpn = RPNParser.Parse(text);
-            var actual = ((INumberExpression)ExpressionBuilder.BuildFlat(rpn).Value()).Val;
+            var actual = ((INumberExpression)ExpressionBuilder.Build(rpn).Value()).Val;
 
             //Assert
             Assert.AreEqual(expected, actual);
         }
 
         [Test]
-        public void AddDoubles()
+        public void PowDoubles()
         {
             //Arrange
-            var text = 2.2.ToString() + "+" + 4.3.ToString();
-            var expected = 6.5;
+            var text = 2.0.ToString() + "^" + 3.0.ToString();
+            var expected = 8;
 
             //Act
             var rpn = RPNParser.Parse(text);
-            var actual = ((INumberExpression)ExpressionBuilder.BuildFlat(rpn).Value()).Val;
+            var actual = ((INumberExpression)ExpressionBuilder.Build(rpn).Value()).Val;
 
             //Assert
             Assert.AreEqual(expected, actual);
         }
 
         [Test]
-        public void AddDecimals()
+        public void PowDecimals()
         {
             //Arrange
-            var text = 2.2m.ToString() + "+" + 4.3m.ToString();
-            var expected = 6.5;
+            var text = 2m.ToString() + "^" + 4m.ToString();
+            var expected = 16;
 
             //Act
             var rpn = RPNParser.Parse(text);
-            var actual = ((INumberExpression)ExpressionBuilder.BuildFlat(rpn).Value()).Val;
+            var actual = ((INumberExpression)ExpressionBuilder.Build(rpn).Value()).Val;
 
             //Assert
             Assert.AreEqual(expected, actual);

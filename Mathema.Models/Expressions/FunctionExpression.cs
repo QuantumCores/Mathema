@@ -11,7 +11,7 @@ namespace Mathema.Models.Expressions
         private FunctionTypes type;
         private IExpression argument;
 
-        public string DimensionType { get; } = "FunctionExpression";
+        public string DimensionKey { get; } = "FunctionExpression";
 
         public FunctionExpression(FunctionTypes type, IExpression argument)
         {

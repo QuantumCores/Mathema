@@ -12,7 +12,7 @@ namespace Mathema.Models.Expressions
         private OperatorTypes op;
         private IExpression rhe;
 
-        public string DimensionType { get; } = "BinaryExpression";
+        public string DimensionKey { get; } = "BinaryExpression";
 
         public BinaryExpression(IExpression lhe, OperatorTypes op, IExpression rhe)
         {

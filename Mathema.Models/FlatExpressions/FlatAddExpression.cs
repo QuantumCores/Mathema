@@ -10,7 +10,7 @@ namespace Mathema.Models.FlatExpressions
     {
         public FlatAddExpression()
         {
-            this.DimensionType = "FlatAddExpression";
+            this.DimensionKey = "FlatAddExpression";
         }
 
         public override void Squash()
@@ -20,10 +20,33 @@ namespace Mathema.Models.FlatExpressions
 
         public override IExpression Value()
         {
-            if (this.Dimensions.Count == 1 && this.Dimensions.ContainsKey(typeof(NumberExpression).ToString()))
+            var all = new List<IExpression>();
+            foreach (var expressions in this.Dimensions)
             {
-                var result = new NumberExpression(0m);
-                this.Dimensions[typeof(NumberExpression).ToString()].ForEach(n => result = (NumberExpression)(result + (INumberExpression)n));
+                foreach (var exp in expressions.Value)
+                {
+                    all.Add(exp.Value());
+                }
+            }
+
+            var dims = new Dictionary<string, List<IExpression>>();
+            foreach (var exp in all)
+            {
+                if (!dims.ContainsKey(exp.DimensionKey))
+                {
+                    dims.Add(exp.DimensionKey, new List<IExpression>());
+                }
+
+                dims[exp.DimensionKey].Add(exp);
+            }
+
+            this.Dimensions = dims;
+
+            var result = new NumberExpression(0m);
+            var numKey = result.DimensionKey;
+            if (this.Dimensions.Count == 1 && this.Dimensions.ContainsKey(numKey))
+            {
+                this.Dimensions[numKey].ForEach(n => result = (NumberExpression)(result + (INumberExpression)n));
                 return result;
             }
             else

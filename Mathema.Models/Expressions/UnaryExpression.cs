@@ -11,7 +11,7 @@ namespace Mathema.Models.Expressions
         private OperatorTypes op;
         private IExpression rhe;
 
-        public string DimensionType { get; } = "UnaryExpression";
+        public string DimensionKey { get; } = "UnaryExpression";
 
         public UnaryExpression(OperatorTypes op, IExpression rhe)
         {

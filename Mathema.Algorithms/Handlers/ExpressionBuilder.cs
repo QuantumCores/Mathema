@@ -79,20 +79,31 @@ namespace Mathema.Algorithms.Handlers
                         if (s.Type == SymbolTypes.BinaryOperator)
                         {
                             var type = Operators.Get(s.Value).Type;
-                            if (type == OperatorTypes.Add || type == OperatorTypes.Subtract)
+                            if (type == OperatorTypes.Add)
                             {
-                                var flat = new FlatAddExpression();
-                                flat.Add(stack[stack.Count - 1]);
-                                flat.Add(stack[stack.Count - 1]);
+                                var tmp = new FlatAddExpression();
+                                tmp.Add(stack[stack.Count - 1]);
+                                tmp.Add(stack[stack.Count - 2]);
+                                stack.RemoveAt(stack.Count - 1);
+                                stack.RemoveAt(stack.Count - 1);
+                                stack.Add(tmp);
+                            }
+                            else if (type == OperatorTypes.Subtract)
+                            {
+                                var tmp = new FlatAddExpression();
+                                tmp.Add(new UnaryExpression(OperatorTypes.Sign, stack[stack.Count - 1]));
+                                tmp.Add(stack[stack.Count - 2]);
+                                stack.RemoveAt(stack.Count - 1);
+                                stack.RemoveAt(stack.Count - 1);
+                                stack.Add(tmp);
                             }
                             else
                             {
                                 var tmp = new BinaryExpression(stack[stack.Count - 2], Operators.Get(s.Value).Type, stack[stack.Count - 1]);
+                                stack.RemoveAt(stack.Count - 1);
+                                stack.RemoveAt(stack.Count - 1);
                                 stack.Add(tmp);
                             }
-
-                            stack.RemoveAt(stack.Count - 1);
-                            stack.RemoveAt(stack.Count - 1);
                         }
                         else if (s.Type == SymbolTypes.UnaryOperator)
                         {
@@ -119,9 +130,15 @@ namespace Mathema.Algorithms.Handlers
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                var msg = "I couldn't undertand what you mean by '" + RPNStack[i].Value + "' after " + string.Join("", stack);
+                var msg = "I couldn't undertand what you mean by '" + RPNStack[i].Value + "' after " + string.Join(" ", stack);
+                throw new WrongSyntaxException(msg);
+            }
+
+            if (stack.Count > 1)
+            {
+                var msg = "I couldn't undertand what you mean. Please rephrase your equation. What I understood " + Environment.NewLine + stack[0].ToString();
                 throw new WrongSyntaxException(msg);
             }
 

@@ -9,7 +9,7 @@ namespace Mathema.Models.Expressions
     {
         public decimal Val { get; }
 
-        public string DimensionType { get; } = "";
+        public string DimensionKey { get; } = "";
 
         public NumberExpression(string val)
         {
@@ -37,22 +37,22 @@ namespace Mathema.Models.Expressions
 
         public static INumberExpression operator +(NumberExpression lhn, INumberExpression rhn)
         {
-            return new NumberExpression(lhn.Val + lhn.Val);
+            return new NumberExpression(lhn.Val + rhn.Val);
         }
 
         public static INumberExpression operator +(INumberExpression lhn, NumberExpression rhn)
         {
-            return new NumberExpression(lhn.Val + lhn.Val);
+            return new NumberExpression(lhn.Val + rhn.Val);
         }
 
         public static INumberExpression operator *(NumberExpression lhn, INumberExpression rhn)
         {
-            return new NumberExpression(lhn.Val * lhn.Val);
+            return new NumberExpression(lhn.Val * rhn.Val);
         }
 
         public static INumberExpression operator /(NumberExpression lhn, INumberExpression rhn)
         {
-            return new NumberExpression(lhn.Val / lhn.Val);
+            return new NumberExpression(lhn.Val / rhn.Val);
         }
     }
 }
