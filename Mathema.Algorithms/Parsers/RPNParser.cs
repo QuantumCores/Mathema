@@ -100,6 +100,14 @@ namespace Mathema.Algorithms.Parsers
                 }
             }
 
+            if (operators.Count == 0 && previousSymbol.Value != "")
+            {
+                if (previousSymbol.Type == SymbolTypes.Undefined)
+                {
+                    FindSymbolForUndefined(ref previousSymbol, operators, output);
+                }
+            }
+
             if (operators.Count != 0)
             {
                 while (operators.Count > 0)

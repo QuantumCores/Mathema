@@ -16,4 +16,8 @@
     <ProjectReference Include="..\Mathema.Algorithms\Mathema.Algorithms.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="VariableTests\" />
+  </ItemGroup>
+
 </Project>
