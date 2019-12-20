@@ -1,4 +1,6 @@
-﻿using Mathema.Interfaces;
+﻿using Mathema.Enums.Operators;
+using Mathema.Enums.Symbols;
+using Mathema.Interfaces;
 using Mathema.Models.Exceptions;
 using Mathema.Models.Expressions;
 using Mathema.Models.FlatExpressions;

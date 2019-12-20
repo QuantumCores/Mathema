@@ -2,15 +2,6 @@
 
 namespace Mathema.Shared.Constants
 {
-    public enum ConstantTypes
-    {
-        PI,
-        e,
-        EM,
-        Phi
-    }
-
-
     public class Constants
     {
         public static double PI { get; } = Math.PI;

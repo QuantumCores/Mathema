@@ -1,4 +1,5 @@
-﻿using Mathema.Interfaces;
+﻿using Mathema.Enums.Operators;
+using Mathema.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;

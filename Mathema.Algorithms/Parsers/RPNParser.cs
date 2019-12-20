@@ -1,4 +1,6 @@
-﻿using Mathema.Models.Constants;
+﻿using Mathema.Enums.Operators;
+using Mathema.Enums.Symbols;
+using Mathema.Models.Constants;
 using Mathema.Models.Functions;
 using Mathema.Models.Operators;
 using Mathema.Models.Symbols;
