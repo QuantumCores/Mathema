@@ -1,5 +1,6 @@
 ﻿using Mathema.Interfaces;
 using Mathema.Models.Functions;
+using Mathema.Models.Numerics;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,6 +14,8 @@ namespace Mathema.Models.Expressions
         private IExpression argument;
 
         public string DimensionKey { get; } = "FunctionExpression";
+
+        public IFraction Count { get; set; } = new Fraction();
 
         public FunctionExpression(FunctionTypes type, IExpression argument)
         {

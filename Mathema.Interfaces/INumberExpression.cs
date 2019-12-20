@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Mathema.Interfaces
 {
-    public interface INumberExpression
+    public interface INumberExpression : IExpression
     {
         decimal Val { get; }
     }

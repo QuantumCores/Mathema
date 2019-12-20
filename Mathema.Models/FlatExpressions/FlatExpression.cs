@@ -1,6 +1,8 @@
 ﻿using Mathema.Interfaces;
+using Mathema.Models.Numerics;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Mathema.Models.FlatExpressions
@@ -11,7 +13,9 @@ namespace Mathema.Models.FlatExpressions
 
         public string DimensionKey { get; internal set; } = "FlatExpression";
 
-        public abstract IExpression Value();        
+        public IFraction Count { get; set; } = new Fraction();
+
+        public abstract IExpression Value();
 
         public abstract void Squash();
 
@@ -25,18 +29,36 @@ namespace Mathema.Models.FlatExpressions
             this.Dimensions[expression.DimensionKey].Add(expression);
         }
 
-        public override string ToString()
+        public static bool Compare(FlatExpression lhe, FlatExpression rhe)
         {
-            var sb = new StringBuilder();
-            foreach (var expressions in this.Dimensions)
+            if (lhe.DimensionKey != rhe.DimensionKey)
             {
-                foreach (var exp in expressions.Value)
-                {
-                    sb.Append(exp.ToString());
-                }                
+                return false;
             }
 
-            return sb.ToString();
-        }
+            if (lhe.Dimensions.Keys.Count != rhe.Dimensions.Keys.Count)
+            {
+                return false;
+            }
+            
+            foreach (var key in lhe.Dimensions.Keys)
+            {
+                if (!rhe.Dimensions.ContainsKey(key))
+                {
+                    return false;
+                }
+                else
+                {
+                    if (lhe.Dimensions[key].Count != rhe.Dimensions[key].Count)
+                    {
+                        return false;
+                    }
+
+                    //compare insides
+                }
+            }
+
+            return true;
+        }       
     }
 }

@@ -18,7 +18,7 @@ namespace ExpressionTests.BasicOperations
 
             //Act
             var rpn = RPNParser.Parse(text);
-            var actual = ((INumberExpression)ExpressionBuilder.Build(rpn.Output).Value()).Val;
+            var actual = ExpressionBuilder.Build(rpn.Output).Value().Count.ToNumber();
 
             //Assert
             Assert.AreEqual(expected, actual);
@@ -33,7 +33,7 @@ namespace ExpressionTests.BasicOperations
 
             //Act
             var rpn = RPNParser.Parse(text);
-            var actual = ((INumberExpression)ExpressionBuilder.Build(rpn.Output).Value()).Val;
+            var actual = ExpressionBuilder.Build(rpn.Output).Value().Count.ToNumber();
 
             //Assert
             Assert.AreEqual(expected, actual);
@@ -48,7 +48,7 @@ namespace ExpressionTests.BasicOperations
 
             //Act
             var rpn = RPNParser.Parse(text);
-            var actual = ((INumberExpression)ExpressionBuilder.Build(rpn.Output).Value()).Val;
+            var actual = ExpressionBuilder.Build(rpn.Output).Value().Count.ToNumber();
 
             //Assert
             Assert.AreEqual(expected, actual);
@@ -63,7 +63,7 @@ namespace ExpressionTests.BasicOperations
 
             //Act
             var rpn = RPNParser.Parse(text);
-            var actual = ((INumberExpression)ExpressionBuilder.Build(rpn.Output).Value()).Val;
+            var actual = ExpressionBuilder.Build(rpn.Output).Value().Count.ToNumber();
 
             //Assert
             Assert.AreEqual(expected, actual);
@@ -78,7 +78,7 @@ namespace ExpressionTests.BasicOperations
 
             //Act
             var rpn = RPNParser.Parse(text);
-            var actual = ((INumberExpression)ExpressionBuilder.Build(rpn.Output).Value()).Val;
+            var actual = ExpressionBuilder.Build(rpn.Output).Value().Count.ToNumber();
 
             //Assert
             Assert.AreEqual(expected, actual);
@@ -93,7 +93,7 @@ namespace ExpressionTests.BasicOperations
 
             //Act
             var rpn = RPNParser.Parse(text);
-            var actual = ((INumberExpression)ExpressionBuilder.Build(rpn.Output).Value()).Val;
+            var actual =ExpressionBuilder.Build(rpn.Output).Value().Count.ToNumber();
 
             //Assert
             Assert.AreEqual(expected, actual);

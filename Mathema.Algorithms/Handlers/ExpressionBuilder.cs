@@ -60,7 +60,7 @@ namespace Mathema.Algorithms.Handlers
             }
             catch (Exception)
             {
-                var msg = "I couldn't undertand what you mean by '" + RPNStack[i].Value + "' after " + string.Join("", stack);
+                var msg = "I couldn't undertand what you mean by '" + RPNStack[i].Value + "' before " + string.Join("", stack);
                 throw new WrongSyntaxException(msg);
             }
 
@@ -76,16 +76,30 @@ namespace Mathema.Algorithms.Handlers
                 for (i = 0; i < RPNStack.Count; i++)
                 {
                     var s = RPNStack[i];
-                    if (s.Type != SymbolTypes.Number)
+                    if (s.Type != SymbolTypes.Number && s.Type != SymbolTypes.Variable)
                     {
                         if (s.Type == SymbolTypes.BinaryOperator)
                         {
                             var type = Operators.Get(s.Value).Type;
+                            
                             if (type == OperatorTypes.Add)
                             {
                                 var tmp = new FlatAddExpression();
-                                tmp.Add(stack[stack.Count - 1]);
-                                tmp.Add(stack[stack.Count - 2]);
+                                if (stack[stack.Count - 1] is FlatAddExpression)
+                                {
+                                    tmp = (FlatAddExpression)stack[stack.Count - 1] + stack[stack.Count - 2];
+                                }
+                                else if (stack[stack.Count - 2] is FlatAddExpression)
+                                {
+                                    tmp = (FlatAddExpression)stack[stack.Count - 2] + stack[stack.Count - 1];
+                                }
+                                else
+                                {
+                                    tmp.Add(stack[stack.Count - 1]);
+                                    tmp.Add(stack[stack.Count - 2]);
+                                }
+
+
                                 stack.RemoveAt(stack.Count - 1);
                                 stack.RemoveAt(stack.Count - 1);
                                 stack.Add(tmp);
@@ -119,28 +133,29 @@ namespace Mathema.Algorithms.Handlers
                             stack.RemoveAt(stack.Count - 1);
                             stack.Add(tmp);
                         }
-                        else if (s.Type == SymbolTypes.Variable)
-                        {
-                            var tmp = new VariableExpression(s.Value, 1m);
-                            stack.RemoveAt(stack.Count - 1);
-                            stack.Add(tmp);
-                        }
                     }
                     else
                     {
-                        stack.Add(new NumberExpression(s.Value));
+                        if (s.Type == SymbolTypes.Number)
+                        {
+                            stack.Add(new NumberExpression(s.Value));
+                        }
+                        else if (s.Type == SymbolTypes.Variable)
+                        {
+                            stack.Add(new VariableExpression(s.Value, 1m));
+                        }
                     }
                 }
             }
             catch (Exception ex)
             {
                 var msg = "I couldn't undertand what you mean by '" + RPNStack[i].Value + "' after " + string.Join(" ", stack);
-                throw new WrongSyntaxException(msg);
+                throw new WrongSyntaxException(msg, ex);
             }
 
             if (stack.Count > 1)
             {
-                var msg = "I couldn't undertand what you mean. Please rephrase your equation. What I understood " + Environment.NewLine + stack[0].ToString();
+                var msg = "I couldn't understand what you mean. Please rephrase your equation. What I understood " + Environment.NewLine + stack[0].ToString();
                 throw new WrongSyntaxException(msg);
             }
 

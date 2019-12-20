@@ -8,28 +8,103 @@ namespace Mathema.Models.Operators
 {
     public class Operations
     {
-        public static Dictionary<OperatorTypes, Func<decimal, decimal, decimal>> BinaryOperations { get; } = GetAllBinary();
+        public static Dictionary<OperatorTypes, Func<IExpression, IExpression, IExpression>> BinaryOperations { get; } = GetAllBinary();
 
-        public static Dictionary<OperatorTypes, Func<decimal, decimal>> UnaryOperations { get; } = GetAllUnary();
+        public static Dictionary<OperatorTypes, Func<IExpression, IExpression>> UnaryOperations { get; } = GetAllUnary();
 
-        private static Dictionary<OperatorTypes, Func<decimal, decimal, decimal>> GetAllBinary()
+        private static Dictionary<OperatorTypes, Func<IExpression, IExpression, IExpression>> GetAllBinary()
         {
-            var result = new Dictionary<OperatorTypes, Func<decimal, decimal, decimal>>();
+            var result = new Dictionary<OperatorTypes, Func<IExpression, IExpression, IExpression>>();
 
-            result.Add(OperatorTypes.Add, (lhe, rhe) => lhe + rhe);
-            result.Add(OperatorTypes.Subtract, (lhe, rhe) => lhe - rhe);
-            result.Add(OperatorTypes.Multiply, (lhe, rhe) => lhe * rhe);
-            result.Add(OperatorTypes.Divide, (lhe, rhe) => lhe / rhe);
-            result.Add(OperatorTypes.Power, (lhe, rhe) => (decimal)Math.Pow((double)lhe, (double)rhe));
+            result.Add(OperatorTypes.Add, (lhe, rhe) => Add(lhe, rhe));
+            result.Add(OperatorTypes.Subtract, (lhe, rhe) => Subtract(lhe, rhe));
+            result.Add(OperatorTypes.Multiply, (lhe, rhe) => Multiply(lhe, rhe));
+            result.Add(OperatorTypes.Divide, (lhe, rhe) => Divide(lhe, rhe));
+            result.Add(OperatorTypes.Power, (lhe, rhe) => Power(lhe, rhe));
 
             return result;
         }
 
-        private static Dictionary<OperatorTypes, Func<decimal, decimal>> GetAllUnary()
+        private static IExpression Add(IExpression lhe, IExpression rhe)
         {
-            var result = new Dictionary<OperatorTypes, Func<decimal, decimal>>();
+            if (lhe is INumberExpression && rhe is INumberExpression)
+            {
+                lhe.Count.Add(rhe.Count);
+                return lhe;
+            }
+            else if (lhe is IVariableExpression && rhe is IVariableExpression && ((IVariableExpression)lhe).CompareDimensions((IVariableExpression)rhe))
+            {
+                lhe.Count.Add(rhe.Count);
+                return lhe;
+            }
 
-            result.Add(OperatorTypes.Sign, rhe => -1 * rhe);
+            return null;
+        }
+
+        private static IExpression Subtract(IExpression lhe, IExpression rhe)
+        {
+            if (lhe is INumberExpression && rhe is INumberExpression)
+            {
+                lhe.Count.Subtract(rhe.Count);
+                return lhe;
+            }
+            else if (lhe is IVariableExpression && rhe is IVariableExpression && ((IVariableExpression)lhe).CompareDimensions((IVariableExpression)rhe))
+            {
+                lhe.Count.Subtract(rhe.Count);
+                return lhe;
+            }
+
+            return null;
+        }
+
+        private static IExpression Multiply(IExpression lhe, IExpression rhe)
+        {
+            if (lhe is INumberExpression && rhe is INumberExpression)
+            {
+                lhe.Count.Multiply(rhe.Count);
+                return lhe;
+            }
+            else if (lhe is IVariableExpression && rhe is IVariableExpression && ((IVariableExpression)lhe).CompareDimensions((IVariableExpression)rhe))
+            {
+                lhe.Count.Multiply(rhe.Count);
+                return lhe;
+            }
+
+            return null;
+        }
+
+        private static IExpression Divide(IExpression lhe, IExpression rhe)
+        {
+            if (lhe is INumberExpression && rhe is INumberExpression)
+            {
+                lhe.Count.Divide(rhe.Count);
+                return lhe;
+            }
+            else if (lhe is IVariableExpression && rhe is IVariableExpression && ((IVariableExpression)lhe).CompareDimensions((IVariableExpression)rhe))
+            {
+                lhe.Count.Divide(rhe.Count);
+                return lhe;
+            }
+
+            return null;
+        }
+
+        private static IExpression Power(IExpression lhe, IExpression rhe)
+        {
+            if (lhe is INumberExpression && rhe is INumberExpression)
+            {
+                lhe.Count.Subtract(rhe.Count);
+                return lhe;
+            }
+
+            return null;
+        }
+
+        private static Dictionary<OperatorTypes, Func<IExpression, IExpression>> GetAllUnary()
+        {
+            var result = new Dictionary<OperatorTypes, Func<IExpression, IExpression>>();
+
+            result.Add(OperatorTypes.Sign, rhe => { rhe.Count.Numerator *= -1; return rhe; });
 
             return result;
         }

@@ -19,10 +19,10 @@ namespace ExpressionTests.RingOperations
 
             //Act
             var rpn1 = RPNParser.Parse(text1);
-            var actual1 = ((INumberExpression)ExpressionBuilder.Build(rpn1.Output).Value()).Val;
+            var actual1 = ExpressionBuilder.Build(rpn1.Output).Value().Count.ToNumber();
 
             var rpn2 = RPNParser.Parse(text2);
-            var actual2 = ((INumberExpression)ExpressionBuilder.Build(rpn2.Output).Value()).Val;
+            var actual2 = ExpressionBuilder.Build(rpn2.Output).Value().Count.ToNumber();
 
             //Assert
             Assert.AreEqual(expected, actual1);
@@ -39,10 +39,10 @@ namespace ExpressionTests.RingOperations
 
             //Act
             var rpn1 = RPNParser.Parse(text1);
-            var actual1 = ((INumberExpression)ExpressionBuilder.Build(rpn1.Output).Value()).Val;
+            var actual1 = ExpressionBuilder.Build(rpn1.Output).Value().Count.ToNumber();
 
             var rpn2 = RPNParser.Parse(text2);
-            var actual2 = ((INumberExpression)ExpressionBuilder.Build(rpn2.Output).Value()).Val;
+            var actual2 = ExpressionBuilder.Build(rpn2.Output).Value().Count.ToNumber();
 
             //Assert
             Assert.AreEqual(expected, actual1);

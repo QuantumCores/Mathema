@@ -15,7 +15,6 @@ namespace Mathema.RPNTests.ParsingTests
         public void Parse_Pi()
         {
             //Arrange
-
             var text = "Pi";
             var expected = Constants.PI.ToString();
 
@@ -30,7 +29,6 @@ namespace Mathema.RPNTests.ParsingTests
         public void Parse_Phi()
         {
             //Arrange
-
             var text = "Phi";
             var expected = Constants.Phi.ToString();
 
@@ -45,7 +43,6 @@ namespace Mathema.RPNTests.ParsingTests
         public void Parse_e()
         {
             //Arrange
-
             var text = "e";
             var expected = Constants.e.ToString();
 
@@ -60,7 +57,6 @@ namespace Mathema.RPNTests.ParsingTests
         public void Parse_EM()
         {
             //Arrange
-
             var text = "em";
             var expected = Constants.EM.ToString();
 
@@ -75,7 +71,6 @@ namespace Mathema.RPNTests.ParsingTests
         public void Parse_Pi_Sin()
         {
             //Arrange
-
             var text = "Sin(Pi)";
             var expected = Constants.PI.ToString() + " sin";
 
@@ -90,7 +85,6 @@ namespace Mathema.RPNTests.ParsingTests
         public void Parse_e_Sin()
         {
             //Arrange
-
             var text = "Sin(e)";
             var expected = Constants.e + " sin";
 
