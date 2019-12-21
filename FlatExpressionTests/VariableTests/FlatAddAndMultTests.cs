@@ -12,11 +12,27 @@ namespace FlatExpressionTests.VariableTests
     public class FlatAddAndMultTests
     {
         [Test]
-        public void Add_TwoMultiply()
+        public void Add_TheSame_FlatMultiply()
         {
             //Arrange
             var text = "y * 2 * x  + 3 * x * y";
             var expected = RPNParser.Parse(" 5 * x * y");
+
+            //Act
+            var rpn = RPNParser.Parse(text);
+            var actual = RPNParser.Parse(ExpressionBuilder.BuildFlat(rpn.Output).Value().ToString());
+
+            //Assert
+            Assert.IsTrue(RPNComparer.Compare(expected.Output, actual.Output));
+
+        }
+
+        [Test]
+        public void Add_Different_FlatMultiply()
+        {
+            //Arrange
+            var text = "y * 2 * x  + 3 * x * y + x + y";
+            var expected = RPNParser.Parse(" 5 * x * y + x + y");
 
             //Act
             var rpn = RPNParser.Parse(text);
