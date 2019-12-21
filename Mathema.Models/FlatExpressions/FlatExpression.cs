@@ -11,7 +11,7 @@ namespace Mathema.Models.FlatExpressions
     {
         public Dictionary<string, List<IExpression>> Dimensions { get; set; } = new Dictionary<string, List<IExpression>>();
 
-        public string DimensionKey { get; internal set; } = "FlatExpression";
+        public string DimensionKey { get; set; } = nameof(FlatExpression);
 
         public IFraction Count { get; set; } = new Fraction();
 

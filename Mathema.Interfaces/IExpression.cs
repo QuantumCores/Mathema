@@ -6,7 +6,7 @@ namespace Mathema.Interfaces
     {
         IFraction Count { get; set; }
 
-        string DimensionKey { get; }
+        string DimensionKey { get; set; }
 
         IExpression Value();
     }

@@ -10,7 +10,7 @@ namespace Mathema.Models.Expressions
     {
         public decimal Val { get; }
 
-        public string DimensionKey { get; } = "";
+        public string DimensionKey { get; set; } = "";
 
         public IFraction Count { get; set; } = new Fraction();
 

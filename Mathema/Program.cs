@@ -1,5 +1,6 @@
 ﻿using Mathema.Algorithms.Handlers;
 using Mathema.Algorithms.Parsers;
+using Mathema.Interfaces;
 using Mathema.Texts;
 using System;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace Mathema
             Console.Write("You can find solution here: ");
             Console.ForegroundColor = ConsoleColor.Green;
             //Console.Clear();
-            Console.Write(@"https://github.com/QunatumCore/Mathema" + Environment.NewLine);
+            Console.Write(@"https://github.com/QuantumCores/Mathema" + Environment.NewLine);
             //Console.ResetColor();
             Console.ForegroundColor = ConsoleColor.Red;
             Console.Write("Your decimal delimeter is '" + del + "'. ");
@@ -72,16 +73,33 @@ namespace Mathema
 
         private static void DoWork(string equation)
         {
-            var output = RPNParser.Parse(equation);
+            try {
+                var rpn = RPNParser.Parse(equation);
 
-            Console.WriteLine();
-            Console.WriteLine("Parsed  : " + string.Join("", output.Output.Select(o => o.Value)));
-            var expr = ExpressionBuilder.Build(output.Output);
-            //Console.WriteLine();
-            Console.WriteLine("Equation: " + expr.ToString());
-            //Console.WriteLine();
-            Console.WriteLine("Result  : " + expr.Value());
+                Console.WriteLine();
+                Console.WriteLine("Parsed  : " + string.Join("", rpn.Output.Select(o => o.Value)));
 
+
+                if (rpn.Variables.Any())
+                {
+                    var expr = ExpressionBuilder.BuildFlat(rpn.Output);
+                    Console.WriteLine("Equation  : " + expr.ToString());
+                    Console.WriteLine("Result    : " + expr.Value().ToString());
+                }
+                else
+                {
+                    var expr = ExpressionBuilder.Build(rpn.Output);
+                    var exprf = ExpressionBuilder.BuildFlat(rpn.Output);
+                    Console.WriteLine("Equation r: " + expr.ToString());
+                    Console.WriteLine("Result   r: " + expr.Value().Count.ToNumber());
+                    Console.WriteLine("Equation f: " + exprf.ToString());
+                    Console.WriteLine("Result   f: " + exprf.Value().Count.ToNumber());
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
         }
     }
 }

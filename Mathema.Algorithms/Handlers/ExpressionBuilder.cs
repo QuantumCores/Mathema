@@ -81,7 +81,7 @@ namespace Mathema.Algorithms.Handlers
                         if (s.Type == SymbolTypes.BinaryOperator)
                         {
                             var type = Operators.Get(s.Value).Type;
-                            
+
                             if (type == OperatorTypes.Add)
                             {
                                 var tmp = new FlatAddExpression();
@@ -119,7 +119,35 @@ namespace Mathema.Algorithms.Handlers
                                     tmp.Add(new UnaryExpression(OperatorTypes.Sign, stack[stack.Count - 1]));
                                     tmp.Add(stack[stack.Count - 2]);
                                 }
-                                
+
+                                stack.RemoveAt(stack.Count - 1);
+                                stack.RemoveAt(stack.Count - 1);
+                                stack.Add(tmp);
+                            }
+                            else if (type == OperatorTypes.Multiply)
+                            {
+                                var tmp = new FlatMultExpression();
+                                if (stack[stack.Count - 1] is FlatMultExpression)
+                                {
+                                    tmp = (FlatMultExpression)stack[stack.Count - 1] * stack[stack.Count - 2];
+                                }
+                                else if (stack[stack.Count - 2] is FlatMultExpression)
+                                {
+                                    tmp = (FlatMultExpression)stack[stack.Count - 2] * stack[stack.Count - 1];
+                                }
+                                else
+                                {
+                                    tmp.Add(stack[stack.Count - 1]);
+                                    tmp.Add(stack[stack.Count - 2]);
+                                }
+
+                                stack.RemoveAt(stack.Count - 1);
+                                stack.RemoveAt(stack.Count - 1);
+                                stack.Add(tmp);
+                            }
+                            else if (type == OperatorTypes.Divide)
+                            {
+                                var tmp = new BinaryExpression(stack[stack.Count - 2], Operators.Get(s.Value).Type, stack[stack.Count - 1]);
                                 stack.RemoveAt(stack.Count - 1);
                                 stack.RemoveAt(stack.Count - 1);
                                 stack.Add(tmp);

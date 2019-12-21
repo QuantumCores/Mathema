@@ -13,7 +13,7 @@ namespace Mathema.Models.Expressions
         private FunctionTypes type;
         private IExpression argument;
 
-        public string DimensionKey { get; } = nameof(FunctionExpression);
+        public string DimensionKey { get; set; } = nameof(FunctionExpression);
 
         public IFraction Count { get; set; } = new Fraction();
 

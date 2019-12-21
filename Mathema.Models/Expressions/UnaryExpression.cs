@@ -13,7 +13,7 @@ namespace Mathema.Models.Expressions
         private OperatorTypes op;
         private IExpression rhe;
 
-        public string DimensionKey { get; } = nameof(UnaryExpression);
+        public string DimensionKey { get; set; } = nameof(UnaryExpression);
 
         public IFraction Count { get; set; } = new Fraction();
 

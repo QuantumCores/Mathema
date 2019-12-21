@@ -13,7 +13,7 @@ namespace Mathema.Models.Expressions
 
         public decimal Val { get; set; }
 
-        public string DimensionKey { get; private set; } = "x";
+        public string DimensionKey { get; set; } = "x";
 
         public IFraction Count { get; set; } = new Fraction();
 
@@ -52,7 +52,7 @@ namespace Mathema.Models.Expressions
                 }
             }
 
-            return num == -1 ? "-" + this.Symbol : this.Symbol;
+            return num == -1 ? "-" + this.DimensionKey : this.DimensionKey;
         }
     }
 }

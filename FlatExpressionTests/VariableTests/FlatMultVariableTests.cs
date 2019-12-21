@@ -1,44 +1,44 @@
 ﻿using Mathema.Algorithms.Handlers;
 using Mathema.Algorithms.Parsers;
-using Mathema.Interfaces;
 using Mathema.Models.Expressions;
 using Mathema.Models.FlatExpressions;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace FlatExpressionTests.VariableTests
 {
     [TestFixture]
-    public class FlatAddVariableTests
+    public class FlatMultVariableTests
     {
         [Test]
         public void CreatesFlatExpression()
         {
             //Arrange
-            var text = "2 - x";
+            var text = "2 * x";
 
             //Act
             var rpn = RPNParser.Parse(text);
             var actual = ExpressionBuilder.BuildFlat(rpn.Output).Value();
 
             //Assert
-            Assert.IsTrue(actual is FlatAddExpression);
+            Assert.IsTrue(actual is FlatMultExpression);
         }
 
         [Test]
         public void RecognizesVariable()
         {
             //Arrange
-            var text = "2 + x";
-            var expected = new FlatAddExpression();
+            var text = "2 * x";
+            var expected = new FlatMultExpression();
             var numDim = new NumberExpression(1m).DimensionKey;
-            expected.Add(new NumberExpression(1));
-            var x = new VariableExpression("x", 1m);
-            expected.Add(new UnaryExpression(Mathema.Enums.Operators.OperatorTypes.Sign, x));
+            expected.Add(new NumberExpression(2));
+            expected.Add(new VariableExpression("x", 1m));
 
             //Act
             var rpn = RPNParser.Parse(text);
-            var actual = (FlatAddExpression)(ExpressionBuilder.BuildFlat(rpn.Output).Value());
+            var actual = (FlatMultExpression)(ExpressionBuilder.BuildFlat(rpn.Output).Value());
 
             //Assert
             Assert.IsTrue(actual.Dimensions.ContainsKey(numDim));
@@ -49,8 +49,8 @@ namespace FlatExpressionTests.VariableTests
         public void Squash_Numbers()
         {
             //Arrange
-            var text = "2 - x  +1";
-            var expected = "( 3 + -x)";
+            var text = "2 * x  *3";
+            var expected = "( 6 * x)";
 
             //Act
             var rpn = RPNParser.Parse(text);
@@ -64,8 +64,8 @@ namespace FlatExpressionTests.VariableTests
         public void Squash_OneVariable()
         {
             //Arrange
-            var text = "2 - x  + 1 - x";
-            var expected = "( 3 + -2 * x)";
+            var text = "2 * x  * 3 * x";
+            var expected = "( 6 * x * x)";
 
             //Act
             var rpn = RPNParser.Parse(text);
@@ -79,8 +79,8 @@ namespace FlatExpressionTests.VariableTests
         public void Value_Squash_TwoVariables()
         {
             //Arrange
-            var text = "y + 2 - x  + 1 - x + y + y";
-            var expected = "( 3 + -2 * x + 3 * y)";
+            var text = "y * 2 * x  * 3 * x * y * y";
+            var expected = "( 6 * x * x * y * y * y)";
 
             //Act
             var rpn = RPNParser.Parse(text);
@@ -89,6 +89,7 @@ namespace FlatExpressionTests.VariableTests
             //Assert
             Assert.AreEqual(expected, actual);
         }
+
 
     }
 }
