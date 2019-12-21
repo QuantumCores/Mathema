@@ -22,7 +22,10 @@ gives
     * 'Pi' - ratio of a circle's circumference to its diameter
     * 'e' - natural logarithm base
 	* 'EM' - Euler–Mascheroni constant
-	
- **Plans**
-   - variables
+  * Variables
+    * recognizes variables
+    * manages variable grouping, adding and multiplying
+    
+ **Plans**   
+   - functions with variables
    - equations
