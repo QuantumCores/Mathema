@@ -1,4 +1,6 @@
-﻿using Mathema.Interfaces;
+﻿using Mathema.Enums.Operators;
+using Mathema.Interfaces;
+using Mathema.Models.Dimension;
 using Mathema.Models.Numerics;
 using System;
 using System.Collections.Generic;
@@ -11,22 +13,27 @@ namespace Mathema.Models.FlatExpressions
     {
         public Dictionary<string, List<IExpression>> Dimensions { get; set; } = new Dictionary<string, List<IExpression>>();
 
-        public string DimensionKey { get; set; } = nameof(FlatExpression);
+        public IDimensionKey DimensionKey { get; set; } = new DimensionKey(nameof(FlatExpression));
 
         public IFraction Count { get; set; } = new Fraction();
 
-        public abstract IExpression Value();
+        public Dictionary<OperatorTypes, Func<IExpression, IExpression, IExpression>> BinaryOperations { get; set; }
+
+        public Dictionary<OperatorTypes, Func<IExpression, IExpression>> UnaryOperations { get; set; }
+
+        public abstract IExpression Execute();
 
         public abstract void Squash();
 
         public void Add(IExpression expression)
         {
-            if (!Dimensions.ContainsKey(expression.DimensionKey))
+            var tmp = expression.DimensionKey.ToString();
+            if (!Dimensions.ContainsKey(tmp))
             {
-                this.Dimensions.Add(expression.DimensionKey, new List<IExpression>());
+                this.Dimensions.Add(tmp, new List<IExpression>());
             }
 
-            this.Dimensions[expression.DimensionKey].Add(expression);
+            this.Dimensions[tmp].Add(expression);
         }
 
         public static bool Compare(FlatExpression lhe, FlatExpression rhe)

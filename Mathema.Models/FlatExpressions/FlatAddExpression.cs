@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Mathema.Interfaces;
+using Mathema.Models.Dimension;
 using Mathema.Models.Expressions;
 using Mathema.Models.Numerics;
 
 namespace Mathema.Models.FlatExpressions
 {
-    public class FlatAddExpression : FlatExpression
+    public class FlatAddExpression : FlatExpression, IFlatAddExpression
     {
         public FlatAddExpression()
         {
-            this.DimensionKey = nameof(FlatAddExpression);
+            this.DimensionKey = new DimensionKey(nameof(FlatAddExpression));
         }
 
         public override void Squash()
@@ -22,14 +23,14 @@ namespace Mathema.Models.FlatExpressions
             {
                 foreach (var exp in expressions.Value)
                 {
-                    all.Add(exp.Value());
+                    all.Add(exp.Execute());
                 }
             }
 
             var dims = new Dictionary<string, List<IExpression>>();
             foreach (var exp in all)
             {
-                var key = exp.DimensionKey;
+                var key = exp.DimensionKey.ToString();
                 if (!dims.ContainsKey(key))
                 {
                     dims.Add(key, new List<IExpression>() { exp });
@@ -50,7 +51,7 @@ namespace Mathema.Models.FlatExpressions
             this.Dimensions = dims;
         }
 
-        public override IExpression Value()
+        public override IExpression Execute()
         {
             this.Squash();
             if (this.Dimensions.Count == 1 && this.Dimensions.ContainsKey(""))

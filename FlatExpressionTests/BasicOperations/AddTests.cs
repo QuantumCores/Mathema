@@ -4,7 +4,7 @@ using Mathema.Interfaces;
 using NUnit.Framework;
 
 
-namespace Tests
+namespace FlatExpressionTests.BasicOperations
 {
     [TestFixture]
     public class AddTests
@@ -18,7 +18,7 @@ namespace Tests
 
             //Act
             var rpn = RPNParser.Parse(text);
-            var actual = ExpressionBuilder.BuildFlat(rpn.Output).Value().Count.ToNumber();
+            var actual = ExpressionBuilder.BuildFlat(rpn.Output).Execute().Count.ToNumber();
 
             //Assert
             Assert.AreEqual(expected, actual);
@@ -33,7 +33,7 @@ namespace Tests
 
             //Act
             var rpn = RPNParser.Parse(text);
-            var actual = ExpressionBuilder.BuildFlat(rpn.Output).Value().Count.ToNumber();
+            var actual = ExpressionBuilder.BuildFlat(rpn.Output).Execute().Count.ToNumber();
 
             //Assert
             Assert.AreEqual(expected, actual);
@@ -48,7 +48,7 @@ namespace Tests
 
             //Act
             var rpn = RPNParser.Parse(text);
-            var actual = ExpressionBuilder.BuildFlat(rpn.Output).Value().Count.ToNumber();
+            var actual = ExpressionBuilder.BuildFlat(rpn.Output).Execute().Count.ToNumber();
 
             //Assert
             Assert.AreEqual(expected, actual);

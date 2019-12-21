@@ -1,4 +1,7 @@
-﻿using Mathema.Interfaces;
+﻿using Mathema.Enums.Operators;
+using Mathema.Interfaces;
+using Mathema.Models.Dimension;
+using Mathema.Models.ExpressionOperations;
 using Mathema.Models.Numerics;
 using System;
 using System.Collections.Generic;
@@ -13,28 +16,29 @@ namespace Mathema.Models.Expressions
 
         public decimal Val { get; set; }
 
-        public string DimensionKey { get; set; } = "x";
+        public IDimensionKey DimensionKey { get; set; } = new DimensionKey();
 
         public IFraction Count { get; set; } = new Fraction();
+
+        public Dictionary<OperatorTypes, Func<IExpression, IExpression, IExpression>> BinaryOperations { get; } = VariableOperations.BinaryOperations;
+
+        public Dictionary<OperatorTypes, Func<IExpression, IExpression>> UnaryOperations { get; } = VariableOperations.UnaryOperations;
 
         public VariableExpression(string symbol, decimal value)
         {
             this.Symbol = symbol;
             this.Val = value;
-            this.DimensionKey = symbol;
+            this.DimensionKey.Add(symbol);
         }
 
-        public IExpression Value()
+        public IExpression Execute()
         {
             return this;
-        }        
+        }
 
         public bool CompareDimensions(IVariableExpression variable)
         {
-            var dims1 = this.DimensionKey.Split("*").OrderBy(x => x);
-            var dims2 = variable.DimensionKey.Split("*").OrderBy(x => x);
-
-            return dims1.SequenceEqual(dims2);
+            return this.DimensionKey == variable.DimensionKey;
         }
 
         public override string ToString()
@@ -52,7 +56,7 @@ namespace Mathema.Models.Expressions
                 }
             }
 
-            return num == -1 ? "-" + this.DimensionKey : this.DimensionKey;
-        }
+            return num == -1 ? "-" + this.DimensionKey.ToString() : this.DimensionKey.ToString();
+        }       
     }
 }

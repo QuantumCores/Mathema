@@ -58,10 +58,10 @@ namespace Mathema.Algorithms.Handlers
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 var msg = "I couldn't undertand what you mean by '" + RPNStack[i].Value + "' before " + string.Join("", stack);
-                throw new WrongSyntaxException(msg);
+                throw new WrongSyntaxException(msg, ex);
             }
 
             return stack[0];

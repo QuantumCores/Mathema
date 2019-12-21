@@ -6,8 +6,6 @@ using System.Text;
 
 namespace Mathema.Models.Operators
 {
-    
-
     public class Operators
     {
         public static List<Operator> All { get; } = GetAllOperators();

@@ -3,7 +3,7 @@ using Mathema.Algorithms.Parsers;
 using Mathema.Interfaces;
 using NUnit.Framework;
 
-namespace ExpressionTests.BasicOperations
+namespace FlatExpressionTests.VariableOperations
 {
     [TestFixture]
     public class SubtractTests
@@ -17,7 +17,7 @@ namespace ExpressionTests.BasicOperations
 
             //Act
             var rpn = RPNParser.Parse(text);
-            var actual = ExpressionBuilder.Build(rpn.Output).Execute().Count.ToNumber();
+            var actual = ExpressionBuilder.BuildFlat(rpn.Output).Execute().Count.ToNumber();
 
             //Assert
             Assert.AreEqual(expected, actual);
@@ -32,7 +32,7 @@ namespace ExpressionTests.BasicOperations
 
             //Act
             var rpn = RPNParser.Parse(text);
-            var actual = ExpressionBuilder.Build(rpn.Output).Execute().Count.ToNumber();
+            var actual = ExpressionBuilder.BuildFlat(rpn.Output).Execute().Count.ToNumber();
 
             //Assert
             Assert.AreEqual(expected, actual);
@@ -47,7 +47,7 @@ namespace ExpressionTests.BasicOperations
 
             //Act
             var rpn = RPNParser.Parse(text);
-            var actual = ExpressionBuilder.Build(rpn.Output).Execute().Count.ToNumber();
+            var actual = ExpressionBuilder.BuildFlat(rpn.Output).Execute().Count.ToNumber();
 
             //Assert
             Assert.AreEqual(expected, actual);

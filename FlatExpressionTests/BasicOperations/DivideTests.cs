@@ -17,7 +17,7 @@ namespace FlatExpressionTests.BasicOperations
 
             //Act
             var rpn = RPNParser.Parse(text);
-            var actual = ExpressionBuilder.BuildFlat(rpn.Output).Value().Count.ToNumber();
+            var actual = ExpressionBuilder.BuildFlat(rpn.Output).Execute().Count.ToNumber();
 
             //Assert
             Assert.AreEqual(expected, actual);
@@ -32,7 +32,7 @@ namespace FlatExpressionTests.BasicOperations
 
             //Act
             var rpn = RPNParser.Parse(text);
-            var actual = ExpressionBuilder.BuildFlat(rpn.Output).Value().Count.ToNumber();
+            var actual = ExpressionBuilder.BuildFlat(rpn.Output).Execute().Count.ToNumber();
 
             //Assert
             Assert.AreEqual(expected, actual);
@@ -47,7 +47,7 @@ namespace FlatExpressionTests.BasicOperations
 
             //Act
             var rpn = RPNParser.Parse(text);
-            var actual = ExpressionBuilder.BuildFlat(rpn.Output).Value().Count.ToNumber();
+            var actual = ExpressionBuilder.BuildFlat(rpn.Output).Execute().Count.ToNumber();
 
             //Assert
             Assert.AreEqual(expected, actual);

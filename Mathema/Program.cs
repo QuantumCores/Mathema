@@ -84,16 +84,16 @@ namespace Mathema
                 {
                     var expr = ExpressionBuilder.BuildFlat(rpn.Output);
                     Console.WriteLine("Equation  : " + expr.ToString());
-                    Console.WriteLine("Result    : " + expr.Value().ToString());
+                    Console.WriteLine("Result    : " + expr.Execute().ToString());
                 }
                 else
                 {
                     var expr = ExpressionBuilder.Build(rpn.Output);
                     var exprf = ExpressionBuilder.BuildFlat(rpn.Output);
                     Console.WriteLine("Equation r: " + expr.ToString());
-                    Console.WriteLine("Result   r: " + expr.Value().Count.ToNumber());
+                    Console.WriteLine("Result   r: " + expr.Execute().Count.ToNumber());
                     Console.WriteLine("Equation f: " + exprf.ToString());
-                    Console.WriteLine("Result   f: " + exprf.Value().Count.ToNumber());
+                    Console.WriteLine("Result   f: " + exprf.Execute().Count.ToNumber());
                 }
             }
             catch (Exception ex)

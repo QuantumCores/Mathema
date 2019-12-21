@@ -1,7 +1,9 @@
 ﻿using Mathema.Enums.Operators;
 using Mathema.Interfaces;
+using Mathema.Models.FlatExpressions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Mathema.Models.Operators
@@ -95,6 +97,22 @@ namespace Mathema.Models.Operators
             {
                 lhe.Count.Pow(rhe.Count);
                 return lhe;
+            }
+            else if (lhe is IFlatAddExpression && rhe is INumberExpression && rhe.Count.ToNumber() % 1 == 0)
+            {
+                var lc = (FlatAddExpression)lhe;
+                var all = lc.Dimensions.SelectMany(t => t.Value).ToList();
+                foreach (var keya in lc.Dimensions.Keys)
+                {
+                    foreach (var keyb in lc.Dimensions.Keys)
+                    {
+
+                    }
+                }
+            }
+            else if (lhe is IFlatMultExpression && rhe is INumberExpression && rhe.Count.ToNumber() % 1 == 0)
+            {
+                var lc = (FlatMultExpression)lhe;                
             }
 
             return null;

@@ -4,7 +4,10 @@ using System.Text;
 
 namespace Mathema.Interfaces
 {
-    public interface INumberExpression : IExpression
+    /// <summary>
+    /// Markup Interface
+    /// </summary>
+    public interface IFlatAddExpression
     {
     }
 }

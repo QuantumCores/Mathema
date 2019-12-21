@@ -1,4 +1,6 @@
-﻿using Mathema.Interfaces;
+﻿using Mathema.Enums.Operators;
+using Mathema.Interfaces;
+using Mathema.Models.Dimension;
 using Mathema.Models.Functions;
 using Mathema.Models.Numerics;
 using System;
@@ -13,9 +15,13 @@ namespace Mathema.Models.Expressions
         private FunctionTypes type;
         private IExpression argument;
 
-        public string DimensionKey { get; set; } = nameof(FunctionExpression);
+        public IDimensionKey DimensionKey { get; set; } = new DimensionKey(nameof(FunctionExpression));
 
         public IFraction Count { get; set; } = new Fraction();
+
+        public Dictionary<OperatorTypes, Func<IExpression, IExpression, IExpression>> BinaryOperations { get; }
+
+        public Dictionary<OperatorTypes, Func<IExpression, IExpression>> UnaryOperations { get; }
 
         public FunctionExpression(FunctionTypes type, IExpression argument)
         {
@@ -23,9 +29,9 @@ namespace Mathema.Models.Expressions
             this.argument = argument;
         }
 
-        public IExpression Value()
+        public IExpression Execute()
         {
-            var arg = this.argument.Value();
+            var arg = this.argument.Execute();
             if (arg is INumberExpression)
             {
                 return new NumberExpression(Functions.Functions.Get(type).Projection(arg.Count.ToNumber()));

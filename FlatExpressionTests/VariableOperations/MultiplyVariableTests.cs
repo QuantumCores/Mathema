@@ -1,48 +1,57 @@
 ﻿using Mathema.Algorithms.Handlers;
 using Mathema.Algorithms.Helpers;
 using Mathema.Algorithms.Parsers;
+using Mathema.Interfaces;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace FlatExpressionTests.VariableTests
+namespace FlatExpressionTests.VariableOperations
 {
     [TestFixture]
-    public class FlatAddAndMultTests
+    public class MultiplyVariableTests
     {
         [Test]
-        public void Add_TheSame_FlatMultiply()
+        public void Multiply_x_x()
         {
             //Arrange
-            var text = "y * 2 * x  + 3 * x * y";
-            var expected = RPNParser.Parse(" 5 * x * y");
+            var text = "x*x";
+            var expected = RPNParser.Parse("x*x");
 
             //Act
             var rpn = RPNParser.Parse(text);
-            var the = ExpressionBuilder.BuildFlat(rpn.Output).Execute().ToString();
             var actual = RPNParser.Parse(ExpressionBuilder.BuildFlat(rpn.Output).Execute().ToString());
 
             //Assert
             Assert.IsTrue(RPNComparer.Compare(expected.Output, actual.Output));
-
         }
 
         [Test]
-        public void Add_Different_FlatMultiply()
+        public void Multiply_x_y()
         {
             //Arrange
-            var text = "y * 2 * x  + 3 * x * y + x + y";
-            var expected = RPNParser.Parse(" 5 * x * y + x + y");
+            var text = "x*y";
+            var expected = RPNParser.Parse("x*y");
 
             //Act
             var rpn = RPNParser.Parse(text);
-            var the = ExpressionBuilder.BuildFlat(rpn.Output).Execute().ToString();
             var actual = RPNParser.Parse(ExpressionBuilder.BuildFlat(rpn.Output).Execute().ToString());
 
             //Assert
             Assert.IsTrue(RPNComparer.Compare(expected.Output, actual.Output));
+        }
 
+        [Test]
+        public void Multiply_x_y_fun_x()
+        {
+            //Arrange
+            var text = "x*y*fun*x";
+            var expected = RPNParser.Parse("fun*x*x*y");
+
+            //Act
+            var rpn = RPNParser.Parse(text);
+            var actual = RPNParser.Parse(ExpressionBuilder.BuildFlat(rpn.Output).Execute().ToString());
+
+            //Assert
+            Assert.IsTrue(RPNComparer.Compare(expected.Output, actual.Output));
         }
     }
 }

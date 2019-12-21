@@ -8,6 +8,6 @@ namespace Mathema.Interfaces
     {
         Dictionary<string, List<IExpression>> Dimensions { get; }
 
-        void Add(IExpression expression);        
+        void Add(IExpression expression);
     }
 }

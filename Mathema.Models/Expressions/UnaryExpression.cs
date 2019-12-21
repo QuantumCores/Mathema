@@ -1,5 +1,6 @@
 ﻿using Mathema.Enums.Operators;
 using Mathema.Interfaces;
+using Mathema.Models.Dimension;
 using Mathema.Models.Numerics;
 using Mathema.Models.Operators;
 using System;
@@ -13,9 +14,13 @@ namespace Mathema.Models.Expressions
         private OperatorTypes op;
         private IExpression rhe;
 
-        public string DimensionKey { get; set; } = nameof(UnaryExpression);
+        public IDimensionKey DimensionKey { get; set; } = new DimensionKey(nameof(UnaryExpression));
 
         public IFraction Count { get; set; } = new Fraction();
+
+        public Dictionary<OperatorTypes, Func<IExpression, IExpression, IExpression>> BinaryOperations { get; }
+
+        public Dictionary<OperatorTypes, Func<IExpression, IExpression>> UnaryOperations { get; }
 
         public UnaryExpression(OperatorTypes op, IExpression rhe)
         {
@@ -23,12 +28,13 @@ namespace Mathema.Models.Expressions
             this.op = op;
         }
 
-        public IExpression Value()
+        public IExpression Execute()
         {
-            var arg = this.rhe.Value();
+            var arg = this.rhe.Execute();
             if (arg is INumberExpression)
             {
-                return new NumberExpression(Operations.UnaryOperations[op](arg).Count);
+                //return new NumberExpression(Operations.UnaryOperations[op](arg).Count);
+                return arg.UnaryOperations[op](arg);
             }
             else
             {
@@ -40,11 +46,11 @@ namespace Mathema.Models.Expressions
         {
             if (op == OperatorTypes.Sign)
             {
-                return " -(" + this.rhe.Value() + ")";
+                return " -(" + this.rhe.Execute() + ")";
             }
             else
             {
-                return " " + Operators.Operators.Get(op).Symbol + "(" + this.rhe.Value() + ")";
+                return " " + Operators.Operators.Get(op).Symbol + "(" + this.rhe.Execute() + ")";
             }
         }
     }

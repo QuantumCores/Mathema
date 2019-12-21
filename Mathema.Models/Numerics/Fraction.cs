@@ -79,8 +79,9 @@ namespace Mathema.Models.Numerics
 
         public void Pow(IFraction frc)
         {
-            this.Numerator = (decimal)Math.Pow((double)this.Numerator, (double)frc.ToNumber());
-            this.Denominator = (decimal)Math.Pow((double)this.Denominator, (double)frc.ToNumber());
+            var p = (double)frc.ToNumber();
+            this.Numerator = (decimal)Math.Pow((double)this.Numerator, p);
+            this.Denominator = (decimal)Math.Pow((double)this.Denominator, p);
             SimplifyFloats();
         }
 

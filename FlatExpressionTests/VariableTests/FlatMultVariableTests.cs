@@ -20,7 +20,7 @@ namespace FlatExpressionTests.VariableTests
 
             //Act
             var rpn = RPNParser.Parse(text);
-            var actual = ExpressionBuilder.BuildFlat(rpn.Output).Value();
+            var actual = ExpressionBuilder.BuildFlat(rpn.Output).Execute();
 
             //Assert
             Assert.IsTrue(actual is FlatMultExpression);
@@ -32,16 +32,15 @@ namespace FlatExpressionTests.VariableTests
             //Arrange
             var text = "2 * x";
             var expected = new FlatMultExpression();
-            var numDim = new NumberExpression(1m).DimensionKey;
             expected.Add(new NumberExpression(2));
             expected.Add(new VariableExpression("x", 1m));
 
             //Act
             var rpn = RPNParser.Parse(text);
-            var actual = (FlatMultExpression)(ExpressionBuilder.BuildFlat(rpn.Output).Value());
+            var actual = (FlatMultExpression)(ExpressionBuilder.BuildFlat(rpn.Output).Execute());
 
             //Assert
-            Assert.IsTrue(actual.Dimensions.ContainsKey(numDim));
+            Assert.IsTrue(actual.Dimensions.ContainsKey(""));
             Assert.IsTrue(actual.Dimensions.ContainsKey("x"));
         }
 
@@ -54,7 +53,7 @@ namespace FlatExpressionTests.VariableTests
 
             //Act
             var rpn = RPNParser.Parse(text);
-            var actual = ExpressionBuilder.BuildFlat(rpn.Output).Value().ToString();
+            var actual = ExpressionBuilder.BuildFlat(rpn.Output).Execute().ToString();
 
             //Assert
             Assert.AreEqual(expected, actual);
@@ -69,7 +68,7 @@ namespace FlatExpressionTests.VariableTests
 
             //Act
             var rpn = RPNParser.Parse(text);
-            var actual = ExpressionBuilder.BuildFlat(rpn.Output).Value().ToString();
+            var actual = ExpressionBuilder.BuildFlat(rpn.Output).Execute().ToString();
 
             //Assert
             Assert.AreEqual(expected, actual);
@@ -84,7 +83,7 @@ namespace FlatExpressionTests.VariableTests
 
             //Act
             var rpn = RPNParser.Parse(text);
-            var actual = ExpressionBuilder.BuildFlat(rpn.Output).Value().ToString();
+            var actual = ExpressionBuilder.BuildFlat(rpn.Output).Execute().ToString();
 
             //Assert
             Assert.AreEqual(expected, actual);

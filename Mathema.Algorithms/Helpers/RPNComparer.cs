@@ -24,10 +24,12 @@ namespace Mathema.Algorithms.Helpers
                 return false;
             }
 
+            var ao = rpnA.OrderBy(s => s.Type).ThenBy(s => s.Value).ToList();
+            var bo = rpnA.OrderBy(s => s.Type).ThenBy(s => s.Value).ToList();
             for (int i = 0; i < rpnA.Count; i++)
             {
-                var a = rpnA[i];
-                var b = rpnA[i];
+                var a = ao[i];
+                var b = bo[i];
                 if (a.Type != b.Type)
                 {
                     return false;

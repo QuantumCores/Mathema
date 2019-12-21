@@ -3,16 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Mathema.Interfaces;
+using Mathema.Models.Dimension;
+using Mathema.Models.ExpressionOperations;
 using Mathema.Models.Expressions;
 using Mathema.Models.Numerics;
 
 namespace Mathema.Models.FlatExpressions
 {
-    public class FlatMultExpression : FlatExpression
+    public class FlatMultExpression : FlatExpression, IFlatMultExpression
     {
         public FlatMultExpression()
         {
-            this.DimensionKey = nameof(FlatMultExpression);
+            this.BinaryOperations = FlatMultOperations.BinaryOperations;
+            this.UnaryOperations = FlatMultOperations.UnaryOperations;
+            this.DimensionKey = new DimensionKey();//nameof(FlatMultExpression)
         }
 
         public override void Squash()
@@ -23,15 +27,14 @@ namespace Mathema.Models.FlatExpressions
                 foreach (var exp in expressions.Value)
                 {
                     // Calling Vlaue simplifies expressions
-                    all.Add(exp.Value());
+                    all.Add(exp.Execute());
                 }
             }
-
 
             var dims = new Dictionary<string, List<NewKeyExpressionPair>>();
             foreach (var exp in all)
             {
-                var key = exp.DimensionKey;
+                var key = exp.DimensionKey.ToString();
                 if (!dims.ContainsKey(key))
                 {
                     dims.Add(key, new List<NewKeyExpressionPair>() { new NewKeyExpressionPair(key, exp) });
@@ -43,7 +46,7 @@ namespace Mathema.Models.FlatExpressions
                         dims[key][0].Expression.Count.Multiply(exp.Count);
                         if (key != "")
                         {
-                            dims[key][0].NewKey += " * " + key;
+                            dims[key][0].NewKey.Add(key);
                             dims[key][0].Expression.DimensionKey = dims[key][0].NewKey;
                         }
                     }
@@ -54,12 +57,15 @@ namespace Mathema.Models.FlatExpressions
                 }
             }
 
-            this.Dimensions = dims.ToDictionary(k => string.Join(" * ", k.Value[0].NewKey.Split('*').OrderBy(s => s.Trim())), k => k.Value.Select(s => s.Expression).ToList());
-            this.DimensionKey = string.Join(" * ", this.Dimensions.Select(d => d.Key).OrderBy(s => s.Trim()));
+            this.Dimensions = dims.ToDictionary(k => k.Value[0].NewKey.ToString(), k => k.Value.Select(s => s.Expression).ToList());
+            foreach (var item in this.Dimensions)
+            {
+                this.DimensionKey.Add(item.Key);
+            }
             this.Count = this.Dimensions.ContainsKey("") ? this.Dimensions[""][0].Count : this.Count;
         }
 
-        public override IExpression Value()
+        public override IExpression Execute()
         {
             this.Squash();
             if (this.Dimensions.Count == 1 && this.Dimensions.ContainsKey(""))
@@ -124,11 +130,11 @@ namespace Mathema.Models.FlatExpressions
     {
         public NewKeyExpressionPair(string key, IExpression expr)
         {
-            this.NewKey = key;
+            this.NewKey = new DimensionKey(key);
             this.Expression = expr;
         }
 
-        internal string NewKey { get; set; }
+        internal IDimensionKey NewKey { get; set; }
 
         internal IExpression Expression { get; set; }
     }

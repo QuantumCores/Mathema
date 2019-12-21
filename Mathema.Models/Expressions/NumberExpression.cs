@@ -1,4 +1,7 @@
-﻿using Mathema.Interfaces;
+﻿using Mathema.Enums.Operators;
+using Mathema.Interfaces;
+using Mathema.Models.Dimension;
+using Mathema.Models.ExpressionOperations;
 using Mathema.Models.Numerics;
 using System;
 using System.Collections.Generic;
@@ -8,35 +11,37 @@ namespace Mathema.Models.Expressions
 {
     public class NumberExpression : INumberExpression
     {
-        public decimal Val { get; }
-
-        public string DimensionKey { get; set; } = "";
+        public IDimensionKey DimensionKey { get; set; } = new DimensionKey("");
 
         public IFraction Count { get; set; } = new Fraction();
+
+        public Dictionary<OperatorTypes, Func<IExpression, IExpression, IExpression>> BinaryOperations { get; } = NumberOperations.BinaryOperations;
+
+        public Dictionary<OperatorTypes, Func<IExpression, IExpression>> UnaryOperations { get; } = NumberOperations.UnaryOperations;
 
         public NumberExpression(string val)
         {
             if (decimal.TryParse(val, out var conv))
             {
-                this.Val = conv;
                 this.Count = new Fraction(conv, 1);
             }
-            //TODO
+            else
+            {
+                throw new ArgumentException($"Couldn't parse {val} into number.");
+            }
         }
 
         public NumberExpression(decimal val)
         {
-            this.Val = val;
             this.Count = new Fraction(val, 1);
         }
 
         public NumberExpression(IFraction frac)
         {
             this.Count = frac;
-            //TODO
         }
 
-        public IExpression Value()
+        public IExpression Execute()
         {
             return this;
         }
@@ -46,11 +51,11 @@ namespace Mathema.Models.Expressions
             return this.Count.ToNumber().ToString();
         }
 
-        public static INumberExpression operator +(NumberExpression lhn, INumberExpression rhn)
-        {
-            lhn.Count.Add(rhn.Count);
-            return new NumberExpression(lhn.Count);
-        }
+        //public static INumberExpression operator +(NumberExpression lhn, INumberExpression rhn)
+        //{
+        //    lhn.Count.Add(rhn.Count);
+        //    return new NumberExpression(lhn.Count);
+        //}
 
         //public static INumberExpression operator +(INumberExpression lhn, NumberExpression rhn)
         //{

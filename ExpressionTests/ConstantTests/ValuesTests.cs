@@ -19,7 +19,7 @@ namespace ExpressionTests.ConstantTests
 
             //Act
             var rpn = RPNParser.Parse(text);
-            var actual = ((INumberExpression)ExpressionBuilder.Build(rpn.Output).Value()).Val;
+            var actual = ExpressionBuilder.Build(rpn.Output).Execute().Count.ToNumber();
 
             //Assert
             Assert.AreEqual(expected, actual);
@@ -34,7 +34,7 @@ namespace ExpressionTests.ConstantTests
 
             //Act
             var rpn = RPNParser.Parse(text);
-            var actual = ((INumberExpression)ExpressionBuilder.Build(rpn.Output).Value()).Val;
+            var actual = ExpressionBuilder.Build(rpn.Output).Execute().Count.ToNumber();
 
             //Assert
             Assert.AreEqual(expected, actual);
@@ -49,7 +49,7 @@ namespace ExpressionTests.ConstantTests
 
             //Act
             var rpn = RPNParser.Parse(text);
-            var actual = ((INumberExpression)ExpressionBuilder.Build(rpn.Output).Value()).Val;
+            var actual = ExpressionBuilder.Build(rpn.Output).Execute().Count.ToNumber();
 
             //Assert
             Assert.AreEqual(expected, actual);
@@ -64,7 +64,7 @@ namespace ExpressionTests.ConstantTests
 
             //Act
             var rpn = RPNParser.Parse(text);
-            var actual = ((INumberExpression)ExpressionBuilder.Build(rpn.Output).Value()).Val;
+            var actual = ExpressionBuilder.Build(rpn.Output).Execute().Count.ToNumber();
 
             //Assert
             Assert.AreEqual(expected, actual);
