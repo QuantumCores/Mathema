@@ -31,15 +31,7 @@ namespace Mathema.Models.Expressions
         public IExpression Execute()
         {
             var arg = this.rhe.Execute();
-            if (arg is INumberExpression)
-            {
-                //return new NumberExpression(Operations.UnaryOperations[op](arg).Count);
-                return arg.UnaryOperations[op](arg);
-            }
-            else
-            {
-                return Operations.UnaryOperations[op](arg);
-            }
+            return arg.UnaryOperations[op](arg);
         }
 
         public override string ToString()

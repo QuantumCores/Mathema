@@ -18,11 +18,11 @@ namespace Mathema.Models.Operators
         {
             var result = new Dictionary<OperatorTypes, Func<IExpression, IExpression, IExpression>>();
 
-            result.Add(OperatorTypes.Add, (lhe, rhe) => Add(lhe, rhe));
-            result.Add(OperatorTypes.Subtract, (lhe, rhe) => Subtract(lhe, rhe));
-            result.Add(OperatorTypes.Multiply, (lhe, rhe) => Multiply(lhe, rhe));
-            result.Add(OperatorTypes.Divide, (lhe, rhe) => Divide(lhe, rhe));
-            result.Add(OperatorTypes.Power, (lhe, rhe) => Power(lhe, rhe));
+            //result.Add(OperatorTypes.Add, (lhe, rhe) => Add(lhe, rhe));
+            //result.Add(OperatorTypes.Subtract, (lhe, rhe) => Subtract(lhe, rhe));
+            //result.Add(OperatorTypes.Multiply, (lhe, rhe) => Multiply(lhe, rhe));
+            //result.Add(OperatorTypes.Divide, (lhe, rhe) => Divide(lhe, rhe));
+            //result.Add(OperatorTypes.Power, (lhe, rhe) => Power(lhe, rhe));
 
             return result;
         }
@@ -122,7 +122,7 @@ namespace Mathema.Models.Operators
         {
             var result = new Dictionary<OperatorTypes, Func<IExpression, IExpression>>();
 
-            result.Add(OperatorTypes.Sign, rhe => { rhe.Count.Numerator *= -1; return rhe; });
+            //result.Add(OperatorTypes.Sign, rhe => { rhe.Count.Numerator *= -1; return rhe; });
 
             return result;
         }
