@@ -13,7 +13,7 @@ namespace Mathema.Models.Expressions
         private FunctionTypes type;
         private IExpression argument;
 
-        public string DimensionKey { get; } = "FunctionExpression";
+        public string DimensionKey { get; } = nameof(FunctionExpression);
 
         public IFraction Count { get; set; } = new Fraction();
 
@@ -28,7 +28,7 @@ namespace Mathema.Models.Expressions
             var arg = this.argument.Value();
             if (arg is INumberExpression)
             {
-                return new NumberExpression(Functions.Functions.Get(type).Projection(((INumberExpression)arg).Val));
+                return new NumberExpression(Functions.Functions.Get(type).Projection(arg.Count.ToNumber()));
             }
             else
             {

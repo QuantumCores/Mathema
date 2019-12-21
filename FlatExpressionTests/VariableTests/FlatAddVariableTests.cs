@@ -46,7 +46,7 @@ namespace FlatExpressionTests.VariableTests
         }
 
         [Test]
-        public void Value_Squash_Numbers()
+        public void Squash_Numbers()
         {
             //Arrange
             var text = "2 - x  +1";
@@ -61,11 +61,26 @@ namespace FlatExpressionTests.VariableTests
         }
 
         [Test]
-        public void Value_Squash_Variable()
+        public void Squash_OneVariable()
         {
             //Arrange
             var text = "2 - x  + 1 - x";
             var expected = "3 + -2 * x";
+
+            //Act
+            var rpn = RPNParser.Parse(text);
+            var actual = ExpressionBuilder.BuildFlat(rpn.Output).Value().ToString();
+
+            //Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void Value_Squash_TwoVariables()
+        {
+            //Arrange
+            var text = "y + 2 - x  + 1 - x + y + y";
+            var expected = "3 + -2 * x + 3 * y";
 
             //Act
             var rpn = RPNParser.Parse(text);

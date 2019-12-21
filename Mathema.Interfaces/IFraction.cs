@@ -12,12 +12,15 @@ namespace Mathema.Interfaces
 
         void Add(IFraction frc);
 
-        void Subtract(IFraction count);
+        void Subtract(IFraction frc);
 
-        void Multiply(IFraction count);
+        void Multiply(IFraction frc);
 
-        void Divide(IFraction count);
+        void Divide(IFraction frc);
+
+        void Pow(IFraction frc);
 
         decimal ToNumber();
+
     }
 }

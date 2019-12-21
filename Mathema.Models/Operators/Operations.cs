@@ -93,7 +93,7 @@ namespace Mathema.Models.Operators
         {
             if (lhe is INumberExpression && rhe is INumberExpression)
             {
-                lhe.Count.Subtract(rhe.Count);
+                lhe.Count.Pow(rhe.Count);
                 return lhe;
             }
 

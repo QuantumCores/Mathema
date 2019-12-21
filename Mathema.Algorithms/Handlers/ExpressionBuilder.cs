@@ -99,7 +99,6 @@ namespace Mathema.Algorithms.Handlers
                                     tmp.Add(stack[stack.Count - 2]);
                                 }
 
-
                                 stack.RemoveAt(stack.Count - 1);
                                 stack.RemoveAt(stack.Count - 1);
                                 stack.Add(tmp);
@@ -107,8 +106,20 @@ namespace Mathema.Algorithms.Handlers
                             else if (type == OperatorTypes.Subtract)
                             {
                                 var tmp = new FlatAddExpression();
-                                tmp.Add(new UnaryExpression(OperatorTypes.Sign, stack[stack.Count - 1]));
-                                tmp.Add(stack[stack.Count - 2]);
+                                if (stack[stack.Count - 1] is FlatAddExpression)
+                                {
+                                    tmp = (FlatAddExpression)stack[stack.Count - 1] + stack[stack.Count - 2];
+                                }
+                                else if (stack[stack.Count - 2] is FlatAddExpression)
+                                {
+                                    tmp = (FlatAddExpression)stack[stack.Count - 2] + new UnaryExpression(OperatorTypes.Sign, stack[stack.Count - 1]);
+                                }
+                                else
+                                {
+                                    tmp.Add(new UnaryExpression(OperatorTypes.Sign, stack[stack.Count - 1]));
+                                    tmp.Add(stack[stack.Count - 2]);
+                                }
+                                
                                 stack.RemoveAt(stack.Count - 1);
                                 stack.RemoveAt(stack.Count - 1);
                                 stack.Add(tmp);

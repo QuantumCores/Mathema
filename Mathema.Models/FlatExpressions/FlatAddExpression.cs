@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Mathema.Interfaces;
 using Mathema.Models.Expressions;
+using Mathema.Models.Numerics;
 
 namespace Mathema.Models.FlatExpressions
 {
@@ -33,27 +34,29 @@ namespace Mathema.Models.FlatExpressions
             var dims = new Dictionary<string, List<IExpression>>();
             foreach (var exp in all)
             {
-                if (!dims.ContainsKey(exp.DimensionKey))
+                var key = exp.DimensionKey;
+                if (!dims.ContainsKey(key))
                 {
-                    dims.Add(exp.DimensionKey, new List<IExpression>());
+                    dims.Add(key, new List<IExpression>() { exp });
                 }
-
-                dims[exp.DimensionKey].Add(exp);
+                else
+                {
+                    if (key != nameof(BinaryExpression) && key != nameof(UnaryExpression) && key != nameof(FunctionExpression))
+                    {
+                        dims[key][0].Count.Add(exp.Count);
+                    }
+                    else
+                    {
+                        dims[key].Add(exp);
+                    }
+                }
             }
 
-            var result = new NumberExpression(0m);
-            var numKey = result.DimensionKey;
-            if (dims.ContainsKey(numKey))
-            {
-                dims[numKey].ForEach(n => result = (NumberExpression)(result + (INumberExpression)n));
-                dims[numKey] = new List<IExpression>() { result };
-            }
             this.Dimensions = dims;
 
-
-            if (this.Dimensions.Count == 1 && this.Dimensions.ContainsKey(numKey))
+            if (this.Dimensions.Count == 1 && this.Dimensions.ContainsKey(""))
             {
-                return this.Dimensions[numKey][0];
+                return this.Dimensions[""][0];
             }
             else
             {
@@ -101,7 +104,7 @@ namespace Mathema.Models.FlatExpressions
             var sb = new List<string>();
             foreach (var key in this.Dimensions.Keys.OrderBy(k => k))
             {
-                var sub = string.Join(" + ", this.Dimensions[key].OrderBy(e => e));
+                var sub = string.Join(" + ", this.Dimensions[key].OrderBy(e => e.ToString()));
                 sb.Add(sub);
             }
 

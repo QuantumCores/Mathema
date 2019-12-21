@@ -14,7 +14,7 @@ namespace Mathema.Models.Expressions
         private OperatorTypes op;
         private IExpression rhe;
 
-        public string DimensionKey { get; } = "BinaryExpression";
+        public string DimensionKey { get; } = nameof(BinaryExpression);
         public IFraction Count { get; set; } = new Fraction();
 
         public BinaryExpression(IExpression lhe, OperatorTypes op, IExpression rhe)

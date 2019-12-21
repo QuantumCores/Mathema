@@ -13,7 +13,7 @@ namespace ExpressionTests.ComplexOperations
         public void AllOperators()
         {
             //Arrange
-            var text = "(4- 6 * -2 )^1/(2 + 2)^(1/2)";/// ;
+            var text = "(4- 6 * -2 )^1/(2 + 2)^(1/2)";
             var expected = 8;
 
             //Act
@@ -28,7 +28,7 @@ namespace ExpressionTests.ComplexOperations
         public void AllOperatorsAndFunctions()
         {
             //Arrange
-            var text = "Sin((4- 6 * -2 )^1/(2 + 2)^(1/2))";/// ;
+            var text = "Sin((4- 6 * -2 )^1/(2 + 2)^(1/2))";
             var expected = (decimal)Math.Sin(8);
 
             //Act

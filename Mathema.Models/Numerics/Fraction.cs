@@ -28,6 +28,8 @@ namespace Mathema.Models.Numerics
             {
                 this.Numerator = this.Denominator * frc.Numerator + this.Numerator * frc.Denominator;
                 this.Denominator *= frc.Denominator;
+
+                SimplifyFloats();
             }
             else
             {
@@ -51,6 +53,8 @@ namespace Mathema.Models.Numerics
             {
                 this.Numerator = this.Numerator * frc.Numerator;
                 this.Denominator = this.Denominator * frc.Denominator;
+
+                SimplifyFloats();
             }
             else
             {
@@ -64,11 +68,20 @@ namespace Mathema.Models.Numerics
             {
                 this.Numerator = this.Numerator * frc.Denominator;
                 this.Denominator = this.Denominator * frc.Numerator;
+
+                SimplifyFloats();
             }
             else
             {
                 this.Simplify(this.Numerator * frc.Denominator, this.Denominator * frc.Numerator);
             }
+        }
+
+        public void Pow(IFraction frc)
+        {
+            this.Numerator = (decimal)Math.Pow((double)this.Numerator, (double)frc.ToNumber());
+            this.Denominator = (decimal)Math.Pow((double)this.Denominator, (double)frc.ToNumber());
+            SimplifyFloats();
         }
 
         public decimal ToNumber()
@@ -95,6 +108,25 @@ namespace Mathema.Models.Numerics
 
             this.Numerator = num / gcf;
             this.Denominator = den / gcf;
+        }
+
+        private void SimplifyFloats()
+        {
+            var nd = (this.Numerator / this.Denominator);
+            if (nd % 1 == 0)
+            {
+                this.Numerator = nd;
+                this.Denominator = 1m;
+                return;
+            }
+
+            var dn = (this.Denominator / this.Numerator);
+            if (dn % 1 == 0)
+            {
+                this.Numerator = 1m;
+                this.Denominator = dn;
+                return;
+            }
         }
     }
 }
