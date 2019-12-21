@@ -38,5 +38,20 @@ namespace FlatExpressionTests.ComplexOperations
             //Assert
             Assert.AreEqual(expected, actual);
         }
+
+        [Test]
+        public void VariableWithFunction()
+        {
+            //Arrange
+            var text = "Sin(x) + x + Sin(x)";
+            var expected = "Sin(x) + x";
+
+            //Act
+            var rpn = RPNParser.Parse(text);
+            var actual = ExpressionBuilder.BuildFlat(rpn.Output).Execute().ToString();
+
+            //Assert
+            Assert.AreEqual(expected, actual);
+        }
     }
 }
