@@ -1,5 +1,6 @@
 using Mathema.Algorithms.Handlers;
 using Mathema.Algorithms.Parsers;
+using Mathema.Interfaces;
 using NUnit.Framework;
 
 namespace ExpressionTests.BasicOperations
@@ -17,7 +18,7 @@ namespace ExpressionTests.BasicOperations
 
             //Act
             var rpn = RPNParser.Parse(text);
-            var actual = ExpressionBuilder.Build(rpn).Value();
+            var actual = ExpressionBuilder.Build(rpn.Output).Execute().Count.ToNumber();
 
             //Assert
             Assert.AreEqual(expected, actual);
@@ -32,7 +33,7 @@ namespace ExpressionTests.BasicOperations
 
             //Act
             var rpn = RPNParser.Parse(text);
-            var actual = ExpressionBuilder.Build(rpn).Value();
+            var actual = ExpressionBuilder.Build(rpn.Output).Execute().Count.ToNumber();
 
             //Assert
             Assert.AreEqual(expected, actual);
@@ -47,10 +48,10 @@ namespace ExpressionTests.BasicOperations
 
             //Act
             var rpn = RPNParser.Parse(text);
-            var actual = ExpressionBuilder.Build(rpn).Value();
+            var actual = ExpressionBuilder.Build(rpn.Output).Execute().Count.ToNumber();
 
             //Assert
             Assert.AreEqual(expected, actual);
-        }       
+        }
     }
 }

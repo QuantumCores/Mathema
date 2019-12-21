@@ -1,38 +1,11 @@
-﻿using System;
+﻿using Mathema.Enums.Operators;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace Mathema.Models.Operators
 {
-    public enum OperatorTypes
-    {
-        Add = 1,
-        Subtract = 2,
-        Divide = 3,
-        Multiply = 4,
-        Power = 5,
-        BinaryAnd = 6,
-        BinaryOr = 7,
-        LeftParenthesis = 8,
-        RightParenthesis = 9,
-        Sign = 10,
-    }
-
-    public enum AssociativityTypes
-    {
-        None = 0,
-        Left = 1,
-        Right = 2
-    }
-
-    public enum OperationTypes
-    {
-        None = 0,
-        Unary = 1,
-        Binary = 2
-    }
-
     public class Operators
     {
         public static List<Operator> All { get; } = GetAllOperators();

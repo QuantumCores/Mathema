@@ -1,4 +1,5 @@
-﻿using Mathema.Interfaces;
+﻿using Mathema.Enums.Symbols;
+using Mathema.Interfaces;
 using System;
 
 namespace Mathema.Models.Symbols

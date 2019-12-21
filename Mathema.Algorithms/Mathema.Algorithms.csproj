@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Mathema.Enums\Mathema.Enums.csproj" />
     <ProjectReference Include="..\Mathema.Models\Mathema.Models.csproj" />
   </ItemGroup>
 

@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Mathema.Enums\Mathema.Enums.csproj" />
     <ProjectReference Include="..\Mathema.Interfaces\Mathema.Interfaces.csproj" />
     <ProjectReference Include="..\Mathema.Shared\Mathema.Shared.csproj" />
   </ItemGroup>

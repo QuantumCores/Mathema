@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using static Mathema.Enums.Functions.Functions;
 
 namespace Mathema.Models.Functions
 {

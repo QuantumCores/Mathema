@@ -1,8 +1,12 @@
-﻿using Mathema.Interfaces;
+﻿using Mathema.Enums.Operators;
+using Mathema.Interfaces;
+using Mathema.Models.Dimension;
 using Mathema.Models.Functions;
+using Mathema.Models.Numerics;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using static Mathema.Enums.Functions.Functions;
 
 namespace Mathema.Models.Expressions
 {
@@ -11,15 +15,31 @@ namespace Mathema.Models.Expressions
         private FunctionTypes type;
         private IExpression argument;
 
+        public IDimensionKey DimensionKey { get; set; } = new DimensionKey(nameof(FunctionExpression));
+
+        public IFraction Count { get; set; } = new Fraction();
+
+        public Dictionary<OperatorTypes, Func<IExpression, IExpression, IExpression>> BinaryOperations { get; }
+
+        public Dictionary<OperatorTypes, Func<IExpression, IExpression>> UnaryOperations { get; }
+
         public FunctionExpression(FunctionTypes type, IExpression argument)
         {
             this.type = type;
             this.argument = argument;
         }
 
-        public decimal Value()
+        public IExpression Execute()
         {
-            return Functions.Functions.Get(type).Projection(argument.Value());
+            var arg = this.argument.Execute();
+            if (arg is INumberExpression)
+            {
+                return new NumberExpression(Functions.Functions.Get(type).Projection(arg.Count.ToNumber()));
+            }
+            else
+            {
+                return this;
+            }
         }
 
         public override string ToString()

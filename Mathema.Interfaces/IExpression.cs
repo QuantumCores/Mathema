@@ -2,8 +2,12 @@
 
 namespace Mathema.Interfaces
 {
-    public interface IExpression
+    public interface IExpression : IOperationDispatcher
     {
-        decimal Value();
+        IFraction Count { get; set; }
+
+        IDimensionKey DimensionKey { get; set; }
+
+        IExpression Execute();
     }
 }

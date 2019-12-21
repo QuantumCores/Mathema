@@ -1,4 +1,7 @@
-﻿using Mathema.Interfaces;
+﻿using Mathema.Enums.Operators;
+using Mathema.Interfaces;
+using Mathema.Models.Dimension;
+using Mathema.Models.Numerics;
 using Mathema.Models.Operators;
 using System;
 using System.Collections.Generic;
@@ -11,20 +14,36 @@ namespace Mathema.Models.Expressions
         private OperatorTypes op;
         private IExpression rhe;
 
+        public IDimensionKey DimensionKey { get; set; } = new DimensionKey(nameof(UnaryExpression));
+
+        public IFraction Count { get; set; } = new Fraction();
+
+        public Dictionary<OperatorTypes, Func<IExpression, IExpression, IExpression>> BinaryOperations { get; }
+
+        public Dictionary<OperatorTypes, Func<IExpression, IExpression>> UnaryOperations { get; }
+
         public UnaryExpression(OperatorTypes op, IExpression rhe)
         {
             this.rhe = rhe;
             this.op = op;
         }
 
-        public decimal Value()
+        public IExpression Execute()
         {
-            return Operations.UnaryOperations[op](rhe);
+            var arg = this.rhe.Execute();
+            return arg.UnaryOperations[op](arg);
         }
 
         public override string ToString()
         {
-            return " " + Operators.Operators.Get(op).Symbol + "(" + this.rhe.Value() + ")";
+            if (op == OperatorTypes.Sign)
+            {
+                return " -(" + this.rhe.Execute() + ")";
+            }
+            else
+            {
+                return " " + Operators.Operators.Get(op).Symbol + "(" + this.rhe.Execute() + ")";
+            }
         }
     }
 }
