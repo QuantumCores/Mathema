@@ -21,14 +21,7 @@ namespace Mathema.Models.Dimension
 
         public void Add(string dim)
         {
-            if (this.Key.ContainsKey(dim))
-            {
-                this.Key[dim] += 1;
-            }
-            else
-            {
-                this.Key.Add(dim, 1);
-            }
+            this.Add(dim, 1);
         }
 
         public void Add(string dim, decimal val)
@@ -36,10 +29,22 @@ namespace Mathema.Models.Dimension
             if (this.Key.ContainsKey(dim))
             {
                 this.Key[dim] += val;
+                if (this.Key[dim] == 0)
+                {
+                    this.Key.Remove(dim);
+                }
             }
             else
             {
                 this.Key.Add(dim, val);
+            }
+        }
+
+        public void Add(IDimensionKey dimensionKey)
+        {
+            foreach (var dim in dimensionKey.Key)
+            {
+                this.Add(dim.Key, dim.Value);
             }
         }
 
@@ -87,32 +92,70 @@ namespace Mathema.Models.Dimension
             }
         }
 
+        public static bool Compare(IDimensionKey a, IDimensionKey b)
+        {
+            if (a.Key.Count != b.Key.Count)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < a.Key.Count; i++)
+            {
+                var k = a.Key.ElementAt(i).Key;
+                if (!b.Key.ContainsKey(k))
+                {
+                    return false;
+                }
+
+                if (a.Key[k] != b.Key[k])
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public IDimensionKey Clone()
+        {
+            var res = new DimensionKey();
+
+            foreach (var kv in this.Key)
+            {
+                res.Key.Add(string.Copy(kv.Key), kv.Value);
+            }
+
+            return res;
+        }
+
         public override string ToString()
         {
-            var sb = new StringBuilder();
+            var sb = new List<string>();
 
             var ordered = this.Key.OrderBy(kv => kv.Key);
             foreach (var item in ordered)
             {
                 if (item.Value > 0)
                 {
-                    if (sb.Length > 0)
+                    if (sb.Count > 0)
                     {
-                        sb.Append(" * ");
+                        sb.Add(" * ");
                     }
-                    sb.Append(string.Join(" * ", Enumerable.Repeat(item.Key, (int)item.Value)));
+                    sb.Add(string.Join(" * ", Enumerable.Repeat(item.Key, (int)item.Value)));
                 }
                 else
                 {
-                    if (sb.Length > 0)
+                    if (sb.Count > 0)
                     {
-                        sb.Append(" / ");
+                        sb.Add(" / ");
                     }
-                    sb.Append(string.Join(" / ", Enumerable.Repeat(item.Key, -(int)item.Value)));
+                    var ump = Enumerable.Repeat(item.Key, -(int)item.Value);
+                    var tmp = string.Join(" / ", ump);
+                    sb.Add(tmp);
                 }
             }
 
-            return sb.ToString();
+            return string.Join("", sb);
         }
 
 
@@ -140,30 +183,5 @@ namespace Mathema.Models.Dimension
         {
             return !(a == b);
         }
-
-        public static bool Compare(IDimensionKey a, IDimensionKey b)
-        {
-            if (a.Key.Count != b.Key.Count)
-            {
-                return false;
-            }
-
-            for (int i = 0; i < a.Key.Count; i++)
-            {
-                var k = a.Key.ElementAt(i).Key;
-                if (!b.Key.ContainsKey(k))
-                {
-                    return false;
-                }
-
-                if (a.Key[k] != b.Key[k])
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
     }
 }

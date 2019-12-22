@@ -11,11 +11,15 @@ namespace Mathema.Interfaces
         void Add(string dim);
 
         void Add(string dim, decimal val);
-        
+
+        void Add(IDimensionKey dimensionKey);
+
         void Remove(string dim);
 
         void Remove(string dim, decimal val);
 
         void Multiply(string dim, decimal val);
+
+        IDimensionKey Clone();
     }
 }

@@ -147,7 +147,23 @@ namespace Mathema.Algorithms.Handlers
                             }
                             else if (type == OperatorTypes.Divide)
                             {
-                                var tmp = new BinaryExpression(stack[stack.Count - 2], Operators.Get(s.Value).Type, stack[stack.Count - 1]);
+                                //var tmp = new BinaryExpression(stack[stack.Count - 2], Operators.Get(s.Value).Type, stack[stack.Count - 1]);
+
+                                var tmp = new FlatMultExpression();
+                                if (stack[stack.Count - 1] is FlatMultExpression)
+                                {
+                                    tmp = (FlatMultExpression)stack[stack.Count - 1] / stack[stack.Count - 2];
+                                }
+                                else if (stack[stack.Count - 2] is FlatMultExpression)
+                                {
+                                    tmp = (FlatMultExpression)stack[stack.Count - 2] / stack[stack.Count - 1];
+                                }
+                                else
+                                {
+                                    tmp.Add(stack[stack.Count - 1].BinaryOperations[OperatorTypes.Power](stack[stack.Count - 1], new NumberExpression(-1)));
+                                    tmp.Add(stack[stack.Count - 2]);
+                                }
+
                                 stack.RemoveAt(stack.Count - 1);
                                 stack.RemoveAt(stack.Count - 1);
                                 stack.Add(tmp);

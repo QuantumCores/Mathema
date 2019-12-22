@@ -1,6 +1,7 @@
 ﻿using Mathema.Enums.Operators;
 using Mathema.Interfaces;
 using Mathema.Models.Dimension;
+using Mathema.Models.Expressions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -73,6 +74,11 @@ namespace Mathema.Models.ExpressionOperations
                     result.DimensionKey.Add(string.Copy(key.Key), key.Value);
                 }
 
+                if (result.DimensionKey.Key.Count == 0)
+                {
+                    return new NumberExpression(lhe.Count.ToNumber());
+                }
+
                 return result;
             }
 
@@ -90,7 +96,12 @@ namespace Mathema.Models.ExpressionOperations
                     lhe.DimensionKey.Remove(key.Key, key.Value);
                 }
 
-                return lhe;
+                if (lhe.DimensionKey.Key.Count == 0)
+                {
+                    return new NumberExpression(lhe.Count.ToNumber());
+                }
+
+                return lhe.Clone();
             }
 
             return null;

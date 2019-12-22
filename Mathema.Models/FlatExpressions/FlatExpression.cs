@@ -11,7 +11,11 @@ namespace Mathema.Models.FlatExpressions
 {
     public abstract class FlatExpression : IFlatExpression
     {
+        /// <summary>
+        /// String key is just a basic variable symbol should not cotain more information
+        /// </summary>        
         public Dictionary<string, List<IExpression>> Expressions { get; set; } = new Dictionary<string, List<IExpression>>();
+        //TODO Above there should be no list it should be sqashed when Adding, probably reduce should be used Reduce
 
         public IDimensionKey DimensionKey { get; set; } = new DimensionKey(nameof(FlatExpression));
 
@@ -27,6 +31,7 @@ namespace Mathema.Models.FlatExpressions
 
         public void Add(IExpression expression)
         {
+            //TODO
             var tmp = expression.DimensionKey.ToString();
             if (!Expressions.ContainsKey(tmp))
             {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Mathema.Enums.DimensionKeys;
+using Mathema.Enums.Operators;
 using Mathema.Interfaces;
 using Mathema.Models.Dimension;
 using Mathema.Models.ExpressionOperations;
@@ -18,6 +19,7 @@ namespace Mathema.Models.FlatExpressions
             this.BinaryOperations = FlatMultOperations.BinaryOperations;
             this.UnaryOperations = FlatMultOperations.UnaryOperations;
             this.DimensionKey = new DimensionKey();//nameof(FlatMultExpression)
+            //this.Expressions.Add(Dimensions.Number, new List<IExpression>() { new NumberExpression(1) });
         }
 
         public override void Squash()
@@ -38,7 +40,7 @@ namespace Mathema.Models.FlatExpressions
                 var key = exp.DimensionKey.ToString();
                 if (!dims.ContainsKey(key))
                 {
-                    dims.Add(key, new List<NewKeyExpressionPair>() { new NewKeyExpressionPair(key, exp) });
+                    dims.Add(key, new List<NewKeyExpressionPair>() { new NewKeyExpressionPair(exp) });
                 }
                 else
                 {
@@ -47,8 +49,7 @@ namespace Mathema.Models.FlatExpressions
                         dims[key][0].Expression.Count.Multiply(exp.Count);
                         if (key != Dimensions.Number)
                         {
-                            dims[key][0].NewKey.Add(key);
-                            dims[key][0].Expression.DimensionKey = dims[key][0].NewKey;
+                            Reduce(dims, exp, key);
                         }
                     }
                     else
@@ -58,12 +59,30 @@ namespace Mathema.Models.FlatExpressions
                 }
             }
 
-            this.Expressions = dims.ToDictionary(k => k.Value[0].NewKey.ToString(), k => k.Value.Select(s => s.Expression).ToList());
+            this.Expressions = dims.ToDictionary(k => k.Key, k => k.Value.Select(s => s.Expression).ToList());
             foreach (var item in this.Expressions)
             {
                 this.DimensionKey.Add(item.Key);
             }
             this.Count = this.Expressions.ContainsKey(Dimensions.Number) ? this.Expressions[Dimensions.Number][0].Count : this.Count;
+        }
+
+        private static void Reduce(Dictionary<string, List<NewKeyExpressionPair>> dims, IExpression exp, string key)
+        {
+            var res = dims[key][0].Expression.BinaryOperations[OperatorTypes.Multiply](dims[key][0].Expression, exp);
+            if (!Dimension.DimensionKey.Compare(dims[key][0].NewKey, res.DimensionKey))
+            {
+                dims.Remove(key);
+                var resKey = res.DimensionKey.ToString();
+                if (dims.ContainsKey(resKey))
+                {
+                    Reduce(dims, res, resKey);
+                }
+                else
+                {
+                    dims.Add(resKey, new List<NewKeyExpressionPair>() { new NewKeyExpressionPair(res) });
+                }
+            }
         }
 
         public override IExpression Execute()
@@ -129,21 +148,75 @@ namespace Mathema.Models.FlatExpressions
             return rhe;
         }
 
+        public static FlatMultExpression operator /(FlatMultExpression lhe, IExpression rhe)
+        {
+            for (int i = 0; i < rhe.DimensionKey.Key.Count; i++)
+            {
+                var key = rhe.DimensionKey.Key.ElementAt(i).Key;
+                rhe.DimensionKey.Multiply(key, -1);
+            }
+
+            lhe.Add(rhe);
+
+            return lhe;
+        }
+
+        public static FlatMultExpression operator /(IExpression lhe, FlatMultExpression rhe)
+        {
+            foreach (var kv in lhe.DimensionKey.Key)
+            {
+                lhe.DimensionKey.Multiply(kv.Key, -1);
+            }
+
+            rhe.Add(lhe);
+
+            return rhe;
+        }
+
         public override string ToString()
         {
             var sb = new List<string>();
-            foreach (var key in this.Expressions.Keys.OrderBy(k => k))
+            IExpression prev = null;
+            if (this.Expressions.ContainsKey(Dimensions.Number))
             {
-                var sub = string.Join(" * ", this.Expressions[key].OrderBy(e => e.ToString()));
-                sb.Add(sub);
+                sb.Add(this.Expressions[Dimensions.Number][0].ToString());
+                prev = this.Expressions[Dimensions.Number][0];
             }
 
-            return "( " + string.Join(" * ", sb) + ")";
+            //TODO order by expr.ToString
+            foreach (var kv in this.Expressions)
+            {
+                if (kv.Key != Dimensions.Number)
+                {
+                    var expr = this.Expressions[kv.Key][0];
+                    if (prev != null)
+                    {
+                        if (expr.DimensionKey.Key.ElementAt(0).Value < 0)
+                        {
+                            sb.Add(" / ");
+                        }
+                        else
+                        {
+                            sb.Add(" * ");
+                        }
+                    }
+                    sb.Add(expr.ToString());
+                    prev = expr;
+                }
+            }
+
+            return "( " + string.Join("", sb) + ")";
         }
     }
 
     class NewKeyExpressionPair
     {
+        public NewKeyExpressionPair(IExpression expr)
+        {
+            this.NewKey = expr.DimensionKey.Clone();
+            this.Expression = expr;
+        }
+
         public NewKeyExpressionPair(string key, IExpression expr)
         {
             this.NewKey = new DimensionKey(key);

@@ -1,5 +1,6 @@
 ﻿using Mathema.Enums.Operators;
 using Mathema.Interfaces;
+using Mathema.Models.Expressions;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -36,7 +37,7 @@ namespace Mathema.Models.ExpressionOperations
             if (rhe is INumberExpression)
             {
                 lhe.Count.Add(rhe.Count);
-                return lhe;
+                return new NumberExpression(lhe.Count);
             }
 
             return null;
