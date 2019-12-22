@@ -101,10 +101,10 @@ namespace Mathema.Models.Operators
             else if (lhe is IFlatAddExpression && rhe is INumberExpression && rhe.Count.ToNumber() % 1 == 0)
             {
                 var lc = (FlatAddExpression)lhe;
-                var all = lc.Dimensions.SelectMany(t => t.Value).ToList();
-                foreach (var keya in lc.Dimensions.Keys)
+                var all = lc.Expressions.SelectMany(t => t.Value).ToList();
+                foreach (var keya in lc.Expressions.Keys)
                 {
-                    foreach (var keyb in lc.Dimensions.Keys)
+                    foreach (var keyb in lc.Expressions.Keys)
                     {
 
                     }

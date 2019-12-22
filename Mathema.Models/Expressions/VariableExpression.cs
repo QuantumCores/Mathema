@@ -12,7 +12,7 @@ namespace Mathema.Models.Expressions
 {
     public class VariableExpression : IVariableExpression
     {
-        public string Symbol { get; set; }
+        public string Symbol { get; private set; }
 
         public decimal Val { get; set; }
 
@@ -36,9 +36,21 @@ namespace Mathema.Models.Expressions
             return this;
         }
 
+        public IExpression Clone()
+        {
+            var res = new VariableExpression(string.Copy(this.Symbol), this.Val);
+            res.DimensionKey = new DimensionKey();
+            foreach (var key in this.DimensionKey.Key)
+            {
+                res.DimensionKey.Add(string.Copy(key.Key), key.Value);
+            }
+
+            return res;
+        }
+
         public bool CompareDimensions(IVariableExpression variable)
         {
-            return this.DimensionKey == variable.DimensionKey;
+            return Dimension.DimensionKey.Compare(this.DimensionKey, variable.DimensionKey);
         }
 
         public override string ToString()
@@ -46,17 +58,18 @@ namespace Mathema.Models.Expressions
             var num = this.Count.ToNumber();
             if (num != 1 && num != -1)
             {
+                if (this.Count.Denominator % 1 == 0 && this.Count.Denominator != 1 && this.Count.Numerator % 1 == 0)
+                {
+                    return this.Count.Numerator.ToString() + " / " + this.Count.Denominator + " * " + this.DimensionKey.ToString();
+                }
+
                 if (num % 1 == 0)
                 {
-                    return num.ToString() + " * " + this.Symbol;
-                }
-                if (this.Count.Denominator % 1 == 0 && this.Count.Numerator % 1 == 0)
-                {
-                    return this.Count.Numerator.ToString() + " / " + this.Count.Denominator + " * " + this.Symbol;
+                    return num.ToString() + " * " + this.DimensionKey.ToString();
                 }
             }
 
             return num == -1 ? "-" + this.DimensionKey.ToString() : this.DimensionKey.ToString();
-        }       
+        }
     }
 }

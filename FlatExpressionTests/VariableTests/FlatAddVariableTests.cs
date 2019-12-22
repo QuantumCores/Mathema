@@ -1,5 +1,6 @@
 ﻿using Mathema.Algorithms.Handlers;
 using Mathema.Algorithms.Parsers;
+using Mathema.Enums.DimensionKeys;
 using Mathema.Interfaces;
 using Mathema.Models.Expressions;
 using Mathema.Models.FlatExpressions;
@@ -40,8 +41,8 @@ namespace FlatExpressionTests.VariableTests
             var actual = (FlatAddExpression)(ExpressionBuilder.BuildFlat(rpn.Output).Execute());
 
             //Assert
-            Assert.IsTrue(actual.Dimensions.ContainsKey(""));
-            Assert.IsTrue(actual.Dimensions.ContainsKey("x"));
+            Assert.IsTrue(actual.Expressions.ContainsKey(Dimensions.Number));
+            Assert.IsTrue(actual.Expressions.ContainsKey("x"));
         }
 
         [Test]

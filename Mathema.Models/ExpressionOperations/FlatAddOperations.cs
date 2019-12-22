@@ -1,7 +1,11 @@
-﻿using Mathema.Enums.Operators;
+﻿using Mathema.Enums.DimensionKeys;
+using Mathema.Enums.Operators;
 using Mathema.Interfaces;
+using Mathema.Models.Dimension;
+using Mathema.Models.FlatExpressions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Mathema.Models.ExpressionOperations
@@ -33,7 +37,7 @@ namespace Mathema.Models.ExpressionOperations
 
         public static IExpression Add(IExpression lhe, IExpression rhe)
         {
-            if (lhe.DimensionKey == rhe.DimensionKey)
+            if (DimensionKey.Compare(lhe.DimensionKey, rhe.DimensionKey))
             {
                 lhe.Count.Add(rhe.Count);
                 return lhe;
@@ -44,7 +48,7 @@ namespace Mathema.Models.ExpressionOperations
 
         public static IExpression Subtract(IExpression lhe, IExpression rhe)
         {
-            if (lhe.DimensionKey == rhe.DimensionKey)
+            if (DimensionKey.Compare(lhe.DimensionKey, rhe.DimensionKey))
             {
                 lhe.Count.Subtract(rhe.Count);
                 return lhe;
@@ -60,7 +64,7 @@ namespace Mathema.Models.ExpressionOperations
             {
                 foreach (var key in rhe.DimensionKey.Key)
                 {
-                    lc.Dimensions[""].Add(rhe);
+                    lc.Expressions[Dimensions.Number].Add(rhe);
                 }
 
                 return lhe;
@@ -68,13 +72,13 @@ namespace Mathema.Models.ExpressionOperations
             else if (rhe is IVariableExpression)
             {
                 var tmp = rhe.DimensionKey.ToString();
-                if (lc.Dimensions.ContainsKey(tmp))
+                if (lc.Expressions.ContainsKey(tmp))
                 {
-                    lc.Dimensions[tmp].Add(rhe);
+                    lc.Expressions[tmp].Add(rhe);
                 }
                 else
                 {
-                    lc.Dimensions.Add(tmp, new List<IExpression>() { rhe });
+                    lc.Expressions.Add(tmp, new List<IExpression>() { rhe });
                 }
 
                 foreach (var key in rhe.DimensionKey.Key)
@@ -117,14 +121,34 @@ namespace Mathema.Models.ExpressionOperations
         public static IExpression Pow(IExpression lhe, IExpression rhe)
         {
             var lc = (IFlatExpression)lhe;
-            if (rhe is INumberExpression)
+            var allA = lc.Expressions.SelectMany(kv => kv.Value).ToList();
+            var allB = allA.Select(e => e.Clone()).ToList();
+            var result = new List<IExpression>();
+            var p = rhe.Count.ToNumber();
+
+            if (rhe is INumberExpression && p % 1 == 0)
             {
-                foreach (var kv in lc.Dimensions)
+                for (int i = 1; i < (int)p; i++)
                 {
-                    kv.Value.ForEach(e => e.BinaryOperations[OperatorTypes.Power](e, rhe));
+                    foreach (var expA in allA)
+                    {
+                        foreach (var expB in allB)
+                        {
+                            result.Add(expA.BinaryOperations[OperatorTypes.Multiply](expA, expB));
+                        }
+                    }
+
+                    allB = result.ToList();
+                    result.Clear();
                 }
 
-                return lhe;
+                var flat = new FlatAddExpression();
+                foreach (var expB in allB)
+                {
+                    flat.Add(expB);
+                }
+
+                return flat.Execute();
             }
 
             return null;

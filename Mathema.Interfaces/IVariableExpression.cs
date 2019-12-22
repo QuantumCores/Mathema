@@ -6,7 +6,7 @@ namespace Mathema.Interfaces
 {
     public interface IVariableExpression : IExpression
     {
-        string Symbol { get; set; }
+        string Symbol { get; }
 
         decimal Val { get; set; }
 

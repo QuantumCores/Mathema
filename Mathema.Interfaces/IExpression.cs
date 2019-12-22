@@ -9,5 +9,7 @@ namespace Mathema.Interfaces
         IDimensionKey DimensionKey { get; set; }
 
         IExpression Execute();
+
+        IExpression Clone();
     }
 }

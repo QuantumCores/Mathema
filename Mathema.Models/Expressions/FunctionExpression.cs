@@ -42,6 +42,11 @@ namespace Mathema.Models.Expressions
             }
         }
 
+        public IExpression Clone()
+        {
+            return new FunctionExpression(this.type, this.argument.Clone());
+        }
+
         public override string ToString()
         {
             return " " + type.ToString() + "(" + argument.ToString() + ")";

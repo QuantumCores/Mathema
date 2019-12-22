@@ -1,5 +1,6 @@
 ﻿using Mathema.Enums.Operators;
 using Mathema.Interfaces;
+using Mathema.Models.Dimension;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,7 +37,7 @@ namespace Mathema.Models.ExpressionOperations
         {
             if (rhe is IVariableExpression)
             {
-                if (((IVariableExpression)rhe).DimensionKey == ((IVariableExpression)lhe).DimensionKey)
+                if (DimensionKey.Compare(rhe.DimensionKey, lhe.DimensionKey))
                 {
                     lhe.Count.Add(rhe.Count);
                     return lhe;
@@ -50,7 +51,7 @@ namespace Mathema.Models.ExpressionOperations
         {
             if (rhe is IVariableExpression)
             {
-                if (((IVariableExpression)rhe).DimensionKey == ((IVariableExpression)lhe).DimensionKey)
+                if (DimensionKey.Compare(lhe.DimensionKey, rhe.DimensionKey))
                 {
                     lhe.Count.Subtract(rhe.Count);
                     return lhe;
@@ -64,13 +65,15 @@ namespace Mathema.Models.ExpressionOperations
         {
             if (rhe is IVariableExpression)
             {
-                lhe.Count.Multiply(rhe.Count);
+                var result = lhe.Clone();
+
+                result.Count.Multiply(rhe.Count);
                 foreach (var key in rhe.DimensionKey.Key)
                 {
-                    lhe.DimensionKey.Add(key.Key, key.Value);
+                    result.DimensionKey.Add(string.Copy(key.Key), key.Value);
                 }
 
-                return lhe;
+                return result;
             }
 
             return null;

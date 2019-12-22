@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Mathema.Enums.DimensionKeys;
 using Mathema.Interfaces;
 using Mathema.Models.Dimension;
 using Mathema.Models.ExpressionOperations;
@@ -22,7 +23,7 @@ namespace Mathema.Models.FlatExpressions
         public override void Squash()
         {
             var all = new List<IExpression>();
-            foreach (var expressions in this.Dimensions)
+            foreach (var expressions in this.Expressions)
             {
                 foreach (var exp in expressions.Value)
                 {
@@ -44,7 +45,7 @@ namespace Mathema.Models.FlatExpressions
                     if (key != nameof(BinaryExpression) && key != nameof(UnaryExpression) && key != nameof(FunctionExpression))
                     {
                         dims[key][0].Expression.Count.Multiply(exp.Count);
-                        if (key != "")
+                        if (key != Dimensions.Number)
                         {
                             dims[key][0].NewKey.Add(key);
                             dims[key][0].Expression.DimensionKey = dims[key][0].NewKey;
@@ -57,20 +58,20 @@ namespace Mathema.Models.FlatExpressions
                 }
             }
 
-            this.Dimensions = dims.ToDictionary(k => k.Value[0].NewKey.ToString(), k => k.Value.Select(s => s.Expression).ToList());
-            foreach (var item in this.Dimensions)
+            this.Expressions = dims.ToDictionary(k => k.Value[0].NewKey.ToString(), k => k.Value.Select(s => s.Expression).ToList());
+            foreach (var item in this.Expressions)
             {
                 this.DimensionKey.Add(item.Key);
             }
-            this.Count = this.Dimensions.ContainsKey("") ? this.Dimensions[""][0].Count : this.Count;
+            this.Count = this.Expressions.ContainsKey(Dimensions.Number) ? this.Expressions[Dimensions.Number][0].Count : this.Count;
         }
 
         public override IExpression Execute()
         {
             this.Squash();
-            if (this.Dimensions.Count == 1 && this.Dimensions.ContainsKey(""))
+            if (this.Expressions.Count == 1 && this.Expressions.ContainsKey(Dimensions.Number))
             {
-                return this.Dimensions[""][0];
+                return this.Expressions[Dimensions.Number][0];
             }
             else
             {
@@ -78,21 +79,36 @@ namespace Mathema.Models.FlatExpressions
             }
         }
 
-        public static FlatMultExpression operator *(FlatMultExpression lhe, FlatMultExpression rhe)
+        public override IExpression Clone()
         {
-            foreach (var key in lhe.Dimensions.Keys)
+            var res = new FlatMultExpression();
+
+            foreach (var dim in this.Expressions.Values)
             {
-                if (rhe.Dimensions.ContainsKey(key))
+                foreach (var exp in dim)
                 {
-                    lhe.Dimensions[key].AddRange(rhe.Dimensions[key]);
+                    res.Add(exp.Clone());
                 }
             }
 
-            foreach (var key in rhe.Dimensions.Keys)
+            return res;
+        }
+
+        public static FlatMultExpression operator *(FlatMultExpression lhe, FlatMultExpression rhe)
+        {
+            foreach (var key in lhe.Expressions.Keys)
             {
-                if (!lhe.Dimensions.ContainsKey(key))
+                if (rhe.Expressions.ContainsKey(key))
                 {
-                    lhe.Dimensions.Add(key, rhe.Dimensions[key]);
+                    lhe.Expressions[key].AddRange(rhe.Expressions[key]);
+                }
+            }
+
+            foreach (var key in rhe.Expressions.Keys)
+            {
+                if (!lhe.Expressions.ContainsKey(key))
+                {
+                    lhe.Expressions.Add(key, rhe.Expressions[key]);
                 }
             }
 
@@ -116,9 +132,9 @@ namespace Mathema.Models.FlatExpressions
         public override string ToString()
         {
             var sb = new List<string>();
-            foreach (var key in this.Dimensions.Keys.OrderBy(k => k))
+            foreach (var key in this.Expressions.Keys.OrderBy(k => k))
             {
-                var sub = string.Join(" * ", this.Dimensions[key].OrderBy(e => e.ToString()));
+                var sub = string.Join(" * ", this.Expressions[key].OrderBy(e => e.ToString()));
                 sb.Add(sub);
             }
 

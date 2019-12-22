@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Mathema.Enums.DimensionKeys;
+using Mathema.Enums.Operators;
 using Mathema.Interfaces;
 using Mathema.Models.Dimension;
+using Mathema.Models.ExpressionOperations;
 using Mathema.Models.Expressions;
 using Mathema.Models.Numerics;
 
@@ -13,13 +16,15 @@ namespace Mathema.Models.FlatExpressions
     {
         public FlatAddExpression()
         {
+            this.BinaryOperations = FlatAddOperations.BinaryOperations;
+            this.UnaryOperations = FlatAddOperations.UnaryOperations;
             this.DimensionKey = new DimensionKey(nameof(FlatAddExpression));
         }
 
         public override void Squash()
         {
             var all = new List<IExpression>();
-            foreach (var expressions in this.Dimensions)
+            foreach (var expressions in this.Expressions)
             {
                 foreach (var exp in expressions.Value)
                 {
@@ -39,7 +44,7 @@ namespace Mathema.Models.FlatExpressions
                 {
                     if (key != nameof(BinaryExpression) && key != nameof(UnaryExpression) && key != nameof(FunctionExpression))
                     {
-                        dims[key][0].Count.Add(exp.Count);
+                        dims[key][0] = dims[key][0].BinaryOperations[OperatorTypes.Add](dims[key][0], exp);
                     }
                     else
                     {
@@ -48,15 +53,15 @@ namespace Mathema.Models.FlatExpressions
                 }
             }
 
-            this.Dimensions = dims;
+            this.Expressions = dims;
         }
 
         public override IExpression Execute()
         {
             this.Squash();
-            if (this.Dimensions.Count == 1 && this.Dimensions.ContainsKey(""))
+            if (this.Expressions.Count == 1 && this.Expressions.ContainsKey(Dimensions.Number))
             {
-                return this.Dimensions[""][0];
+                return this.Expressions[Dimensions.Number][0];
             }
             else
             {
@@ -64,21 +69,36 @@ namespace Mathema.Models.FlatExpressions
             }
         }
 
-        public static FlatAddExpression operator +(FlatAddExpression lhe, FlatAddExpression rhe)
+        public override IExpression Clone()
         {
-            foreach (var key in lhe.Dimensions.Keys)
+            var res = new FlatAddExpression();
+
+            foreach (var dim in this.Expressions.Values)
             {
-                if (rhe.Dimensions.ContainsKey(key))
+                foreach (var exp in dim)
                 {
-                    lhe.Dimensions[key].AddRange(rhe.Dimensions[key]);
+                    res.Add(exp.Clone());
                 }
             }
 
-            foreach (var key in rhe.Dimensions.Keys)
+            return res;
+        }
+
+        public static FlatAddExpression operator +(FlatAddExpression lhe, FlatAddExpression rhe)
+        {
+            foreach (var key in lhe.Expressions.Keys)
             {
-                if (!lhe.Dimensions.ContainsKey(key))
+                if (rhe.Expressions.ContainsKey(key))
                 {
-                    lhe.Dimensions.Add(key, rhe.Dimensions[key]);
+                    lhe.Expressions[key].AddRange(rhe.Expressions[key]);
+                }
+            }
+
+            foreach (var key in rhe.Expressions.Keys)
+            {
+                if (!lhe.Expressions.ContainsKey(key))
+                {
+                    lhe.Expressions.Add(key, rhe.Expressions[key]);
                 }
             }
 
@@ -102,9 +122,9 @@ namespace Mathema.Models.FlatExpressions
         public override string ToString()
         {
             var sb = new List<string>();
-            foreach (var key in this.Dimensions.Keys.OrderBy(k => k))
+            foreach (var key in this.Expressions.Keys.OrderBy(k => k))
             {
-                var sub = string.Join(" + ", this.Dimensions[key].OrderBy(e => e.ToString()));
+                var sub = string.Join(" + ", this.Expressions[key].OrderBy(e => e.ToString()));
                 sb.Add(sub);
             }
 

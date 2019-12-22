@@ -1,4 +1,5 @@
-﻿using Mathema.Enums.Operators;
+﻿using Mathema.Enums.DimensionKeys;
+using Mathema.Enums.Operators;
 using Mathema.Interfaces;
 using Mathema.Models.Dimension;
 using Mathema.Models.ExpressionOperations;
@@ -11,7 +12,7 @@ namespace Mathema.Models.Expressions
 {
     public class NumberExpression : INumberExpression
     {
-        public IDimensionKey DimensionKey { get; set; } = new DimensionKey("");
+        public IDimensionKey DimensionKey { get; set; } = new DimensionKey(Dimensions.Number);
 
         public IFraction Count { get; set; } = new Fraction();
 
@@ -44,6 +45,11 @@ namespace Mathema.Models.Expressions
         public IExpression Execute()
         {
             return this;
+        }
+
+        public IExpression Clone()
+        {
+            return new NumberExpression(this.Count.ToNumber());
         }
 
         public override string ToString()

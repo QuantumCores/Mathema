@@ -2,7 +2,7 @@
 using Mathema.Models.Numerics;
 using NUnit.Framework;
 
-namespace ModelsTests.Fractions
+namespace ModelsTests.FractionTests
 {
     [TestFixture]
     public class PowerTests

@@ -11,7 +11,7 @@ namespace Mathema.Models.FlatExpressions
 {
     public abstract class FlatExpression : IFlatExpression
     {
-        public Dictionary<string, List<IExpression>> Dimensions { get; set; } = new Dictionary<string, List<IExpression>>();
+        public Dictionary<string, List<IExpression>> Expressions { get; set; } = new Dictionary<string, List<IExpression>>();
 
         public IDimensionKey DimensionKey { get; set; } = new DimensionKey(nameof(FlatExpression));
 
@@ -28,44 +28,57 @@ namespace Mathema.Models.FlatExpressions
         public void Add(IExpression expression)
         {
             var tmp = expression.DimensionKey.ToString();
-            if (!Dimensions.ContainsKey(tmp))
+            if (!Expressions.ContainsKey(tmp))
             {
-                this.Dimensions.Add(tmp, new List<IExpression>());
+                this.Expressions.Add(tmp, new List<IExpression>());
             }
 
-            this.Dimensions[tmp].Add(expression);
+            this.Expressions[tmp].Add(expression);
         }
+
+        public abstract IExpression Clone();
 
         public static bool Compare(FlatExpression lhe, FlatExpression rhe)
         {
-            if (lhe.DimensionKey != rhe.DimensionKey)
+            if (!Dimension.DimensionKey.Compare(lhe.DimensionKey, rhe.DimensionKey))
             {
                 return false;
             }
 
-            if (lhe.Dimensions.Keys.Count != rhe.Dimensions.Keys.Count)
+            if (lhe.Expressions.Keys.Count != rhe.Expressions.Keys.Count)
             {
                 return false;
             }
-            
-            foreach (var key in lhe.Dimensions.Keys)
+
+            foreach (var key in lhe.Expressions.Keys)
             {
-                if (!rhe.Dimensions.ContainsKey(key))
+                if (!rhe.Expressions.ContainsKey(key))
                 {
                     return false;
                 }
                 else
                 {
-                    if (lhe.Dimensions[key].Count != rhe.Dimensions[key].Count)
+                    if (lhe.Expressions[key].Count != rhe.Expressions[key].Count)
                     {
                         return false;
                     }
 
-                    //compare insides
+                    for (int i = 0; i < lhe.Expressions[key].Count; i++)
+                    {
+                        var expl = lhe.Expressions[key][i];
+                        var expr = rhe.Expressions[key][i];
+
+                        if (!Dimension.DimensionKey.Compare(expl.DimensionKey, expr.DimensionKey))
+                        {
+                            return false;
+                        }
+                    }
                 }
             }
 
             return true;
-        }       
+        }
+
+
     }
 }

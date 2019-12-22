@@ -96,18 +96,52 @@ namespace Mathema.Models.Dimension
             {
                 if (item.Value > 0)
                 {
+                    if (sb.Length > 0)
+                    {
+                        sb.Append(" * ");
+                    }
                     sb.Append(string.Join(" * ", Enumerable.Repeat(item.Key, (int)item.Value)));
                 }
                 else
                 {
-                    sb.Append(string.Join(" / ", Enumerable.Repeat(item.Key, (int)item.Value)));
+                    if (sb.Length > 0)
+                    {
+                        sb.Append(" / ");
+                    }
+                    sb.Append(string.Join(" / ", Enumerable.Repeat(item.Key, -(int)item.Value)));
                 }
             }
 
             return sb.ToString();
         }
 
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+
+            if (obj is DimensionKey key)
+            {
+                return Compare(this, key);
+            }
+
+            return false;
+        }
+
         public static bool operator ==(DimensionKey a, IDimensionKey b)
+        {
+            return Compare(a, b);
+        }
+
+        public static bool operator !=(DimensionKey a, IDimensionKey b)
+        {
+            return !(a == b);
+        }
+
+        public static bool Compare(IDimensionKey a, IDimensionKey b)
         {
             if (a.Key.Count != b.Key.Count)
             {
@@ -129,11 +163,6 @@ namespace Mathema.Models.Dimension
             }
 
             return true;
-        }
-
-        public static bool operator !=(DimensionKey a, IDimensionKey b)
-        {
-            return !(a == b);
         }
 
     }
