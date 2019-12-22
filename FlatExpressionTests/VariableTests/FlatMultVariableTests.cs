@@ -1,4 +1,5 @@
 ﻿using Mathema.Algorithms.Handlers;
+using Mathema.Algorithms.Helpers;
 using Mathema.Algorithms.Parsers;
 using Mathema.Enums.DimensionKeys;
 using Mathema.Models.Expressions;
@@ -80,14 +81,15 @@ namespace FlatExpressionTests.VariableTests
         {
             //Arrange
             var text = "y * 2 * x  * 3 * x * y * y";
-            var expected = "( 6 * x * x * y * y * y)";
+            var expectedText = "( 6 * x * x * y * y * y)";
 
             //Act
             var rpn = RPNParser.Parse(text);
-            var actual = ExpressionBuilder.BuildFlat(rpn.Output).Execute().ToString();
+            var actual = RPNParser.Parse(ExpressionBuilder.BuildFlat(rpn.Output).Execute().ToString());
+            var expected = RPNParser.Parse(expectedText);
 
             //Assert
-            Assert.AreEqual(expected, actual);
+            Assert.IsTrue(RPNComparer.Compare(expected.Output, actual.Output));
         }
 
 

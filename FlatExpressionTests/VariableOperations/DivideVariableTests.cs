@@ -44,7 +44,7 @@ namespace FlatExpressionTests.VariableOperations
         {
             //Arrange
             var text = "x/y/fun/x";
-            var expected = RPNParser.Parse("fun/y");
+            var expected = RPNParser.Parse("1/fun/y");
             
             //Act
             var rpn = RPNParser.Parse(text);

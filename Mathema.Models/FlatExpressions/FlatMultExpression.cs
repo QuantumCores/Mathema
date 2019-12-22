@@ -46,10 +46,14 @@ namespace Mathema.Models.FlatExpressions
                 {
                     if (key != nameof(BinaryExpression) && key != nameof(UnaryExpression) && key != nameof(FunctionExpression))
                     {
-                        dims[key][0].Expression.Count.Multiply(exp.Count);
+                        //dims[key][0].Expression.Count.Multiply(exp.Count);
                         if (key != Dimensions.Number)
                         {
                             Reduce(dims, exp, key);
+                        }
+                        else
+                        {
+                            dims[key][0].Expression = exp.BinaryOperations[OperatorTypes.Multiply](dims[key][0].Expression, exp);
                         }
                     }
                     else
@@ -83,6 +87,7 @@ namespace Mathema.Models.FlatExpressions
                     dims.Add(resKey, new List<NewKeyExpressionPair>() { new NewKeyExpressionPair(res) });
                 }
             }
+            //TODO else
         }
 
         public override IExpression Execute()

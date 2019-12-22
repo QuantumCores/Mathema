@@ -44,7 +44,7 @@ namespace FlatExpressionTests.ComplexOperations
         {
             //Arrange
             var text = "Sin(x) + x + Sin(x)";
-            var expected = "Sin(x) + x";
+            var expected = "2 * Sin(x) + x";
 
             //Act
             var rpn = RPNParser.Parse(text);

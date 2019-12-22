@@ -160,6 +160,7 @@ namespace Mathema.Algorithms.Handlers
                                 }
                                 else
                                 {
+                                    //TODO do not execute stack in builder! Find other way to that - binary pow(-1)?
                                     tmp.Add(stack[stack.Count - 1].BinaryOperations[OperatorTypes.Power](stack[stack.Count - 1], new NumberExpression(-1)));
                                     tmp.Add(stack[stack.Count - 2]);
                                 }
