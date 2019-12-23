@@ -33,7 +33,7 @@ namespace Mathema.Models.ExpressionOperations
             UnaryOperations.Add(OperatorTypes.Sign, Sign);
         }
 
-
+        //TODO write operations to return new objects and doesn't change input
         public static IExpression Add(IExpression lhe, IExpression rhe)
         {
             if (rhe is IVariableExpression)

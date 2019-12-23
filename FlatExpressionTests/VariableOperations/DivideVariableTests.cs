@@ -70,5 +70,21 @@ namespace FlatExpressionTests.VariableOperations
             //Assert
             Assert.IsTrue(RPNComparer.Compare(expected.Output, actual.Output));
         }
+
+        [Test]
+        public void Divide_x_by_x_by_y_()
+        {
+            //Arrange
+            var text = "x/(x/y)";
+            var expected = RPNParser.Parse("y");
+
+            //Act
+            var rpn = RPNParser.Parse(text);
+            var the = ExpressionBuilder.BuildFlat(rpn.Output).Execute();
+            var actual = RPNParser.Parse(ExpressionBuilder.BuildFlat(rpn.Output).Execute().ToString());
+
+            //Assert
+            Assert.IsTrue(RPNComparer.Compare(expected.Output, actual.Output));
+        }
     }
 }

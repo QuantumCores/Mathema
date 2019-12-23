@@ -35,6 +35,8 @@ namespace Mathema.Models.FlatExpressions
             }
 
             var dims = new Dictionary<string, List<NewKeyExpressionPair>>();
+            //TODO what if flat expression? Shouldn't we merge both together?
+            //TODO FlatMult DimensionKey is invalid
             foreach (var exp in all)
             {
                 var key = exp.DimensionKey.ToString();
@@ -87,7 +89,13 @@ namespace Mathema.Models.FlatExpressions
                     dims.Add(resKey, new List<NewKeyExpressionPair>() { new NewKeyExpressionPair(res) });
                 }
             }
-            //TODO else
+            else
+            {
+                //TODO else
+                dims[key][0].Expression = res;
+                dims[key][0].NewKey = res.DimensionKey;
+                //throw new NotImplementedException("Just Wondering if we ever get here");
+            }            
         }
 
         public override IExpression Execute()
@@ -155,19 +163,22 @@ namespace Mathema.Models.FlatExpressions
 
         public static FlatMultExpression operator /(FlatMultExpression lhe, IExpression rhe)
         {
+            //TODO this is wrong because we change rhe
+            var res = (FlatMultExpression)lhe.Clone();
             for (int i = 0; i < rhe.DimensionKey.Key.Count; i++)
             {
                 var key = rhe.DimensionKey.Key.ElementAt(i).Key;
                 rhe.DimensionKey.Multiply(key, -1);
             }
 
-            lhe.Add(rhe);
+            res.Add(rhe);
 
             return lhe;
         }
 
         public static FlatMultExpression operator /(IExpression lhe, FlatMultExpression rhe)
         {
+            var res = lhe.Clone();
             foreach (var kv in lhe.DimensionKey.Key)
             {
                 lhe.DimensionKey.Multiply(kv.Key, -1);
@@ -218,6 +229,7 @@ namespace Mathema.Models.FlatExpressions
     {
         public NewKeyExpressionPair(IExpression expr)
         {
+            //TODO I don't think we need that property and this class at all
             this.NewKey = expr.DimensionKey.Clone();
             this.Expression = expr;
         }
