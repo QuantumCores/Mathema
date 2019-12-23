@@ -147,8 +147,6 @@ namespace Mathema.Algorithms.Handlers
                             }
                             else if (type == OperatorTypes.Divide)
                             {
-                                //var tmp = new BinaryExpression(stack[stack.Count - 2], Operators.Get(s.Value).Type, stack[stack.Count - 1]);
-
                                 var tmp = new FlatMultExpression();
                                 if (stack[stack.Count - 1] is FlatMultExpression)
                                 {
@@ -160,8 +158,7 @@ namespace Mathema.Algorithms.Handlers
                                 }
                                 else
                                 {
-                                    //TODO do not execute stack in builder! Find other way to that - binary pow(-1)?
-                                    tmp.Add(stack[stack.Count - 1].BinaryOperations[OperatorTypes.Power](stack[stack.Count - 1], new NumberExpression(-1)));
+                                    tmp.Add(new BinaryExpression(stack[stack.Count - 1], OperatorTypes.Power, new NumberExpression(-1)));
                                     tmp.Add(stack[stack.Count - 2]);
                                 }
 

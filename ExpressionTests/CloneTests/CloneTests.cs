@@ -1,4 +1,6 @@
-﻿using Mathema.Models.Dimension;
+﻿using Mathema.Enums.Functions;
+using Mathema.Enums.Operators;
+using Mathema.Models.Dimension;
 using Mathema.Models.Expressions;
 using Mathema.Models.FlatExpressions;
 using NUnit.Framework;
@@ -15,13 +17,16 @@ namespace ExpressionTests.CloneTests
         public void Clone_BinaryExpression()
         {
             //Arrange
-            var expression = new VariableExpression("x", 2);
+            var expr1 = new NumberExpression(2);
+            var expr2 = new NumberExpression(3);
+            var actual = new BinaryExpression(expr1, OperatorTypes.Power, expr2);
 
             //Act
-            var clone = (VariableExpression)expression.Clone();
+            var expected = (BinaryExpression)actual.Clone();
 
             //Assert
-            Assert.AreEqual(1, 2);
+            Assert.IsTrue(!Object.ReferenceEquals(actual, expected));
+            Assert.AreEqual(actual.Execute().Count.ToNumber(), expected.Execute().Count.ToNumber());
         }
 
         [Test]
@@ -46,13 +51,14 @@ namespace ExpressionTests.CloneTests
         public void Clone_FunctionsExpression()
         {
             //Arrange
-            var expression = new VariableExpression("x", 2);
+            var expected = new FunctionExpression(FunctionTypes.Cos, new NumberExpression(0));
 
             //Act
-            var clone = (VariableExpression)expression.Clone();
+            var actual = (FunctionExpression)expected.Clone();
 
             //Assert
-            Assert.AreEqual(1, 2);
+            Assert.IsTrue(!Object.ReferenceEquals(actual, expected));
+            Assert.AreEqual(actual.Execute().Count.ToNumber(), expected.Execute().Count.ToNumber());
         }
 
         [Test]
@@ -72,13 +78,14 @@ namespace ExpressionTests.CloneTests
         public void Clone_UnaryExpression()
         {
             //Arrange
-            var expression = new VariableExpression("x", 2);
+            var expected = new UnaryExpression(OperatorTypes.Sign, new NumberExpression(0));
 
             //Act
-            var clone = (VariableExpression)expression.Clone();
+            var actual = (UnaryExpression)expected.Clone();
 
             //Assert
-            Assert.AreEqual(1, 2);
-        }       
+            Assert.IsTrue(!Object.ReferenceEquals(actual, expected));
+            Assert.AreEqual(actual.Execute().Count.ToNumber(), expected.Execute().Count.ToNumber());
+        }
     }
 }

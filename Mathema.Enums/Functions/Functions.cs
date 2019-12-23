@@ -4,14 +4,11 @@ using System.Text;
 
 namespace Mathema.Enums.Functions
 {
-    public class Functions
+    public enum FunctionTypes
     {
-        public enum FunctionTypes
-        {
-            Sin = 1,
-            Cos = 2,
-            Tan = 3,
-            Ctan = 4
-        }
+        Sin = 1,
+        Cos = 2,
+        Tan = 3,
+        Ctan = 4
     }
 }

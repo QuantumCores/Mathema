@@ -1,4 +1,5 @@
-﻿using Mathema.Enums.Operators;
+﻿using Mathema.Enums.Functions;
+using Mathema.Enums.Operators;
 using Mathema.Interfaces;
 using Mathema.Models.Dimension;
 using Mathema.Models.Functions;
@@ -6,7 +7,6 @@ using Mathema.Models.Numerics;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using static Mathema.Enums.Functions.Functions;
 
 namespace Mathema.Models.Expressions
 {
