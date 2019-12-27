@@ -58,7 +58,7 @@ namespace Mathema.RPNTests.ParsingTests
         {
             //Arrange
             var text = "x-1";
-            var expected = "x1Sign";
+            var expected = "x1-";
 
             //Act
             var rpn = RPNParser.Parse(text);

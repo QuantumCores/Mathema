@@ -1,4 +1,5 @@
 ﻿using Mathema.Algorithms.Handlers;
+using Mathema.Algorithms.Helpers;
 using Mathema.Algorithms.Parsers;
 using Mathema.Interfaces;
 using NUnit.Framework;
@@ -52,6 +53,22 @@ namespace FlatExpressionTests.ComplexOperations
 
             //Assert
             Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void VariableWithAddAndDivide()
+        {
+            //Arrange
+            var text = "2*x + 7 -2 + 2*x*x/x"; //+ 2*x*x/x
+            var expected = RPNParser.Parse("4*x + 5");
+
+            //Act
+            var rpn = RPNParser.Parse(text);
+            var the = ExpressionBuilder.BuildFlat(rpn.Output).Execute();
+            var actual = RPNParser.Parse(ExpressionBuilder.BuildFlat(rpn.Output).Execute().ToString());
+
+            //Assert
+            Assert.IsTrue(RPNComparer.Compare(actual.Output, expected.Output));
         }
     }
 }

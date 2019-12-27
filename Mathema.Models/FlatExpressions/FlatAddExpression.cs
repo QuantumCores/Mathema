@@ -28,7 +28,26 @@ namespace Mathema.Models.FlatExpressions
             {
                 foreach (var exp in expressions.Value)
                 {
-                    all.Add(exp.Execute());
+                    var exec = exp.Execute();
+                    // Calling Vlaue simplifies expressions
+                    if (exec is FlatAddExpression mult)
+                    {
+                        foreach (var mel in mult.Expressions)
+                        {
+                            foreach (var me in mel.Value)
+                            {
+                                all.Add(me);
+                            }
+                        }
+                    }
+                    else if (exec is FlatMultExpression add)
+                    {
+                        all.Add(exec);
+                    }
+                    else
+                    {
+                        all.Add(exec);
+                    }
                 }
             }
 

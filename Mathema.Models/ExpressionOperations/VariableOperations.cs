@@ -33,15 +33,15 @@ namespace Mathema.Models.ExpressionOperations
             UnaryOperations.Add(OperatorTypes.Sign, Sign);
         }
 
-        //TODO write operations to return new objects and doesn't change input
         public static IExpression Add(IExpression lhe, IExpression rhe)
         {
+            var res = lhe.Clone();
             if (rhe is IVariableExpression)
             {
-                if (DimensionKey.Compare(rhe.DimensionKey, lhe.DimensionKey))
+                if (DimensionKey.Compare(rhe.DimensionKey, res.DimensionKey))
                 {
-                    lhe.Count.Add(rhe.Count);
-                    return lhe;
+                    res.Count.Add(rhe.Count);
+                    return res;
                 }
             }
 
@@ -50,12 +50,13 @@ namespace Mathema.Models.ExpressionOperations
 
         public static IExpression Subtract(IExpression lhe, IExpression rhe)
         {
+            var res = lhe.Clone();
             if (rhe is IVariableExpression)
             {
-                if (DimensionKey.Compare(lhe.DimensionKey, rhe.DimensionKey))
+                if (DimensionKey.Compare(res.DimensionKey, rhe.DimensionKey))
                 {
-                    lhe.Count.Subtract(rhe.Count);
-                    return lhe;
+                    res.Count.Subtract(rhe.Count);
+                    return res;
                 }
             }
 
@@ -64,22 +65,21 @@ namespace Mathema.Models.ExpressionOperations
 
         public static IExpression Multiply(IExpression lhe, IExpression rhe)
         {
+            var res = lhe.Clone();
             if (rhe is IVariableExpression)
             {
-                var result = lhe.Clone();
-
-                result.Count.Multiply(rhe.Count);
+                res.Count.Multiply(rhe.Count);
                 foreach (var key in rhe.DimensionKey.Key)
                 {
-                    result.DimensionKey.Add(string.Copy(key.Key), key.Value);
+                    res.DimensionKey.Add(string.Copy(key.Key), key.Value);
                 }
 
-                if (result.DimensionKey.Key.Count == 0)
+                if (res.DimensionKey.Key.Count == 0)
                 {
                     return new NumberExpression(lhe.Count.ToNumber());
                 }
 
-                return result;
+                return res;
             }
 
             return null;
@@ -87,21 +87,22 @@ namespace Mathema.Models.ExpressionOperations
 
         public static IExpression Divide(IExpression lhe, IExpression rhe)
         {
+            var res = lhe.Clone();
             if (rhe is IVariableExpression)
             {
-                lhe.Count.Divide(rhe.Count);
+                res.Count.Divide(rhe.Count);
 
                 foreach (var key in rhe.DimensionKey.Key)
                 {
-                    lhe.DimensionKey.Remove(key.Key, key.Value);
+                    res.DimensionKey.Remove(key.Key, key.Value);
                 }
 
-                if (lhe.DimensionKey.Key.Count == 0)
+                if (res.DimensionKey.Key.Count == 0)
                 {
-                    return new NumberExpression(lhe.Count.ToNumber());
+                    return new NumberExpression(res.Count.ToNumber());
                 }
 
-                return lhe.Clone();
+                return res.Clone();
             }
 
             return null;
@@ -109,16 +110,17 @@ namespace Mathema.Models.ExpressionOperations
 
         public static IExpression Pow(IExpression lhe, IExpression rhe)
         {
+            var res = lhe.Clone();
             if (rhe is INumberExpression)
             {
-                lhe.Count.Pow(rhe.Count);
-                var keys = lhe.DimensionKey.Key.Select(k => k.Key).ToArray();
+                res.Count.Pow(rhe.Count);
+                var keys = res.DimensionKey.Key.Select(k => k.Key).ToArray();
                 foreach (var k in keys)
                 {
-                    lhe.DimensionKey.Multiply(k, rhe.Count.ToNumber());
+                    res.DimensionKey.Multiply(k, rhe.Count.ToNumber());
                 }
 
-                return lhe;
+                return res;
             }
 
             return null;
@@ -126,8 +128,9 @@ namespace Mathema.Models.ExpressionOperations
 
         public static IExpression Sign(IExpression rhe)
         {
-            rhe.Count.Numerator *= -1;
-            return rhe;
+            var res = rhe.Clone();
+            res.Count.Numerator *= -1;
+            return res;
         }
     }
 }

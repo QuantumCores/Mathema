@@ -40,6 +40,8 @@ namespace Mathema.Models.Expressions
         {
             var res = new VariableExpression(string.Copy(this.Symbol), this.Val);
             res.DimensionKey = new DimensionKey();
+            res.Count.Numerator = this.Count.Numerator;
+            res.Count.Denominator = this.Count.Denominator;
             foreach (var key in this.DimensionKey.Key)
             {
                 res.DimensionKey.Add(string.Copy(key.Key), key.Value);

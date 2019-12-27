@@ -69,6 +69,7 @@ namespace FlatExpressionTests.VariableTests
 
             //Act
             var rpn = RPNParser.Parse(text);
+            var the = ExpressionBuilder.BuildFlat(rpn.Output).Execute();
             var actual = ExpressionBuilder.BuildFlat(rpn.Output).Execute().ToString();
 
             //Assert

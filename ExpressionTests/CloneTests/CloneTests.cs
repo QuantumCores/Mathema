@@ -17,7 +17,7 @@ namespace ExpressionTests.CloneTests
         public void Clone_BinaryExpression()
         {
             //Arrange
-            var expr1 = new NumberExpression(2);
+            var expr1 = new NumberExpression(-2);
             var expr2 = new NumberExpression(3);
             var actual = new BinaryExpression(expr1, OperatorTypes.Power, expr2);
 
@@ -34,6 +34,7 @@ namespace ExpressionTests.CloneTests
         {
             //Arrange
             var expression = new VariableExpression("x", 2);
+            expression.Count.Numerator = -1;
             expression.DimensionKey.Add("y", 3);
 
             //Act
@@ -65,10 +66,10 @@ namespace ExpressionTests.CloneTests
         public void Clone_NumberExpression()
         {
             //Arrange
-            var expression = new VariableExpression("x", 2);
+            var expression = new NumberExpression(-2);
 
             //Act
-            var clone = (VariableExpression)expression.Clone();
+            var clone = (NumberExpression)expression.Clone();
 
             //Assert
             Assert.AreEqual(expression.Count.ToNumber(), clone.Count.ToNumber());

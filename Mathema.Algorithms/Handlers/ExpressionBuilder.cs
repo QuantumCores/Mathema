@@ -87,12 +87,10 @@ namespace Mathema.Algorithms.Handlers
                                 var tmp = new FlatAddExpression();
                                 if (stack[stack.Count - 1] is FlatAddExpression)
                                 {
-                                    //TODO check if this operation does not execute the expressions
                                     tmp = (FlatAddExpression)stack[stack.Count - 1] + stack[stack.Count - 2];
                                 }
                                 else if (stack[stack.Count - 2] is FlatAddExpression)
                                 {
-                                    //TODO check if this operation does not execute the expressions
                                     tmp = (FlatAddExpression)stack[stack.Count - 2] + stack[stack.Count - 1];
                                 }
                                 else
@@ -110,12 +108,10 @@ namespace Mathema.Algorithms.Handlers
                                 var tmp = new FlatAddExpression();
                                 if (stack[stack.Count - 1] is FlatAddExpression)
                                 {
-                                    //TODO check if this operation does not execute the expressions
                                     tmp = (FlatAddExpression)stack[stack.Count - 1] + stack[stack.Count - 2];
                                 }
                                 else if (stack[stack.Count - 2] is FlatAddExpression)
                                 {
-                                    //TODO check if this operation does not execute the expressions
                                     tmp = (FlatAddExpression)stack[stack.Count - 2] + new UnaryExpression(OperatorTypes.Sign, stack[stack.Count - 1]);
                                 }
                                 else
@@ -133,13 +129,13 @@ namespace Mathema.Algorithms.Handlers
                                 var tmp = new FlatMultExpression();
                                 if (stack[stack.Count - 1] is FlatMultExpression)
                                 {
-                                    //TODO check if this operation does not execute the expressions
-                                    tmp = (FlatMultExpression)stack[stack.Count - 1] * stack[stack.Count - 2];
+                                    ((FlatMultExpression)stack[stack.Count - 1]).Add(stack[stack.Count - 2]);
+                                    tmp = (FlatMultExpression)stack[stack.Count - 1];
                                 }
                                 else if (stack[stack.Count - 2] is FlatMultExpression)
                                 {
-                                    //TODO check if this operation does not execute the expressions
-                                    tmp = (FlatMultExpression)stack[stack.Count - 2] * stack[stack.Count - 1];
+                                    ((FlatMultExpression)stack[stack.Count - 2]).Add(stack[stack.Count - 1]);
+                                    tmp = (FlatMultExpression)stack[stack.Count - 2];
                                 }
                                 else
                                 {
@@ -157,13 +153,11 @@ namespace Mathema.Algorithms.Handlers
                                 //TODO when both are flatmult
                                 if (stack[stack.Count - 1] is FlatMultExpression)
                                 {
-                                    //TODO check if this operation does not execute the expressions
                                     tmp.Add(stack[stack.Count - 2]);
                                     tmp.Add(new BinaryExpression(stack[stack.Count - 1], OperatorTypes.Power, new NumberExpression(-1)));
                                 }
                                 else if (stack[stack.Count - 2] is FlatMultExpression)
                                 {
-                                    //TODO check if this operation does not execute the expressions
                                     tmp = ((FlatMultExpression)stack[stack.Count - 2]);
                                     tmp.Add(new BinaryExpression(stack[stack.Count - 1], OperatorTypes.Power, new NumberExpression(-1)));
                                 }

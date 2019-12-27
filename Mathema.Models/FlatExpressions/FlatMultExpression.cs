@@ -29,20 +29,39 @@ namespace Mathema.Models.FlatExpressions
             {
                 foreach (var exp in expressions.Value)
                 {
+                    var exec = exp.Execute();
                     // Calling Vlaue simplifies expressions
-                    all.Add(exp.Execute());
+                    if (exec is FlatMultExpression mult)
+                    {
+                        foreach (var mel in mult.Expressions)
+                        {
+                            foreach (var me in mel.Value)
+                            {
+                                all.Add(me);
+                            }
+                        }
+                    }
+                    else if (exec is FlatAddExpression add)
+                    {
+
+                    }
+                    else
+                    {
+                        all.Add(exec);
+                    }
+
                 }
             }
 
-            var dims = new Dictionary<string, List<NewKeyExpressionPair>>();
+            var dims = new Dictionary<string, List<IExpression>>();
             //TODO what if flat expression? Shouldn't we merge both together?
             //TODO FlatMult DimensionKey is invalid
             foreach (var exp in all)
             {
-                var key = exp.DimensionKey.ToString();
+                var key = exp.DimensionKey.Key.ElementAt(0).Key;
                 if (!dims.ContainsKey(key))
                 {
-                    dims.Add(key, new List<NewKeyExpressionPair>() { new NewKeyExpressionPair(exp) });
+                    dims.Add(key, new List<IExpression>() { exp });
                 }
                 else
                 {
@@ -55,28 +74,34 @@ namespace Mathema.Models.FlatExpressions
                         }
                         else
                         {
-                            dims[key][0].Expression = exp.BinaryOperations[OperatorTypes.Multiply](dims[key][0].Expression, exp);
+                            dims[key][0] = exp.BinaryOperations[OperatorTypes.Multiply](dims[key][0], exp);
                         }
                     }
                     else
                     {
-                        dims[key].Add(new NewKeyExpressionPair(key, exp));
+                        dims[key].Add(exp);
                     }
                 }
             }
 
-            this.Expressions = dims.ToDictionary(k => k.Key, k => k.Value.Select(s => s.Expression).ToList());
+            //if (dims.Count > 1 && dims.Any(x => x.Value[0].DimensionKey.Key.Any(k => k.Value > 0)) && dims.ContainsKey(Dimensions.Number) && dims[Dimensions.Number][0].Count.ToNumber() == 1m)
+            //{
+            //    dims.Remove(Dimensions.Number);
+            //}
+
+
+            this.Expressions = dims;
             foreach (var item in this.Expressions)
             {
-                this.DimensionKey.Add(item.Key);
+                this.DimensionKey.Add(item.Value[0].DimensionKey);
             }
             this.Count = this.Expressions.ContainsKey(Dimensions.Number) ? this.Expressions[Dimensions.Number][0].Count : this.Count;
         }
 
-        private static void Reduce(Dictionary<string, List<NewKeyExpressionPair>> dims, IExpression exp, string key)
+        private static void Reduce(Dictionary<string, List<IExpression>> dims, IExpression exp, string key)
         {
-            var res = dims[key][0].Expression.BinaryOperations[OperatorTypes.Multiply](dims[key][0].Expression, exp);
-            if (!Dimension.DimensionKey.Compare(dims[key][0].NewKey, res.DimensionKey))
+            var res = dims[key][0].BinaryOperations[OperatorTypes.Multiply](dims[key][0], exp);
+            if (key != res.DimensionKey.Key.ElementAt(0).Key)
             {
                 dims.Remove(key);
                 var resKey = res.DimensionKey.ToString();
@@ -86,16 +111,16 @@ namespace Mathema.Models.FlatExpressions
                 }
                 else
                 {
-                    dims.Add(resKey, new List<NewKeyExpressionPair>() { new NewKeyExpressionPair(res) });
+                    dims.Add(resKey, new List<IExpression>() { res });
                 }
             }
             else
             {
                 //TODO else
-                dims[key][0].Expression = res;
-                dims[key][0].NewKey = res.DimensionKey;
+                dims[key][0] = res;
+                //dims[key][0].NewKey = res.DimensionKey;
                 //throw new NotImplementedException("Just Wondering if we ever get here");
-            }            
+            }
         }
 
         public override IExpression Execute()
@@ -122,6 +147,7 @@ namespace Mathema.Models.FlatExpressions
                     res.Add(exp.Clone());
                 }
             }
+            res.DimensionKey = this.DimensionKey.Clone();
 
             return res;
         }
@@ -230,17 +256,17 @@ namespace Mathema.Models.FlatExpressions
         public NewKeyExpressionPair(IExpression expr)
         {
             //TODO I don't think we need that property and this class at all
-            this.NewKey = expr.DimensionKey.Clone();
+            //this.NewKey = expr.DimensionKey.Clone();
             this.Expression = expr;
         }
 
         public NewKeyExpressionPair(string key, IExpression expr)
         {
-            this.NewKey = new DimensionKey(key);
+            //this.NewKey = new DimensionKey(key);
             this.Expression = expr;
         }
 
-        internal IDimensionKey NewKey { get; set; }
+        //internal IDimensionKey NewKey { get; set; }
 
         internal IExpression Expression { get; set; }
     }

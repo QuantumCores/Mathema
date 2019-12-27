@@ -44,5 +44,22 @@ namespace FlatExpressionTests.VariableTests
             Assert.IsTrue(RPNComparer.Compare(expected.Output, actual.Output));
 
         }
+
+        [Test]
+        public void Squash_To_Quadratic()
+        {
+            //Arrange
+            var text = "2 * x * x + 5 + 3 * x - 1";// "2 * x  - 1 + 3 * x * x + x + 5 - x*x";
+            var expected = RPNParser.Parse("2 * x * x + 3 * x + 4");
+
+            //Act
+            var rpn = RPNParser.Parse(text);
+            var the = ExpressionBuilder.BuildFlat(rpn.Output).Execute().ToString();
+            var actual = RPNParser.Parse(ExpressionBuilder.BuildFlat(rpn.Output).Execute().ToString());
+
+            //Assert
+            Assert.IsTrue(RPNComparer.Compare(expected.Output, actual.Output));
+
+        }
     }
 }

@@ -31,13 +31,13 @@ namespace Mathema.Models.ExpressionOperations
             UnaryOperations.Add(OperatorTypes.Sign, Sign);
         }
 
-        //TODO write operations to return new objects and doesn't change input
         public static IExpression Add(IExpression lhe, IExpression rhe)
         {
+            var res = lhe.Clone();
             if (rhe is INumberExpression)
             {
-                lhe.Count.Add(rhe.Count);
-                return new NumberExpression(lhe.Count);
+                res.Count.Add(rhe.Count);
+                return new NumberExpression(res.Count);
             }
 
             return null;
@@ -45,10 +45,11 @@ namespace Mathema.Models.ExpressionOperations
 
         public static IExpression Subtract(IExpression lhe, IExpression rhe)
         {
+            var res = lhe.Clone();
             if (rhe is INumberExpression)
             {
-                lhe.Count.Subtract(rhe.Count);
-                return lhe;
+                res.Count.Subtract(rhe.Count);
+                return res;
             }
 
             return null;
@@ -56,10 +57,11 @@ namespace Mathema.Models.ExpressionOperations
 
         public static IExpression Multiply(IExpression lhe, IExpression rhe)
         {
+            var res = lhe.Clone();
             if (rhe is INumberExpression)
             {
-                lhe.Count.Multiply(rhe.Count);
-                return lhe;
+                res.Count.Multiply(rhe.Count);
+                return res;
             }
 
             return null;
@@ -67,10 +69,11 @@ namespace Mathema.Models.ExpressionOperations
 
         public static IExpression Divide(IExpression lhe, IExpression rhe)
         {
+            var res = lhe.Clone();
             if (rhe is INumberExpression)
             {
-                lhe.Count.Divide(rhe.Count);
-                return lhe;
+                res.Count.Divide(rhe.Count);
+                return res;
             }
 
             return null;
@@ -78,10 +81,11 @@ namespace Mathema.Models.ExpressionOperations
 
         public static IExpression Pow(IExpression lhe, IExpression rhe)
         {
+            var res = lhe.Clone();
             if (rhe is INumberExpression)
             {
-                lhe.Count.Pow(rhe.Count);
-                return lhe;
+                res.Count.Pow(rhe.Count);
+                return res;
             }
 
             return null;
@@ -89,8 +93,9 @@ namespace Mathema.Models.ExpressionOperations
 
         public static IExpression Sign(IExpression rhe)
         {
-            rhe.Count.Numerator *= -1;
-            return rhe;
+            var res = rhe.Clone();
+            res.Count.Numerator *= -1;
+            return res;
         }
     }
 }
