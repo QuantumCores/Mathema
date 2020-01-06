@@ -204,7 +204,5 @@ namespace Mathema.Models.FlatExpressions
 
             return "( " + string.Join(" + ", sb) + ")";
         }
-
-
     }
 }

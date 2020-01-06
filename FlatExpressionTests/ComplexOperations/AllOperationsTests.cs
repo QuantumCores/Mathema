@@ -44,15 +44,17 @@ namespace FlatExpressionTests.ComplexOperations
         public void VariableWithFunction()
         {
             //Arrange
-            var text = "Sin(x) + x + Sin(x)";
-            var expected = "2 * Sin(x) + x";
+            var test = "Sin(x) + x + Sin(x)";
+            var expText = "2 * Sin(x) + x";
+            var expected = RPNParser.Parse(expText);
 
             //Act
-            var rpn = RPNParser.Parse(text);
-            var actual = ExpressionBuilder.BuildFlat(rpn.Output).Execute().ToString();
+            var rpn = RPNParser.Parse(test);
+            var expr = ExpressionBuilder.BuildFlat(rpn.Output).Execute();
+            var actual = RPNParser.Parse(expr.ToString());
 
             //Assert
-            Assert.AreEqual(expected, actual);
+            Assert.IsTrue(RPNComparer.Compare(expected.Output, actual.Output), $"Expected: {expText} but was {expr.ToString()}");
         }
 
         [Test]
