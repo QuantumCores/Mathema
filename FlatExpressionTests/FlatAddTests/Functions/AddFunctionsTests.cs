@@ -43,5 +43,56 @@ namespace FlatExpressionTests.FlatAddTests.Functions
             //Assert
             Assert.IsTrue(RPNComparer.Compare(expected.Output, actual.Output), $"Expected: {expText} but was {expr.ToString()}");
         }
+
+        [Test]
+        public void Add_FlatAdd_Sinx_Cos2x()
+        {
+            //Arrange
+            var test = "Sin(x) + 2 + x + Cos(2*x)";
+            var expText = "x + 2 + Sin(x) + Cos(2*x)";
+            var expected = RPNParser.Parse(expText);
+
+            //Act
+            var rpn = RPNParser.Parse(test);
+            var expr = ExpressionBuilder.BuildFlat(rpn.Output).Execute();
+            var actual = RPNParser.Parse(expr.ToString());
+
+            //Assert
+            Assert.IsTrue(RPNComparer.Compare(expected.Output, actual.Output), $"Expected: {expText} but was {expr.ToString()}");
+        }
+
+        [Test]
+        public void Add_FlatAdd_Sinx_Tan2x()
+        {
+            //Arrange
+            var test = "Sin(x) + 2 + x + Tan(2*x)";
+            var expText = "x + 2 + Sin(x) + Tan(2*x)";
+            var expected = RPNParser.Parse(expText);
+
+            //Act
+            var rpn = RPNParser.Parse(test);
+            var expr = ExpressionBuilder.BuildFlat(rpn.Output).Execute();
+            var actual = RPNParser.Parse(expr.ToString());
+
+            //Assert
+            Assert.IsTrue(RPNComparer.Compare(expected.Output, actual.Output), $"Expected: {expText} but was {expr.ToString()}");
+        }
+
+        [Test]
+        public void Add_FlatAdd_Sinx_CTan2x()
+        {
+            //Arrange
+            var test = "Sin(x) + 2 + x + Ctan(2*x)";
+            var expText = "x + 2 + Sin(x) + Ctan(2*x)";
+            var expected = RPNParser.Parse(expText);
+
+            //Act
+            var rpn = RPNParser.Parse(test);
+            var expr = ExpressionBuilder.BuildFlat(rpn.Output).Execute();
+            var actual = RPNParser.Parse(expr.ToString());
+
+            //Assert
+            Assert.IsTrue(RPNComparer.Compare(expected.Output, actual.Output), $"Expected: {expText} but was {expr.ToString()}");
+        }
     }
 }

@@ -14,6 +14,8 @@ namespace Mathema.Models.Functions
             var result = new Dictionary<string, Function>();
             result.Add(FunctionTypes.Sin.ToString().ToLower(), new Function(FunctionTypes.Sin, (val) => (decimal)Math.Sin((double)val)));
             result.Add(FunctionTypes.Cos.ToString().ToLower(), new Function(FunctionTypes.Cos, (val) => (decimal)Math.Cos((double)val)));
+            result.Add(FunctionTypes.Tan.ToString().ToLower(), new Function(FunctionTypes.Tan, (val) => (decimal)Math.Tan((double)val)));
+            result.Add(FunctionTypes.Ctan.ToString().ToLower(), new Function(FunctionTypes.Ctan, (val) => (decimal)(1 / Math.Tan((double)val))));
 
             return result;
         }
