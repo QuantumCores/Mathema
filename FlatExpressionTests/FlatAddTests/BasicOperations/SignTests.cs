@@ -4,7 +4,7 @@ using Mathema.Interfaces;
 using NUnit.Framework;
 using System;
 
-namespace FlatExpressionTests.BasicOperations
+namespace FlatExpressionTests.FlatAddTests.BasicOperations
 {
     [TestFixture]
     public class SignTests

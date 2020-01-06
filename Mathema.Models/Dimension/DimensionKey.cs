@@ -1,4 +1,5 @@
-﻿using Mathema.Interfaces;
+﻿using Mathema.Enums.DimensionKeys;
+using Mathema.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -94,6 +95,17 @@ namespace Mathema.Models.Dimension
 
         public static bool Compare(IDimensionKey a, IDimensionKey b)
         {
+            //int an = 0;
+            //int bn = 0;
+            //if (a.Key.ContainsKey(Dimensions.Number) && !b.Key.ContainsKey(Dimensions.Number))
+            //{
+            //    bn = 1;
+            //}
+            //else if (b.Key.ContainsKey(Dimensions.Number) && !a.Key.ContainsKey(Dimensions.Number))
+            //{
+            //    an = 1;
+            //}
+
             if (a.Key.Count != b.Key.Count)
             {
                 return false;

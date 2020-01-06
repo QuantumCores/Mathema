@@ -60,7 +60,7 @@ namespace Mathema.Models.ExpressionOperations
 
         public static IExpression Subtract(IExpression lhe, IExpression rhe)
         {
-            var res = lhe.Clone();
+            var res = (FlatMultExpression)(lhe.Clone());
             if (DimensionKey.Compare(res.DimensionKey, rhe.DimensionKey))
             {
                 res.Count.Subtract(rhe.Count);

@@ -21,6 +21,25 @@ namespace Mathema.Models.FlatExpressions
             this.DimensionKey = new DimensionKey(nameof(FlatAddExpression));
         }
 
+        public override void Add(IExpression expression)
+        {
+            //TODO
+            //if (expression is FlatExpression)
+            //{
+
+            //}
+            //else
+            {
+                var tmp = expression.DimensionKey.ToString();
+                if (!Expressions.ContainsKey(tmp))
+                {
+                    this.Expressions.Add(tmp, new List<IExpression>());
+                }
+                this.Expressions[tmp].Add(expression);
+                this.UpdateDimensionKey();
+            }
+        }
+
         public override void Squash()
         {
             var all = new List<IExpression>();
@@ -73,6 +92,7 @@ namespace Mathema.Models.FlatExpressions
             }
 
             this.Expressions = dims;
+            this.UpdateDimensionKey();
         }
 
         public override IExpression Execute()
@@ -92,12 +112,15 @@ namespace Mathema.Models.FlatExpressions
         {
             var res = new FlatAddExpression();
 
-            foreach (var dim in this.Expressions.Values)
+            foreach (var kv in this.Expressions)
             {
-                foreach (var exp in dim)
-                {
-                    res.Add(exp.Clone());
-                }
+                res.Expressions.Add(kv.Key, kv.Value);
+            }
+
+            res.DimensionKey.Key.Clear();
+            foreach (var kv in this.DimensionKey.Key)
+            {
+                res.DimensionKey.Key.Add(kv.Key, kv.Value);
             }
 
             return res;
@@ -138,7 +161,39 @@ namespace Mathema.Models.FlatExpressions
             return rhe;
         }
 
+        public override string AsString()
+        {
+            return this.ToString();
+        }
+
         public override string ToString()
+        {
+            var kv = this.DimensionKey.Key.ElementAt(0);
+            if (Math.Abs(kv.Value) != 1)
+            {
+                if (kv.Value > 0)
+                {
+                    return "(" + kv.Key + ")^" + kv.Value;
+                }
+                else
+                {
+                    return "(" + kv.Key + ")^(" + kv.Value + ")";
+                }
+            }
+            else
+            {
+                return kv.Key;
+            }
+        }
+
+        private void UpdateDimensionKey()
+        {
+            var newDim = new Dictionary<string, decimal>();
+            newDim.Add(this.ExpressionKey(), this.DimensionKey.Key.ElementAt(0).Value);
+            this.DimensionKey.Key = newDim;
+        }
+
+        private string ExpressionKey()
         {
             var sb = new List<string>();
             foreach (var key in this.Expressions.Keys.OrderBy(k => k))
@@ -149,5 +204,7 @@ namespace Mathema.Models.FlatExpressions
 
             return "( " + string.Join(" + ", sb) + ")";
         }
+
+
     }
 }

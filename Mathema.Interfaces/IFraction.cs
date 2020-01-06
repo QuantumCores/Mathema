@@ -22,5 +22,7 @@ namespace Mathema.Interfaces
 
         decimal ToNumber();
 
+        string AsString();
+
     }
 }

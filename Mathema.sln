@@ -21,9 +21,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionTests", "Expressi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlatExpressionTests", "FlatExpressionTests\FlatExpressionTests.csproj", "{3C2C9AB3-FBC5-47D3-A2EC-EB0F8E279725}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mathema.Enums", "Mathema.Enums\Mathema.Enums.csproj", "{446FB13E-0EEA-461A-8B68-AE1D5A6D3B15}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mathema.Enums", "Mathema.Enums\Mathema.Enums.csproj", "{446FB13E-0EEA-461A-8B68-AE1D5A6D3B15}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelsTests", "Models.Tests\ModelsTests.csproj", "{EFC521A1-3ED2-4CDA-A813-8B0D5061D232}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelsTests", "Models.Tests\ModelsTests.csproj", "{EFC521A1-3ED2-4CDA-A813-8B0D5061D232}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9F05B2ED-6AC2-4A07-B7BE-1FEE6B845159}"
+	ProjectSection(SolutionItems) = preProject
+		DevelopersDocumentation.html = DevelopersDocumentation.html
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

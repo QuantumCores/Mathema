@@ -28,26 +28,11 @@ namespace Mathema.Models.FlatExpressions
 
         public abstract void Squash();
 
-        public void Add(IExpression expression)
-        {
-            //TODO
-            //if (expression is FlatExpression)
-            //{
-
-            //}
-            //else
-            {
-                var tmp = expression.DimensionKey.ToString();
-                if (!Expressions.ContainsKey(tmp))
-                {
-                    this.Expressions.Add(tmp, new List<IExpression>());
-                }
-                this.Expressions[tmp].Add(expression);
-            }
-            
-        }
+        public abstract void Add(IExpression expression);        
 
         public abstract IExpression Clone();
+
+        public abstract string AsString();
 
         public static bool Compare(FlatExpression lhe, FlatExpression rhe)
         {

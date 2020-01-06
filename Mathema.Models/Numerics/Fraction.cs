@@ -90,6 +90,18 @@ namespace Mathema.Models.Numerics
             return this.Numerator / this.Denominator;
         }
 
+        public string AsString()
+        {
+            if (this.Denominator == 1)
+            {
+                return this.Numerator.ToString();
+            }
+            else
+            {
+                return (this.Numerator / this.Denominator).ToString();
+            }
+        }
+
         /// <summary>
         /// Greatest Common Factor
         /// </summary>

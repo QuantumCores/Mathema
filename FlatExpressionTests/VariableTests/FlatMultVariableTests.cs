@@ -18,7 +18,7 @@ namespace FlatExpressionTests.VariableTests
         public void CreatesFlatExpression()
         {
             //Arrange
-            var text = "2 * x";
+            var text = "2 * x * y";
 
             //Act
             var rpn = RPNParser.Parse(text);
@@ -32,7 +32,7 @@ namespace FlatExpressionTests.VariableTests
         public void RecognizesVariable()
         {
             //Arrange
-            var text = "2 * x";
+            var text = "2 * x * y";
             var expected = new FlatMultExpression();
             expected.Add(new NumberExpression(2));
             expected.Add(new VariableExpression("x", 1m));
@@ -42,38 +42,44 @@ namespace FlatExpressionTests.VariableTests
             var actual = (FlatMultExpression)(ExpressionBuilder.BuildFlat(rpn.Output).Execute());
 
             //Assert
-            Assert.IsTrue(actual.Expressions.ContainsKey(Dimensions.Number));
+            Assert.IsTrue(actual.Count.ToNumber() == 2);
             Assert.IsTrue(actual.Expressions.ContainsKey("x"));
+            Assert.IsTrue(actual.Expressions.ContainsKey("y"));
         }
 
         [Test]
         public void Squash_Numbers()
         {
             //Arrange
-            var text = "2 * x  *3";
-            var expected = "( 6 * x)";
+            var test = "2 * x  *3";
+            var expText = "6 * x";
+            var expected = RPNParser.Parse(expText);
 
             //Act
-            var rpn = RPNParser.Parse(text);
-            var actual = ExpressionBuilder.BuildFlat(rpn.Output).Execute().ToString();
+            var rpn = RPNParser.Parse(test);
+            var expr = ExpressionBuilder.BuildFlat(rpn.Output).Execute();
+            var actual = RPNParser.Parse(expr.ToString());
 
             //Assert
-            Assert.AreEqual(expected, actual);
+            Assert.IsTrue(RPNComparer.Compare(expected.Output, actual.Output), $"Expected: {expText} but was {expr.ToString()}");
         }
 
         [Test]
         public void Squash_OneVariable()
         {
+
             //Arrange
-            var text = "2 * x  * 3 * x";
-            var expected = "( 6 * x * x)";
+            var test = "2 * x  * 3 * x";
+            var expText = "( 6 * x * x)";
+            var expected = RPNParser.Parse(expText);
 
             //Act
-            var rpn = RPNParser.Parse(text);
-            var actual = ExpressionBuilder.BuildFlat(rpn.Output).Execute().ToString();
+            var rpn = RPNParser.Parse(test);
+            var expr = ExpressionBuilder.BuildFlat(rpn.Output).Execute();
+            var actual = RPNParser.Parse(expr.ToString());
 
             //Assert
-            Assert.AreEqual(expected, actual);
+            Assert.IsTrue(RPNComparer.Compare(expected.Output, actual.Output), $"Expected: {expText} but was {expr.ToString()}");
         }
 
         [Test]
@@ -81,15 +87,16 @@ namespace FlatExpressionTests.VariableTests
         {
             //Arrange
             var text = "y * 2 * x  * 3 * x * y * y";
-            var expectedText = "( 6 * x * x * y * y * y)";
+            var expText = "( 6 * x * x * y * y * y)";
+            var expected = RPNParser.Parse(expText);
 
             //Act
             var rpn = RPNParser.Parse(text);
-            var actual = RPNParser.Parse(ExpressionBuilder.BuildFlat(rpn.Output).Execute().ToString());
-            var expected = RPNParser.Parse(expectedText);
+            var expr = ExpressionBuilder.BuildFlat(rpn.Output).Execute();
+            var actual = RPNParser.Parse(expr.ToString());
 
             //Assert
-            Assert.IsTrue(RPNComparer.Compare(expected.Output, actual.Output));
+            Assert.IsTrue(RPNComparer.Compare(expected.Output, actual.Output), $"Expected: {expText} but was {expr.ToString()}");
         }
 
 

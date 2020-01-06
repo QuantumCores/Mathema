@@ -1,18 +1,36 @@
-﻿using Mathema.Algorithms.Handlers;
+using Mathema.Algorithms.Handlers;
+using Mathema.Algorithms.Helpers;
 using Mathema.Algorithms.Parsers;
 using Mathema.Interfaces;
 using NUnit.Framework;
 
-namespace FlatExpressionTests.BasicOperations
+
+namespace FlatExpressionTests.FlatAddTests.BasicOperations
 {
     [TestFixture]
-    public class PowerTests
+    public class AddTests
     {
         [Test]
-        public void PowIntegers()
+        public void Add_FlatAdd_Variable()
         {
             //Arrange
-            var text = "2^2";
+            var text = "2 + x + x^2 + x";
+            var expected = RPNParser.Parse("x*x + 2*x + 2");
+
+            //Act
+            var rpn = RPNParser.Parse(text);
+            var expr = ExpressionBuilder.BuildFlat(rpn.Output).Execute();
+            var actual = RPNParser.Parse(expr.ToString());
+
+            //Assert
+            Assert.IsTrue(RPNComparer.Compare(expected.Output, actual.Output));
+        }
+
+        [Test]
+        public void AddIntegers()
+        {
+            //Arrange
+            var text = "2+2";
             var expected = 4;
 
             //Act
@@ -24,11 +42,11 @@ namespace FlatExpressionTests.BasicOperations
         }
 
         [Test]
-        public void PowDoubles()
+        public void AddDoubles()
         {
             //Arrange
-            var text = 2.0.ToString() + "^" + 3.0.ToString();
-            var expected = 8;
+            var text = 2.2.ToString() + "+" + 4.3.ToString();
+            var expected = 6.5;
 
             //Act
             var rpn = RPNParser.Parse(text);
@@ -39,11 +57,11 @@ namespace FlatExpressionTests.BasicOperations
         }
 
         [Test]
-        public void PowDecimals()
+        public void AddDecimals()
         {
             //Arrange
-            var text = 2m.ToString() + "^" + 4m.ToString();
-            var expected = 16;
+            var text = 2.2m.ToString() + "+" + 4.3m.ToString();
+            var expected = 6.5;
 
             //Act
             var rpn = RPNParser.Parse(text);

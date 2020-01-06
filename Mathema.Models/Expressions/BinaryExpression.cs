@@ -52,6 +52,11 @@ namespace Mathema.Models.Expressions
             return new BinaryExpression(this.lhe.Clone(), this.op, this.rhe.Clone());
         }
 
+        public string AsString()
+        {
+            return this.ToString();
+        }
+
         public override string ToString()
         {
             return " (" + this.lhe.ToString() + Operators.Operators.Get(op).Symbol + this.rhe.ToString() + ")";

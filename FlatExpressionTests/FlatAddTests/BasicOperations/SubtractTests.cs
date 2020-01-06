@@ -3,17 +3,17 @@ using Mathema.Algorithms.Parsers;
 using Mathema.Interfaces;
 using NUnit.Framework;
 
-namespace FlatExpressionTests.BasicOperations
+namespace FlatExpressionTests.FlatAddTests.BasicOperations
 {
     [TestFixture]
-    public class MultiplyTests
+    public class SubtractTests
     {
         [Test]
-        public void MultiplyIntegers()
+        public void SubtractIntegers()
         {
             //Arrange
-            var text = 5.ToString() + "*" + 2.ToString();
-            var expected = 10;
+            var text = "4-6";
+            var expected = -2m;
 
             //Act
             var rpn = RPNParser.Parse(text);
@@ -24,11 +24,11 @@ namespace FlatExpressionTests.BasicOperations
         }
 
         [Test]
-        public void MultiplyDoubles()
+        public void SubtractDoubles()
         {
             //Arrange
-            var text = 4.0.ToString() + "*" + 2.5.ToString();
-            var expected = 10;
+            var text = 5.2.ToString() + "-" + 1.3.ToString();
+            var expected = 3.9m;
 
             //Act
             var rpn = RPNParser.Parse(text);
@@ -39,11 +39,11 @@ namespace FlatExpressionTests.BasicOperations
         }
 
         [Test]
-        public void MultiplyDecimals()
+        public void SubtractDecimals()
         {
             //Arrange
-            var text = 4.0m.ToString() + "*" + 2.5m.ToString();
-            var expected = 10;
+            var text = 5.2m.ToString() + "-" + 1.3m.ToString();
+            var expected = 3.9m;
 
             //Act
             var rpn = RPNParser.Parse(text);

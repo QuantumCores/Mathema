@@ -1,40 +1,37 @@
 ﻿using Mathema.Algorithms.Handlers;
 using Mathema.Algorithms.Helpers;
 using Mathema.Algorithms.Parsers;
+using Mathema.Interfaces;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace FlatExpressionTests.VariableTests
+namespace FlatExpressionTests.FlatAddTests.BasicOperations
 {
     [TestFixture]
-    public class FlatAddAndMultTests
+    public class PowerTests
     {
         [Test]
-        public void Add_TheSame_FlatMultiply()
+        public void Pow_0()
         {
             //Arrange
-            var text = "y * 2 * x  + 3 * x * y";
-            var expText = " 5 * x * y";
+            var text = "(2+x)^0";
+            var expText = "1";
             var expected = RPNParser.Parse(expText);
 
             //Act
             var rpn = RPNParser.Parse(text);
             var expr = ExpressionBuilder.BuildFlat(rpn.Output).Execute();
-            var actual = RPNParser.Parse(expr.ToString());
+            var actual = RPNParser.Parse(ExpressionBuilder.BuildFlat(rpn.Output).Execute().ToString());
 
             //Assert
             Assert.IsTrue(RPNComparer.Compare(expected.Output, actual.Output), $"Expected: {expText} but was {expr.ToString()}");
-
         }
 
         [Test]
-        public void Add_Different_FlatMultiply()
+        public void Pow_1()
         {
             //Arrange
-            var text = "y * 2 * x  + 3 * x * y + x + y";
-            var expText = " 5 * x * y + x + y";
+            var text = "(2+x)^1";
+            var expText = "2+x";
             var expected = RPNParser.Parse(expText);
 
             //Act
@@ -44,15 +41,14 @@ namespace FlatExpressionTests.VariableTests
 
             //Assert
             Assert.IsTrue(RPNComparer.Compare(expected.Output, actual.Output), $"Expected: {expText} but was {expr.ToString()}");
-
         }
 
         [Test]
-        public void Squash_To_Quadratic()
+        public void Pow_2()
         {
             //Arrange
-            var text = "2 * x * x + 5 + 3 * x - 1";// "2 * x  - 1 + 3 * x * x + x + 5 - x*x";
-            var expText = "2 * x * x + 3 * x + 4";
+            var text = "(2+x)^2";
+            var expText = "(2+x)^2";
             var expected = RPNParser.Parse(expText);
 
             //Act
@@ -62,7 +58,6 @@ namespace FlatExpressionTests.VariableTests
 
             //Assert
             Assert.IsTrue(RPNComparer.Compare(expected.Output, actual.Output), $"Expected: {expText} but was {expr.ToString()}");
-
         }
     }
 }

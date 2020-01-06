@@ -11,5 +11,7 @@ namespace Mathema.Interfaces
         IExpression Execute();
 
         IExpression Clone();
+
+        string AsString();
     }
 }

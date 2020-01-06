@@ -22,6 +22,35 @@ namespace Mathema.Models.FlatExpressions
             //this.Expressions.Add(Dimensions.Number, new List<IExpression>() { new NumberExpression(1) });
         }
 
+        public override void Add(IExpression expression)
+        {
+            this.Count.Multiply(expression.Count);
+
+            if (expression is FlatAddExpression)
+            {
+                var key = expression.ToString();
+                if (!this.Expressions.ContainsKey(key))
+                {
+                    this.Expressions.Add(key, new List<IExpression>());
+                }
+
+                this.Expressions[key].Add(expression);
+            }
+            else if (expression is NumberExpression)
+            {
+                //do not add
+            }
+            else
+            {
+                var key = expression.DimensionKey.ToString();
+                if (!Expressions.ContainsKey(key))
+                {
+                    this.Expressions.Add(key, new List<IExpression>());
+                }
+                this.Expressions[key].Add(expression);
+            }
+        }
+
         public override void Squash()
         {
             var all = new List<IExpression>();
@@ -30,20 +59,21 @@ namespace Mathema.Models.FlatExpressions
                 foreach (var exp in expressions.Value)
                 {
                     var exec = exp.Execute();
-                    // Calling Vlaue simplifies expressions
+                    // Calling Value simplifies expressions
                     if (exec is FlatMultExpression mult)
                     {
                         foreach (var mel in mult.Expressions)
                         {
                             foreach (var me in mel.Value)
                             {
-                                all.Add(me);
+                                var mex = me.Execute();
+                                all.Add(mex);
                             }
                         }
                     }
                     else if (exec is FlatAddExpression add)
                     {
-
+                        all.Add(exec);
                     }
                     else
                     {
@@ -59,23 +89,25 @@ namespace Mathema.Models.FlatExpressions
             foreach (var exp in all)
             {
                 var key = exp.DimensionKey.Key.ElementAt(0).Key;
+                if (key == Dimensions.Number)
+                {
+                    this.Count.Multiply(exp.Count);
+                    continue;
+                }
+
                 if (!dims.ContainsKey(key))
                 {
+                    //this.Count.Multiply(exp.Count);
                     dims.Add(key, new List<IExpression>() { exp });
                 }
                 else
                 {
                     if (key != nameof(BinaryExpression) && key != nameof(UnaryExpression) && key != nameof(FunctionExpression))
                     {
-                        //dims[key][0].Expression.Count.Multiply(exp.Count);
-                        if (key != Dimensions.Number)
-                        {
-                            Reduce(dims, exp, key);
-                        }
-                        else
-                        {
-                            dims[key][0] = exp.BinaryOperations[OperatorTypes.Multiply](dims[key][0], exp);
-                        }
+                        this.Count.Multiply(exp.Count);
+                        exp.Count = new Fraction();
+
+                        Reduce(dims, exp, key);
                     }
                     else
                     {
@@ -84,18 +116,11 @@ namespace Mathema.Models.FlatExpressions
                 }
             }
 
-            //if (dims.Count > 1 && dims.Any(x => x.Value[0].DimensionKey.Key.Any(k => k.Value > 0)) && dims.ContainsKey(Dimensions.Number) && dims[Dimensions.Number][0].Count.ToNumber() == 1m)
-            //{
-            //    dims.Remove(Dimensions.Number);
-            //}
-
-
             this.Expressions = dims;
             foreach (var item in this.Expressions)
             {
                 this.DimensionKey.Add(item.Value[0].DimensionKey);
             }
-            this.Count = this.Expressions.ContainsKey(Dimensions.Number) ? this.Expressions[Dimensions.Number][0].Count : this.Count;
         }
 
         private static void Reduce(Dictionary<string, List<IExpression>> dims, IExpression exp, string key)
@@ -126,9 +151,15 @@ namespace Mathema.Models.FlatExpressions
         public override IExpression Execute()
         {
             this.Squash();
-            if (this.Expressions.Count == 1 && this.Expressions.ContainsKey(Dimensions.Number))
+            if (this.Expressions.Count == 0)
             {
-                return this.Expressions[Dimensions.Number][0];
+                return new NumberExpression(this.Count);
+            }
+            else if (this.Expressions.Count == 1)
+            {
+                var res = this.Expressions.ElementAt(0).Value[0];
+                res.Count.Multiply(this.Count);
+                return res;
             }
             else
             {
@@ -215,36 +246,51 @@ namespace Mathema.Models.FlatExpressions
             return rhe;
         }
 
+        public override string AsString()
+        {
+            return this.ToString();
+        }
+
         public override string ToString()
         {
             var sb = new List<string>();
-            IExpression prev = null;
-            if (this.Expressions.ContainsKey(Dimensions.Number))
+            var addOne = true;
+            if (this.Count.ToNumber() != 1)
             {
-                sb.Add(this.Expressions[Dimensions.Number][0].ToString());
-                prev = this.Expressions[Dimensions.Number][0];
+                sb.Add(this.Count.AsString());
+                addOne = false;
             }
 
             //TODO order by expr.ToString
             foreach (var kv in this.Expressions)
             {
-                if (kv.Key != Dimensions.Number)
+                var expr = this.Expressions[kv.Key][0];
+                if (sb.Count > 0)
                 {
-                    var expr = this.Expressions[kv.Key][0];
-                    if (prev != null)
+                    if (expr.DimensionKey.Key.ElementAt(0).Value < 0)
                     {
-                        if (expr.DimensionKey.Key.ElementAt(0).Value < 0)
-                        {
-                            sb.Add(" / ");
-                        }
-                        else
-                        {
-                            sb.Add(" * ");
-                        }
+                        sb.Add(" / ");
                     }
-                    sb.Add(expr.ToString());
-                    prev = expr;
+                    else
+                    {
+                        sb.Add(" * ");
+                        addOne = false;
+                    }
                 }
+
+                if (kv.Value.Count > 1)
+                {
+                    sb.Add(string.Join("*", kv.Value));
+                }
+                else
+                {
+                    sb.Add(expr.ToString());
+                }
+            }
+
+            if (addOne)
+            {
+                sb.Insert(0, "1 / ");
             }
 
             return "( " + string.Join("", sb) + ")";

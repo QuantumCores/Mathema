@@ -55,6 +55,11 @@ namespace Mathema.Models.Expressions
             return Dimension.DimensionKey.Compare(this.DimensionKey, variable.DimensionKey);
         }
 
+        public string AsString()
+        {
+            return this.ToString();
+        }
+
         public override string ToString()
         {
             var num = this.Count.ToNumber();

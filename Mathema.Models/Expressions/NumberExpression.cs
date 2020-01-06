@@ -52,9 +52,14 @@ namespace Mathema.Models.Expressions
             return new NumberExpression(this.Count.ToNumber());
         }
 
+        public string AsString()
+        {
+            return this.ToString();
+        }
+
         public override string ToString()
         {
-            return this.Count.ToNumber().ToString();
+            return this.Count.AsString();
         }
 
         //public static INumberExpression operator +(NumberExpression lhn, INumberExpression rhn)

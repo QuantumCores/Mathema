@@ -47,6 +47,11 @@ namespace Mathema.Models.Expressions
             return new FunctionExpression(this.type, this.argument.Clone());
         }
 
+        public string AsString()
+        {
+            return this.ToString();
+        }
+
         public override string ToString()
         {
             return " " + type.ToString() + "(" + argument.ToString() + ")";

@@ -2,6 +2,7 @@
 using Mathema.Enums.Operators;
 using Mathema.Interfaces;
 using Mathema.Models.Dimension;
+using Mathema.Models.Expressions;
 using Mathema.Models.FlatExpressions;
 using System;
 using System.Collections.Generic;
@@ -99,6 +100,40 @@ namespace Mathema.Models.ExpressionOperations
 
                 return res;
             }
+            else if (rhe is FlatAddExpression rc)
+            {
+                var ret = new FlatAddExpression();
+                if (lc.DimensionKey.Key.ElementAt(0).Key == rc.DimensionKey.Key.ElementAt(0).Key)
+                {
+                    lc.DimensionKey.Key[lc.DimensionKey.Key.ElementAt(0).Key] += rc.DimensionKey.Key.ElementAt(0).Value;
+
+                    if (lc.DimensionKey.Key.ElementAt(0).Value == 0)
+                    {
+                        return new NumberExpression(1);
+                    }
+
+                    return lc;
+                }
+                else
+                {
+                    foreach (var expl in lc.Expressions)
+                    {
+                        foreach (var li in expl.Value)
+                        {
+                            foreach (var expr in rc.Expressions)
+                            {
+                                foreach (var ri in expr.Value)
+                                {
+                                    var tmp = li.BinaryOperations[OperatorTypes.Multiply](li, ri);
+                                    ret.Add(tmp);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                return ret;
+            }
 
             return null;
         }
@@ -123,36 +158,54 @@ namespace Mathema.Models.ExpressionOperations
 
         public static IExpression Pow(IExpression lhe, IExpression rhe)
         {
-            var res = lhe.Clone();
-            var lc = (IFlatExpression)res;
+            var lc = (IFlatExpression)lhe.Clone();
             var allA = lc.Expressions.SelectMany(kv => kv.Value).ToList();
             var allB = allA.Select(e => e.Clone()).ToList();
             var result = new List<IExpression>();
-            var p = rhe.Count.ToNumber();
 
-            if (rhe is INumberExpression && p % 1 == 0)
+            if (rhe is INumberExpression)
             {
-                for (int i = 1; i < (int)p; i++)
+                var p = rhe.Count.ToNumber();
+                if (p % 1 == 0)
                 {
-                    foreach (var expA in allA)
+                    if (p == 0)
                     {
-                        foreach (var expB in allB)
-                        {
-                            result.Add(expA.BinaryOperations[OperatorTypes.Multiply](expA, expB));
-                        }
+                        return new NumberExpression(1);
                     }
+                    //else if (p == 1)
+                    //{
+                    //    return lc;
+                    //}
+                    //else if (p > 1)
+                    //{
+                    //    for (int i = 1; i < (int)p; i++)
+                    //    {
+                    //        foreach (var expA in allA)
+                    //        {
+                    //            foreach (var expB in allB)
+                    //            {
+                    //                result.Add(expA.BinaryOperations[OperatorTypes.Multiply](expA, expB));
+                    //            }
+                    //        }
 
-                    allB = result.ToList();
-                    result.Clear();
+                    //        allB = result.ToList();
+                    //        result.Clear();
+                    //    }
+
+                    //    var flat = new FlatAddExpression();
+                    //    foreach (var expB in allB)
+                    //    {
+                    //        flat.Add(expB);
+                    //    }
+
+                    //    return flat.Execute();
+                    //}
+                    else
+                    {
+                        lc.DimensionKey.Key[lc.DimensionKey.Key.ElementAt(0).Key] *= p;
+                        return lc;
+                    }
                 }
-
-                var flat = new FlatAddExpression();
-                foreach (var expB in allB)
-                {
-                    flat.Add(expB);
-                }
-
-                return flat.Execute();
             }
 
             return null;

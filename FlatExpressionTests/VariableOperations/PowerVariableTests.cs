@@ -77,15 +77,17 @@ namespace FlatExpressionTests.VariableOperations
         {
             //Arrange
             var text = "(x+y)^2";
-            var expected = RPNParser.Parse("x*x + 2*x*y + y*y");
+            var expText = "x*x + 2*x*y + y*y";
+            var expected = RPNParser.Parse(expText);
 
             //Act
             var rpn = RPNParser.Parse(text);
-            var the = ExpressionBuilder.BuildFlat(rpn.Output).Execute().ToString();
-            var actual = RPNParser.Parse(ExpressionBuilder.BuildFlat(rpn.Output).Execute().ToString());
+            var expr = ExpressionBuilder.BuildFlat(rpn.Output).Execute();
+            var actual = RPNParser.Parse(expr.ToString());
 
             //Assert
-            Assert.IsTrue(RPNComparer.Compare(expected.Output, actual.Output));
+            Assert.IsTrue(RPNComparer.Compare(expected.Output, actual.Output), $"Expected: {expText} but was {expr.ToString()}");
+
         }
 
         [Test]

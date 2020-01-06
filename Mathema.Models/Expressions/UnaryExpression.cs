@@ -39,6 +39,11 @@ namespace Mathema.Models.Expressions
             return new UnaryExpression(this.op, this.rhe.Clone());
         }
 
+        public string AsString()
+        {
+            return this.ToString();
+        }
+
         public override string ToString()
         {
             if (op == OperatorTypes.Sign)
