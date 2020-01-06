@@ -34,13 +34,20 @@ namespace Mathema.Models.Expressions
 
         public IExpression Execute()
         {
-            var arg = this.argument.Execute();
-            if (arg is INumberExpression)
+            var res = this.argument.Execute();
+
+            if (res == null)
             {
-                return new NumberExpression(Functions.Functions.Get(type).Projection(arg.Count.ToNumber()));
+                return this;
+            }
+
+            if (res is INumberExpression)
+            {
+                return new NumberExpression(Functions.Functions.Get(type).Projection(res.Count.ToNumber()));
             }
             else
             {
+                this.argument = res;
                 return this;
             }
         }
@@ -60,6 +67,19 @@ namespace Mathema.Models.Expressions
             if (this.Count.ToNumber() != 1)
             {
                 return this.Count.AsString() + "*" + this.ExpressionKey();
+            }
+
+            var kv = this.DimensionKey.Key.ElementAt(0);
+            if (Math.Abs(kv.Value) != 1)
+            {
+                if (kv.Value > 0)
+                {
+                    return "(" + kv.Key + ")^" + kv.Value;
+                }
+                else
+                {
+                    return "(" + kv.Key + ")^(" + kv.Value + ")";
+                }
             }
 
             return this.ExpressionKey();

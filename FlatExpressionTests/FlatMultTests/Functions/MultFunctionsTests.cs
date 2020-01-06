@@ -5,17 +5,18 @@ using Mathema.Interfaces;
 using NUnit.Framework;
 
 
-namespace FlatExpressionTests.FlatAddTests.BasicOperations
+namespace FlatExpressionTests.FlatMultTests.Functions
 {
     [TestFixture]
-    public class AddTests
+    public class MultFunctionsTests
     {
         [Test]
-        public void Add_FlatAdd_Variable()
+        public void Multiply_Sin_Sin_x()
         {
             //Arrange
-            var text = "2 + x + x^2 + x";
-            var expected = RPNParser.Parse("x*x + 2*x + 2");
+            var text = "Sin(x)*Sin(x)*x";
+            var expText = "x*(Sin(x))^2";
+            var expected = RPNParser.Parse(expText);
 
             //Act
             var rpn = RPNParser.Parse(text);
@@ -23,15 +24,15 @@ namespace FlatExpressionTests.FlatAddTests.BasicOperations
             var actual = RPNParser.Parse(expr.ToString());
 
             //Assert
-            Assert.IsTrue(RPNComparer.Compare(expected.Output, actual.Output));
+            Assert.IsTrue(RPNComparer.Compare(expected.Output, actual.Output), $"Expected: {expText} but was {expr.ToString()}");
         }
 
         [Test]
-        public void Add_FlatAdd_FlatAdd_TheSame()
+        public void Multiply_FlatAdd_Sinx_Sin2x()
         {
             //Arrange
-            var test = "2 + x + 2 * (x + 2)";
-            var expText = " 3 * (2+x)";
+            var test = "Sin(x) * Sin(2*x)";
+            var expText = " Sin(x) * Sin(2*x)";
             var expected = RPNParser.Parse(expText);
 
             //Act

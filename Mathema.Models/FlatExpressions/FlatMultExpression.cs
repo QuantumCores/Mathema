@@ -79,7 +79,6 @@ namespace Mathema.Models.FlatExpressions
                     {
                         all.Add(exec);
                     }
-
                 }
             }
 
