@@ -35,7 +35,11 @@ namespace Mathema.Models.Expressions
             var arg1 = this.lhe.Execute();
             var arg2 = this.rhe.Execute();
 
-            //var res = Operations.BinaryOperations[op](arg1, arg2);
+            if(arg1 != null && arg2 != null)
+            {
+                this.lhe = arg1;
+                this.rhe = arg2;
+            }
 
             var res = arg1.BinaryOperations[op](arg1, arg2);
 

@@ -34,20 +34,20 @@ namespace Mathema.Models.Expressions
 
         public IExpression Execute()
         {
-            var res = this.argument.Execute();
+            var arg = this.argument.Execute();
 
-            if (res == null)
+            if (arg == null)
             {
                 return this;
             }
 
-            if (res is INumberExpression)
+            if (arg is INumberExpression)
             {
-                return new NumberExpression(Functions.Functions.Get(type).Projection(res.Count.ToNumber()));
+                return new NumberExpression(Functions.Functions.Get(type).Projection(arg.Count.ToNumber()));
             }
             else
             {
-                this.argument = res;
+                this.argument = arg;
                 return this;
             }
         }

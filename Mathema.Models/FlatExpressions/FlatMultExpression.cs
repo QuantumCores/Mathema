@@ -158,6 +158,8 @@ namespace Mathema.Models.FlatExpressions
             {
                 var res = this.Expressions.ElementAt(0).Value[0];
                 res.Count.Multiply(this.Count);
+                //Reset counter when extracting
+                this.Count = new Fraction();
                 return res;
             }
             else

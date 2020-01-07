@@ -31,7 +31,20 @@ namespace Mathema.Models.Expressions
         public IExpression Execute()
         {
             var arg = this.rhe.Execute();
-            return arg.UnaryOperations[op](arg);
+
+            if (arg != null)
+            {
+                this.rhe = arg;
+            }
+
+            var res = arg.UnaryOperations[op](arg);
+
+            if (res == null)
+            {
+                return this;
+            }
+
+            return res;
         }
 
         public IExpression Clone()
