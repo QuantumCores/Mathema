@@ -1,4 +1,5 @@
-﻿using Mathema.Interfaces;
+﻿using Mathema.Enums.Equations;
+using Mathema.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,6 +13,8 @@ namespace Mathema.Models.Equations
         public IExpression Left { get; }
 
         public IExpression Right { get; }
+
+        public EquationTypes Type { get; set; }
 
         public Equation(string equation, IExpression left, IExpression right)
         {

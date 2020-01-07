@@ -9,14 +9,14 @@ using System.Text;
 namespace FlatExpressionTests.FlatMultTests.BasicOperations
 {
     [TestFixture]
-    public class AddTests
+    public class MultiplyTests
     {
         [Test]
-        public void Add_FlatMult_Variable()
+        public void Multiply_FlatMult_FlatThatIsZero()
         {
             //Arrange
-            var text = "2*x + x";
-            var expText = "3*x";
+            var text = "x*(x -x)";
+            var expText = "0";
             var expected = RPNParser.Parse(expText);
 
             //Act
@@ -27,21 +27,5 @@ namespace FlatExpressionTests.FlatMultTests.BasicOperations
             //Assert
             Assert.IsTrue(RPNComparer.Compare(expected.Output, actual.Output), $"Expected: {expText} but was {expr.ToString()}");
         }
-
-        [Test]
-        public void Add_FlatMult_Variable_Number()
-        {
-            //Arrange
-            var text = "2*x +2 + x";
-            var expected = RPNParser.Parse("3*x + 2");
-
-            //Act
-            var rpn = RPNParser.Parse(text);
-            var expr = ExpressionBuilder.BuildFlat(rpn.Output).Execute();
-            var actual = RPNParser.Parse(expr.ToString());
-
-            //Assert
-            Assert.IsTrue(RPNComparer.Compare(expected.Output, actual.Output));
-        }        
     }
 }

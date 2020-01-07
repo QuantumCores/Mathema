@@ -1,7 +1,10 @@
-﻿using Mathema.Interfaces;
+﻿using Mathema.Enums.DimensionKeys;
+using Mathema.Enums.Equations;
+using Mathema.Interfaces;
 using Mathema.Models.Equations;
 using Mathema.Models.FlatExpressions;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Mathema.Classifier
@@ -15,27 +18,74 @@ namespace Mathema.Classifier
             this.equation = equation;
         }
 
-        public void Classify()
+        public EquationTypes Classify()
         {
-            this.Classify(this.equation.Left, this.equation.Right);
+            return this.Classify(this.equation.Left);
         }
 
-        public static void Classify(Equation equation)
+        public static Equation Classify(Equation equation)
         {
             var ec = new EquationClassifier(equation);
-            ec.Classify();
+            ec.equation.Type = ec.Classify();
+
+            return ec.equation;
         }
 
-        private void Classify(IExpression left, IExpression right)
+        private EquationTypes Classify(IExpression expr)
         {
-            if (left is FlatMultExpression e)
+            if (expr is FlatMultExpression fm)
             {
-                var ord = e.Expressions.OrderBy(x => x.Value);
+                var ord = fm.Expressions.SelectMany(x => x.Value).OrderBy(x => x.DimensionKey.Key.ElementAt(0).Value);
             }
-            else if (left is FlatAddExpression e)
+            else if (expr is FlatAddExpression fa)
             {
-                e.Expressions.OrderBy()
+                var all = fa.Expressions.SelectMany(x => x.Value).ToList();
+                var keys = all.Select(x => x.DimensionKey.Key.ElementAt(0));
+
+                var result = new Dictionary<string, List<decimal>>();
+                foreach (var k in keys)
+                {
+                    if (k.Key != Dimensions.Number)
+                    {
+                        if (!result.ContainsKey(k.Key))
+                        {
+                            result.Add(k.Key, new List<decimal>());
+                        }
+
+                        result[k.Key].Add(k.Value);
+                    }
+                }
+
+                if (result.Count == 1)
+                {
+                    var dim = result.ElementAt(0);
+                    var ord = dim.Value.OrderBy(x => x).ToArray();
+                    if (ord.Length == 1)
+                    {
+                        if (ord[0] == 1)
+                        {
+                            return EquationTypes.Linear;
+                        }
+                        else if (ord[0] == 2)
+                        {
+                            return EquationTypes.Quadratic;
+                        }
+                    }
+                    else if (ord.Length == 2)
+                    {
+                        if (ord[1] / ord[0] == 2)
+                        {
+                            return EquationTypes.Quadratic;
+                        }
+                    }
+                }
+                else
+                {
+
+                }
             }
+
+            return EquationTypes.Undefined;
         }
     }
 }

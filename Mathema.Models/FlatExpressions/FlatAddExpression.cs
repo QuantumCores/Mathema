@@ -73,20 +73,32 @@ namespace Mathema.Models.FlatExpressions
             var dims = new Dictionary<string, List<IExpression>>();
             foreach (var exp in all)
             {
-                var key = exp.DimensionKey.ToString();
-                if (!dims.ContainsKey(key))
+                if (exp.Count.Numerator != 0)
                 {
-                    dims.Add(key, new List<IExpression>() { exp });
-                }
-                else
-                {
-                    if (key != nameof(BinaryExpression) && key != nameof(UnaryExpression) && key != nameof(FunctionExpression))
+                    var key = exp.DimensionKey.ToString();
+                    if (!dims.ContainsKey(key))
                     {
-                        dims[key][0] = dims[key][0].BinaryOperations[OperatorTypes.Add](dims[key][0], exp);
+                        dims.Add(key, new List<IExpression>() { exp });
                     }
                     else
                     {
-                        dims[key].Add(exp);
+                        if (key != nameof(BinaryExpression) && key != nameof(UnaryExpression) && key != nameof(FunctionExpression))
+                        {
+                            var res = dims[key][0].BinaryOperations[OperatorTypes.Add](dims[key][0], exp);
+                            if (res.Count.Numerator == 0)
+                            {
+                                dims.Remove(key);
+                                break;
+                            }
+                            else
+                            {
+                                dims[key][0] = res;
+                            }
+                        }
+                        else
+                        {
+                            dims[key].Add(exp);
+                        }
                     }
                 }
             }
@@ -98,7 +110,11 @@ namespace Mathema.Models.FlatExpressions
         public override IExpression Execute()
         {
             this.Squash();
-            if (this.Expressions.Count == 1 && this.Expressions.ContainsKey(Dimensions.Number))
+            if (this.Expressions.Count == 0)
+            {
+                return new NumberExpression(0);
+            }
+            else if (this.Expressions.Count == 1 && this.Expressions.ContainsKey(Dimensions.Number))
             {
                 return this.Expressions[Dimensions.Number][0];
             }

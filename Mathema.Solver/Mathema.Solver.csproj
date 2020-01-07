@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Mathema.Classifier\Mathema.Classifier.csproj" />
+    <ProjectReference Include="..\Mathema.Interfaces\Mathema.Interfaces.csproj" />
+    <ProjectReference Include="..\Mathema.Models\Mathema.Models.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -6,6 +6,7 @@ namespace Mathema.Enums.Equations
 {
     public enum EquationTypes
     {
+        Undefined = 0,
         Linear = 1,
         Quadratic = 2,
         Cubic = 3,

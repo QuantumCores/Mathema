@@ -87,31 +87,40 @@ namespace Mathema.Models.FlatExpressions
             //TODO FlatMult DimensionKey is invalid
             foreach (var exp in all)
             {
-                var key = exp.DimensionKey.Key.ElementAt(0).Key;
-                if (key == Dimensions.Number)
+                if (exp.Count.Numerator != 0)
                 {
-                    this.Count.Multiply(exp.Count);
-                    continue;
-                }
-
-                if (!dims.ContainsKey(key))
-                {
-                    //this.Count.Multiply(exp.Count);
-                    dims.Add(key, new List<IExpression>() { exp });
-                }
-                else
-                {
-                    if (key != nameof(BinaryExpression) && key != nameof(UnaryExpression) && key != nameof(FunctionExpression))
+                    var key = exp.DimensionKey.Key.ElementAt(0).Key;
+                    if (key == Dimensions.Number)
                     {
                         this.Count.Multiply(exp.Count);
-                        exp.Count = new Fraction();
+                        continue;
+                    }
 
-                        Reduce(dims, exp, key);
+                    if (!dims.ContainsKey(key))
+                    {
+                        //this.Count.Multiply(exp.Count);
+                        dims.Add(key, new List<IExpression>() { exp });
                     }
                     else
                     {
-                        dims[key].Add(exp);
+                        if (key != nameof(BinaryExpression) && key != nameof(UnaryExpression) && key != nameof(FunctionExpression))
+                        {
+                            this.Count.Multiply(exp.Count);
+                            exp.Count = new Fraction();
+
+                            Reduce(dims, exp, key);
+                        }
+                        else
+                        {
+                            dims[key].Add(exp);
+                        }
                     }
+                }
+                else
+                {
+                    dims = new Dictionary<string, List<IExpression>>();
+                    this.Count.Numerator = 0;
+                    break;
                 }
             }
 
@@ -152,7 +161,14 @@ namespace Mathema.Models.FlatExpressions
             this.Squash();
             if (this.Expressions.Count == 0)
             {
-                return new NumberExpression(this.Count);
+                if (this.Count.Numerator == 0)
+                {
+                    return new NumberExpression(0);
+                }
+                else
+                {
+                    return new NumberExpression(this.Count);
+                }
             }
             else if (this.Expressions.Count == 1)
             {
