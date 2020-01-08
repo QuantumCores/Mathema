@@ -16,6 +16,11 @@ namespace Mathema.Models.Numerics
 
         }
 
+        public Fraction(IFraction frc) : this(frc.Numerator, frc.Denominator)
+        {
+
+        }
+
         public Fraction(decimal num, decimal den)
         {
             this.Numerator = num;
@@ -140,6 +145,134 @@ namespace Mathema.Models.Numerics
                 this.Denominator = dn;
                 return;
             }
+        }
+
+        public static Fraction operator +(Fraction l, Fraction r)
+        {
+            var res = new Fraction(l);
+            res.Add(r);
+
+            return res;
+        }
+
+        public static IFraction operator +(Fraction l, IFraction r)
+        {
+            var res = new Fraction(l);
+            res.Add(r);
+
+            return res;
+        }
+
+        public static IFraction operator +(IFraction l, Fraction r)
+        {
+            var res = new Fraction(l);
+            res.Add(r);
+
+            return res;
+        }
+
+        public static IFraction operator +(Fraction l, int r)
+        {
+            var res = new Fraction(l);
+            res.Add(new Fraction(r, 1));
+
+            return res;
+        }
+
+        public static IFraction operator +(int l, Fraction r)
+        {
+            var res = new Fraction(l, 1);
+            res.Add(r);
+
+            return res;
+        }
+
+        public static Fraction operator -(Fraction l, Fraction r)
+        {
+            var res = new Fraction(l);
+            res.Subtract(r);
+
+            return res;
+        }
+
+        public static IFraction operator -(Fraction l, IFraction r)
+        {
+            var res = new Fraction(l);
+            res.Subtract(r);
+
+            return res;
+        }
+
+        public static IFraction operator -(IFraction l, Fraction r)
+        {
+            var res = new Fraction(l);
+            res.Subtract(r);
+
+            return res;
+        }
+
+        public static Fraction operator *(Fraction l, Fraction r)
+        {
+            var res = new Fraction(l);
+            res.Multiply(r);
+
+            return res;
+        }
+
+        public static IFraction operator *(Fraction l, IFraction r)
+        {
+            var res = new Fraction(l);
+            res.Multiply(r);
+
+            return res;
+        }
+
+        public static IFraction operator *(IFraction l, Fraction r)
+        {
+            var res = new Fraction(l);
+            res.Multiply(r);
+
+            return res;
+        }
+
+        public static IFraction operator *(Fraction l, int r)
+        {
+            var res = new Fraction(l);
+            res.Multiply(new Fraction(r, 1));
+
+            return res;
+        }
+
+        public static IFraction operator *(int l, Fraction r)
+        {
+            var res = new Fraction(l, 1);
+            res.Multiply(r);
+
+            return res;
+        }
+
+        public static Fraction operator /(Fraction l, Fraction r)
+        {
+            var res = new Fraction(l);
+            res.Divide(r);
+
+            return res;
+        }
+
+        public static IFraction operator /(Fraction l, IFraction r)
+        {
+            var res = new Fraction(l);
+            res.Divide(r);
+
+            return res;
+        }
+
+        public static IFraction operator /(IFraction l, Fraction r)
+        {
+            var res = new Fraction(l);
+            res.Divide(r);
+
+            return res;
         }
     }
 }
