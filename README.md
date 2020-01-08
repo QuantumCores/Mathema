@@ -26,8 +26,10 @@ gives
     * recognizes variables
     * manages variable grouping, adding and multiplying
   * Funcions with variables
+  
 **WIP**   
    - solving equations
+
 **Plans**   
    - solving equations
    - derivatives
