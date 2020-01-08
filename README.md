@@ -26,7 +26,8 @@ gives
     * recognizes variables
     * manages variable grouping, adding and multiplying
   * Funcions with variables
-  
+    * recognizes variables in functions
+    * manages grouping, adding and multiplying functions with variables
 **WIP**   
    - solving equations
 
