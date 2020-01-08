@@ -34,8 +34,8 @@ namespace Mathema.Solver.Solvers
                 else
                 {
                     var sqrt = Math.Sqrt((double)nd);
-                    res.Solutions.Add(new NumberExpression((-1 * b + sqrt) / 2 * a));
-                    res.Solutions.Add(new NumberExpression((-1 * b - sqrt) / 2 * a));
+                    res.Solutions.Add(new NumberExpression((-b + sqrt) / 2 * a));
+                    res.Solutions.Add(new NumberExpression((-b - sqrt) / 2 * a));
                 }
             }
 

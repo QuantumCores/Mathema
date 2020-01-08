@@ -394,5 +394,11 @@ namespace Mathema.Models.Numerics
 
             return res;
         }
+
+        public static Fraction operator -(Fraction r)
+        {
+            return new Fraction(-r.Numerator, r.Denominator);
+        }
+
     }
 }
