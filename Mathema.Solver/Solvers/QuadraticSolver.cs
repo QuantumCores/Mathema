@@ -5,6 +5,7 @@ using Mathema.Models.FlatExpressions;
 using Mathema.Models.Numerics;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Mathema.Solver.Solvers
@@ -16,9 +17,38 @@ namespace Mathema.Solver.Solvers
             var res = new EquationSolutions();
             if (expression is FlatAddExpression fa)
             {
-                var a = (Fraction)fa.Expressions["x * x"][0].Count;
-                var b = (Fraction)fa.Expressions["x"][0].Count;
-                var c = (Fraction)fa.Expressions["1"][0].Count;
+                Fraction a = null;
+                Fraction b = null;
+                Fraction c = null;
+
+                IExpression ea = null;
+                IExpression eb = null;
+                IExpression ec = null;
+
+                for (int i = 0; i < fa.Expressions.Count; i++)
+                {
+                    var kv = fa.Expressions.ElementAt(i);
+                    var deg = kv.Value[0].DimensionKey.Key.ElementAt(0).Value;
+
+                    if (deg == 2)
+                    {
+                        a = (Fraction)kv.Value[0].Count;
+                        ea = kv.Value[0];
+                    }
+                    else if (deg == 1)
+                    {
+                        if (kv.Value[0] is NumberExpression)
+                        {
+                            c = (Fraction)kv.Value[0].Count;
+                            ec = kv.Value[0];
+                        }
+                        else
+                        {
+                            b = (Fraction)kv.Value[0].Count;
+                            eb = kv.Value[0];
+                        }
+                    }
+                }
 
                 var delta = b * b - (4 * a * c);
                 var nd = delta.ToNumber();
