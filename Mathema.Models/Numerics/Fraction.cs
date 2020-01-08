@@ -147,6 +147,29 @@ namespace Mathema.Models.Numerics
             }
         }
 
+        public override string ToString()
+        {
+            if (this.Denominator == 1)
+            {
+                return this.Numerator.ToString();
+            }
+            else if (this.Denominator == -1)
+            {
+                return (-1 * this.Numerator).ToString();
+            }
+            else
+            {
+                if (this.Numerator < 0 || this.Denominator < 0)
+                {
+                    return "-" + this.Numerator + "/" + this.Denominator;
+                }
+                else
+                {
+                    return this.Numerator + "/" + this.Denominator;
+                }
+            }
+        }
+
         public static Fraction operator +(Fraction l, Fraction r)
         {
             var res = new Fraction(l);
@@ -171,7 +194,7 @@ namespace Mathema.Models.Numerics
             return res;
         }
 
-        public static IFraction operator +(Fraction l, int r)
+        public static Fraction operator +(Fraction l, int r)
         {
             var res = new Fraction(l);
             res.Add(new Fraction(r, 1));
@@ -179,13 +202,30 @@ namespace Mathema.Models.Numerics
             return res;
         }
 
-        public static IFraction operator +(int l, Fraction r)
+        public static Fraction operator +(int l, Fraction r)
         {
             var res = new Fraction(l, 1);
             res.Add(r);
 
             return res;
         }
+
+        public static Fraction operator +(Fraction l, double r)
+        {
+            var res = new Fraction(l);
+            res.Add(new Fraction((decimal)r, 1));
+
+            return res;
+        }
+
+        public static Fraction operator +(double l, Fraction r)
+        {
+            var res = new Fraction((decimal)l, 1);
+            res.Add(r);
+
+            return res;
+        }
+
 
         public static Fraction operator -(Fraction l, Fraction r)
         {
@@ -206,6 +246,38 @@ namespace Mathema.Models.Numerics
         public static IFraction operator -(IFraction l, Fraction r)
         {
             var res = new Fraction(l);
+            res.Subtract(r);
+
+            return res;
+        }
+
+        public static Fraction operator -(Fraction l, int r)
+        {
+            var res = new Fraction(l);
+            res.Subtract(new Fraction(r, 1));
+
+            return res;
+        }
+
+        public static Fraction operator -(int l, Fraction r)
+        {
+            var res = new Fraction(l, 1);
+            res.Subtract(r);
+
+            return res;
+        }
+
+        public static Fraction operator -(Fraction l, double r)
+        {
+            var res = new Fraction(l);
+            res.Subtract(new Fraction((decimal)r, 1));
+
+            return res;
+        }
+
+        public static Fraction operator -(double l, Fraction r)
+        {
+            var res = new Fraction((decimal)l, 1);
             res.Subtract(r);
 
             return res;
@@ -235,7 +307,7 @@ namespace Mathema.Models.Numerics
             return res;
         }
 
-        public static IFraction operator *(Fraction l, int r)
+        public static Fraction operator *(Fraction l, int r)
         {
             var res = new Fraction(l);
             res.Multiply(new Fraction(r, 1));
@@ -243,9 +315,25 @@ namespace Mathema.Models.Numerics
             return res;
         }
 
-        public static IFraction operator *(int l, Fraction r)
+        public static Fraction operator *(int l, Fraction r)
         {
             var res = new Fraction(l, 1);
+            res.Multiply(r);
+
+            return res;
+        }
+
+        public static Fraction operator *(Fraction l, double r)
+        {
+            var res = new Fraction(l);
+            res.Multiply(new Fraction((decimal)r, 1));
+
+            return res;
+        }
+
+        public static Fraction operator *(double l, Fraction r)
+        {
+            var res = new Fraction((decimal)l, 1);
             res.Multiply(r);
 
             return res;
@@ -270,6 +358,38 @@ namespace Mathema.Models.Numerics
         public static IFraction operator /(IFraction l, Fraction r)
         {
             var res = new Fraction(l);
+            res.Divide(r);
+
+            return res;
+        }
+
+        public static Fraction operator /(Fraction l, int r)
+        {
+            var res = new Fraction(l);
+            res.Divide(new Fraction(r, 1));
+
+            return res;
+        }
+
+        public static Fraction operator /(int l, Fraction r)
+        {
+            var res = new Fraction(l, 1);
+            res.Divide(r);
+
+            return res;
+        }
+
+        public static Fraction operator /(Fraction l, double r)
+        {
+            var res = new Fraction(l);
+            res.Divide(new Fraction((decimal)r, 1));
+
+            return res;
+        }
+
+        public static Fraction operator /(double l, Fraction r)
+        {
+            var res = new Fraction((decimal)l, 1);
             res.Divide(r);
 
             return res;

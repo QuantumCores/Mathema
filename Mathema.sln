@@ -32,9 +32,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mathema.Classifier", "Mathema.Classifier\Mathema.Classifier.csproj", "{1A8EC2F5-9D80-4F8B-8E3C-D9F17AA90CB8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassifierTests", "ClassifierTests\ClassifierTests.csproj", "{71D00681-CDC1-44D3-8D32-42649D0360BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClassifierTests", "ClassifierTests\ClassifierTests.csproj", "{71D00681-CDC1-44D3-8D32-42649D0360BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mathema.Solver", "Mathema.Solver\Mathema.Solver.csproj", "{EF95EAFB-92AC-42F3-988F-77EAF64DAF77}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mathema.Solver", "Mathema.Solver\Mathema.Solver.csproj", "{EF95EAFB-92AC-42F3-988F-77EAF64DAF77}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolverTests", "SolverTests\SolverTests.csproj", "{C6DC4827-A5D9-4A02-9330-B2B7C03D721B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -94,6 +96,10 @@ Global
 		{EF95EAFB-92AC-42F3-988F-77EAF64DAF77}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF95EAFB-92AC-42F3-988F-77EAF64DAF77}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF95EAFB-92AC-42F3-988F-77EAF64DAF77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6DC4827-A5D9-4A02-9330-B2B7C03D721B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6DC4827-A5D9-4A02-9330-B2B7C03D721B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6DC4827-A5D9-4A02-9330-B2B7C03D721B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6DC4827-A5D9-4A02-9330-B2B7C03D721B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -104,6 +110,7 @@ Global
 		{3C2C9AB3-FBC5-47D3-A2EC-EB0F8E279725} = {2A338ED6-3589-453C-A915-05D17ABAF6FC}
 		{EFC521A1-3ED2-4CDA-A813-8B0D5061D232} = {2A338ED6-3589-453C-A915-05D17ABAF6FC}
 		{71D00681-CDC1-44D3-8D32-42649D0360BC} = {2A338ED6-3589-453C-A915-05D17ABAF6FC}
+		{C6DC4827-A5D9-4A02-9330-B2B7C03D721B} = {2A338ED6-3589-453C-A915-05D17ABAF6FC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A474CDFB-1DAB-44D4-8124-00EE16E34E94}
