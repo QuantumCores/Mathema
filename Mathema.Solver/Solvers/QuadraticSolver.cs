@@ -67,6 +67,11 @@ namespace Mathema.Solver.Solvers
                     res.Solutions.Add(new NumberExpression((-b + sqrt) / 2 * a));
                     res.Solutions.Add(new NumberExpression((-b - sqrt) / 2 * a));
                 }
+
+                if(!(eb is VariableExpression))
+                {
+                    //TODO Clasify and then run specific solver
+                }
             }
 
             return res;
