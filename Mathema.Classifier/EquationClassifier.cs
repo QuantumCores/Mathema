@@ -20,7 +20,7 @@ namespace Mathema.Classifier
 
         public EquationTypes Classify()
         {
-            return this.Classify(this.equation.Left);
+            return EquationClassifier.Classify(this.equation.Left);
         }
 
         public static Equation Classify(Equation equation)
@@ -31,7 +31,7 @@ namespace Mathema.Classifier
             return ec.equation;
         }
 
-        private EquationTypes Classify(IExpression expr)
+        public static EquationTypes Classify(IExpression expr)
         {
             if (expr is FlatMultExpression fm)
             {
@@ -86,6 +86,6 @@ namespace Mathema.Classifier
             }
 
             return EquationTypes.Undefined;
-        }
+        }        
     }
 }

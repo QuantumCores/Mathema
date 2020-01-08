@@ -13,15 +13,21 @@ namespace Mathema.Solver
         public static IEquationSolutions Solve(Equation equation)
         {
             var equationType = EquationClassifier.Classify(equation);
-            if (equation.Type == EquationTypes.Linear)
+            return Solve(equationType.Type, equation.Left);
+           
+        }
+
+        public static IEquationSolutions Solve(EquationTypes type, IExpression expression)
+        {
+            if (type == EquationTypes.Linear)
             {
                 var solver = new LinearSolver();
-                return solver.Solve(equation.Left);
+                return solver.Solve(expression);
             }
-            else if (equation.Type == EquationTypes.Quadratic)
+            else if (type == EquationTypes.Quadratic)
             {
                 var solver = new QuadraticSolver();
-                return solver.Solve(equation.Left);
+                return solver.Solve(expression);
             }
             else
             {

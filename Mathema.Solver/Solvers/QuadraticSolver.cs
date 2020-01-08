@@ -1,4 +1,5 @@
-﻿using Mathema.Interfaces;
+﻿using Mathema.Classifier;
+using Mathema.Interfaces;
 using Mathema.Models.Equations;
 using Mathema.Models.Expressions;
 using Mathema.Models.FlatExpressions;
@@ -70,7 +71,21 @@ namespace Mathema.Solver.Solvers
 
                 if(!(eb is VariableExpression))
                 {
-                    //TODO Clasify and then run specific solver
+                    var es = new EquationSolutions();
+                    var type = EquationClassifier.Classify(eb);
+                    foreach (var s in res.Solutions)
+                    {
+                        var tmp = new FlatAddExpression();
+                        var se = new NumberExpression(-(Fraction)s.Count);
+                        tmp.Add(eb);
+                        tmp.Add(se);
+                        var exec = tmp.Execute();
+                        var solutions = Solver.Solve(type, exec);
+
+                        es.Solutions.AddRange(solutions.Solutions);
+                    }
+
+                    return es;
                 }
             }
 
