@@ -82,8 +82,8 @@ namespace FlatExpressionTests.FlatAddTests.Functions
         public void Add_FlatAdd_Sinx_CTan2x()
         {
             //Arrange
-            var test = "Sin(x) + 2 + x + Ctan(2*x)";
-            var expText = "x + 2 + Sin(x) + Ctan(2*x)";
+            var test = "Sin(x) + 2 + x + Cot(2*x)";
+            var expText = "x + 2 + Sin(x) + Cot(2*x)";
             var expected = RPNParser.Parse(expText);
 
             //Act

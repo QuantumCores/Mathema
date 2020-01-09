@@ -18,6 +18,8 @@ gives
   * Functions
     * 'sin' Sinus
     * 'cos' Cosinus
+	* 'tan' Tangens
+	* 'cot' Cotangens
   * Constants
     * 'Pi' - ratio of a circle's circumference to its diameter
     * 'e' - natural logarithm base
@@ -30,7 +32,9 @@ gives
     * manages grouping, adding and multiplying functions with variables
 	
 **WIP**   
-   - solving equations
+   - solving equations (linear, quadratic, cubic)
+   - complex numbers
+   - logarithms
 
 **Plans**   
    - solving equations
