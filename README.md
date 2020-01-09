@@ -37,6 +37,7 @@ gives
    - logarithms
 
 **Plans**   
+   - solution with 'step by step'
    - solving equations
    - derivatives
    - integrals
