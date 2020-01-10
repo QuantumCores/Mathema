@@ -49,7 +49,7 @@ namespace Mathema.Models.Expressions
 
         public IExpression Clone()
         {
-            return new NumberExpression(this.Count.ToNumber());
+            return new NumberExpression(this.Count.Clone());
         }
 
         public string AsString()

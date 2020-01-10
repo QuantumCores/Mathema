@@ -37,8 +37,14 @@ namespace Mathema.Models.ExpressionOperations
             if (rhe is INumberExpression)
             {
                 res.Count.Add(rhe.Count);
-                return new NumberExpression(res.Count);
+                return res;
             }
+            else if (rhe is ComplexExpression rc)
+            {
+                res.Count.Add(rc.Re);
+                return new ComplexExpression(res.Count, rc.Im);            
+            }
+
 
             return null;
         }
@@ -50,6 +56,11 @@ namespace Mathema.Models.ExpressionOperations
             {
                 res.Count.Subtract(rhe.Count);
                 return res;
+            }
+            else if (rhe is ComplexExpression rc)
+            {
+                res.Count.Subtract(rc.Re);
+                return new ComplexExpression(res.Count, rc.Im);
             }
 
             return null;
@@ -63,6 +74,12 @@ namespace Mathema.Models.ExpressionOperations
                 res.Count.Multiply(rhe.Count);
                 return res;
             }
+            else if (rhe is ComplexExpression rc)
+            {
+                res.Count.Multiply(rc.Re);
+                rc.Im.Multiply(res.Count);
+                return new ComplexExpression(res.Count, rc.Im);
+            }
 
             return null;
         }
@@ -75,6 +92,12 @@ namespace Mathema.Models.ExpressionOperations
                 res.Count.Divide(rhe.Count);
                 return res;
             }
+            else if (rhe is ComplexExpression rc)
+            {
+                res.Count.Divide(rc.Re);
+                rc.Im.Divide(res.Count);
+                return new ComplexExpression(res.Count, rc.Im);
+            }
 
             return null;
         }
@@ -84,6 +107,13 @@ namespace Mathema.Models.ExpressionOperations
             var res = lhe.Clone();
             if (rhe is INumberExpression)
             {
+                var n = rhe.Count.ToNumber();
+
+                if (n == 0)
+                {
+                    return new NumberExpression(1);
+                }
+
                 res.Count.Pow(rhe.Count);
                 return res;
             }

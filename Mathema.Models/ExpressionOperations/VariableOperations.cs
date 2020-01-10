@@ -113,12 +113,16 @@ namespace Mathema.Models.ExpressionOperations
             var res = lhe.Clone();
             if (rhe is INumberExpression)
             {
-                res.Count.Pow(rhe.Count);
-                var keys = res.DimensionKey.Key.Select(k => k.Key).ToArray();
-                foreach (var k in keys)
+                var n = rhe.Count.ToNumber();
+
+                if (n == 0)
                 {
-                    res.DimensionKey.Multiply(k, rhe.Count.ToNumber());
+                    return new NumberExpression(1);
                 }
+
+                res.Count.Pow(rhe.Count);
+                var k = res.DimensionKey.Key.ElementAt(0).Key;
+                res.DimensionKey.Multiply(k, rhe.Count.ToNumber());
 
                 return res;
             }

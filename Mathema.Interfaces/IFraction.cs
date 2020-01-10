@@ -22,6 +22,8 @@ namespace Mathema.Interfaces
 
         decimal ToNumber();
 
+        IFraction Clone();
+
         string AsString();
 
     }

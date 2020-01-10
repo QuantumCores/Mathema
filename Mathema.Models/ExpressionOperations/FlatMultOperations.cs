@@ -139,12 +139,21 @@ namespace Mathema.Models.ExpressionOperations
             var lc = (IFlatExpression)res;
             if (rhe is INumberExpression)
             {
-                foreach (var kv in lc.Expressions)
+                var n = rhe.Count.ToNumber();
+
+                if (n == 0)
                 {
-                    for (int i = 0; i < kv.Value.Count; i++)
+                    return new NumberExpression(1);
+                }
+                else
+                {
+                    foreach (var kv in lc.Expressions)
                     {
-                        var expr = kv.Value[i];
-                        kv.Value[i] = expr.BinaryOperations[OperatorTypes.Power](expr, rhe);
+                        for (int i = 0; i < kv.Value.Count; i++)
+                        {
+                            var expr = kv.Value[i];
+                            kv.Value[i] = expr.BinaryOperations[OperatorTypes.Power](expr, rhe);
+                        }
                     }
                 }
 
