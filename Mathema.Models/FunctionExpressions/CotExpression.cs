@@ -3,21 +3,21 @@ using Mathema.Enums.Operators;
 using Mathema.Interfaces;
 using Mathema.Models.Dimension;
 using Mathema.Models.ExpressionOperations;
-using Mathema.Models.Functions;
+using Mathema.Models.Expressions;
 using Mathema.Models.Numerics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Mathema.Models.Expressions
+namespace Mathema.Models.FunctionExpressions
 {
-    public class FunctionExpression : IExpression
+    public class CotExpression : IFunctionExpression
     {
         private FunctionTypes type;
         private IExpression argument;
 
-        public IDimensionKey DimensionKey { get; set; } = new DimensionKey(nameof(FunctionExpression));
+        public IDimensionKey DimensionKey { get; set; } = new DimensionKey(nameof(CotExpression));
 
         public IFraction Count { get; set; } = new Fraction();
 
@@ -25,7 +25,7 @@ namespace Mathema.Models.Expressions
 
         public Dictionary<OperatorTypes, Func<IExpression, IExpression>> UnaryOperations { get; } = FunctionOperations.UnaryOperations;
 
-        public FunctionExpression(FunctionTypes type, IExpression argument)
+        public CotExpression(FunctionTypes type, IExpression argument)
         {
             this.type = type;
             this.argument = argument;
@@ -43,7 +43,7 @@ namespace Mathema.Models.Expressions
 
             if (arg is INumberExpression)
             {
-                return new NumberExpression(Functions.Functions.Get(type).Projection(arg.Count.ToNumber()));
+                return new NumberExpression(1/ (decimal)Math.Tan((double)arg.Count.ToNumber()));
             }
             else
             {
@@ -54,7 +54,7 @@ namespace Mathema.Models.Expressions
 
         public IExpression Clone()
         {
-            return new FunctionExpression(this.type, this.argument.Clone());
+            return new CotExpression(this.type, this.argument.Clone());
         }
 
         public string AsString()

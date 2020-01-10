@@ -8,6 +8,7 @@ using Mathema.Interfaces;
 using Mathema.Models.Dimension;
 using Mathema.Models.ExpressionOperations;
 using Mathema.Models.Expressions;
+using Mathema.Models.FunctionExpressions;
 using Mathema.Models.Numerics;
 
 namespace Mathema.Models.FlatExpressions
@@ -103,7 +104,7 @@ namespace Mathema.Models.FlatExpressions
                     }
                     else
                     {
-                        if (key != nameof(BinaryExpression) && key != nameof(UnaryExpression) && key != nameof(FunctionExpression))
+                        if (key != nameof(BinaryExpression) && key != nameof(UnaryExpression))
                         {
                             this.Count.Multiply(exp.Count);
                             exp.Count = new Fraction();

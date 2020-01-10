@@ -2,7 +2,7 @@
 using Mathema.Enums.Operators;
 using Mathema.Models.Dimension;
 using Mathema.Models.Expressions;
-using Mathema.Models.FlatExpressions;
+using Mathema.Models.FunctionExpressions;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -52,10 +52,10 @@ namespace ExpressionTests.CloneTests
         public void Clone_FunctionsExpression()
         {
             //Arrange
-            var expected = new FunctionExpression(FunctionTypes.Cos, new NumberExpression(0));
+            var expected = new CosExpression(FunctionTypes.Cos, new NumberExpression(0));
 
             //Act
-            var actual = (FunctionExpression)expected.Clone();
+            var actual = (CosExpression)expected.Clone();
 
             //Assert
             Assert.IsTrue(!Object.ReferenceEquals(actual, expected));

@@ -41,7 +41,7 @@ namespace Mathema.Algorithms.Handlers
                         }
                         else if (s.Type == SymbolTypes.Function)
                         {
-                            var tmp = new FunctionExpression(Functions.Get(s.Value).Type, stack[stack.Count - 1]);
+                            var tmp = Functions.Get(s.Value, stack[stack.Count - 1]);
                             stack.RemoveAt(stack.Count - 1);
                             stack.Add(tmp);
                         }
@@ -188,7 +188,7 @@ namespace Mathema.Algorithms.Handlers
                         }
                         else if (s.Type == SymbolTypes.Function)
                         {
-                            var tmp = new FunctionExpression(Functions.Get(s.Value).Type, stack[stack.Count - 1]);
+                            var tmp = Functions.Get(s.Value, stack[stack.Count - 1]);
                             stack.RemoveAt(stack.Count - 1);
                             stack.Add(tmp);
                         }

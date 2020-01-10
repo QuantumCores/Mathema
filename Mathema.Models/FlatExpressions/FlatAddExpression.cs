@@ -8,6 +8,7 @@ using Mathema.Interfaces;
 using Mathema.Models.Dimension;
 using Mathema.Models.ExpressionOperations;
 using Mathema.Models.Expressions;
+using Mathema.Models.FunctionExpressions;
 using Mathema.Models.Numerics;
 
 namespace Mathema.Models.FlatExpressions
@@ -82,7 +83,7 @@ namespace Mathema.Models.FlatExpressions
                     }
                     else
                     {
-                        if (key != nameof(BinaryExpression) && key != nameof(UnaryExpression) && key != nameof(FunctionExpression))
+                        if (key != nameof(BinaryExpression) && key != nameof(UnaryExpression))
                         {
                             var res = dims[key][0].BinaryOperations[OperatorTypes.Add](dims[key][0], exp);
                             if (res.Count.Numerator == 0)

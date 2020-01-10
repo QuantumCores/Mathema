@@ -9,6 +9,7 @@ namespace Mathema.Enums.Functions
         Sin = 1,
         Cos = 2,
         Tan = 3,
-        Cot = 4
+        Cot = 4,
+        Log = 5,
     }
 }

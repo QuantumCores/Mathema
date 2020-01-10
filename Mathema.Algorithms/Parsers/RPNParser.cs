@@ -126,7 +126,7 @@ namespace Mathema.Algorithms.Parsers
                 previousSymbol = new Symbol(c.Value.ToString(), SymbolTypes.Number);
                 output.Add(previousSymbol);
             }
-            else if (Functions.TryGetValue(previousSymbol.Value, out var f))
+            else if (Functions.All.ContainsKey(previousSymbol.Value))
             {
                 previousSymbol = new Symbol(previousSymbol.Value, SymbolTypes.Function);
                 operators.Add(previousSymbol);

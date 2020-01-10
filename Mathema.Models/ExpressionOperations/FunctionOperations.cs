@@ -1,6 +1,7 @@
 ﻿using Mathema.Enums.Operators;
 using Mathema.Interfaces;
 using Mathema.Models.Expressions;
+using Mathema.Models.FunctionExpressions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,7 +36,7 @@ namespace Mathema.Models.ExpressionOperations
         public static IExpression Add(IExpression lhe, IExpression rhe)
         {
             var res = lhe.Clone();
-            if (rhe is FunctionExpression)
+            if (rhe is IFunctionExpression)
             {
                 if (lhe.DimensionKey.Key.ElementAt(0).Key == rhe.DimensionKey.Key.ElementAt(0).Key)
                 {
@@ -50,7 +51,7 @@ namespace Mathema.Models.ExpressionOperations
         public static IExpression Subtract(IExpression lhe, IExpression rhe)
         {
             var res = lhe.Clone();
-            if (rhe is FunctionExpression)
+            if (rhe is IFunctionExpression)
             {
                 if (lhe.DimensionKey.Key.ElementAt(0).Key == rhe.DimensionKey.Key.ElementAt(0).Key)
                 {
@@ -65,7 +66,7 @@ namespace Mathema.Models.ExpressionOperations
         public static IExpression Multiply(IExpression lhe, IExpression rhe)
         {
             var res = lhe.Clone();
-            if (rhe is FunctionExpression)
+            if (rhe is IFunctionExpression)
             {
                 if (lhe.DimensionKey.Key.ElementAt(0).Key == rhe.DimensionKey.Key.ElementAt(0).Key)
                 {
@@ -86,7 +87,7 @@ namespace Mathema.Models.ExpressionOperations
         public static IExpression Divide(IExpression lhe, IExpression rhe)
         {
             var res = lhe.Clone();
-            if (rhe is FunctionExpression)
+            if (rhe is IFunctionExpression)
             {
                 if (lhe.DimensionKey.Key.ElementAt(0).Key == rhe.DimensionKey.Key.ElementAt(0).Key)
                 {
