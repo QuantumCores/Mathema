@@ -26,7 +26,7 @@ namespace ExpressionTests.CloneTests
 
             //Assert
             Assert.IsTrue(!Object.ReferenceEquals(actual, expected));
-            Assert.AreEqual(actual.Execute().Count.ToNumber(), expected.Execute().Count.ToNumber());
+            Assert.AreEqual(actual.Execute().Count.Re.ToNumber(), expected.Execute().Count.Re.ToNumber());
         }
 
         [Test]
@@ -34,14 +34,15 @@ namespace ExpressionTests.CloneTests
         {
             //Arrange
             var expression = new VariableExpression("x", 2);
-            expression.Count.Numerator = -1;
+            expression.Count.Re.Numerator = -1;
             expression.DimensionKey.Add("y", 3);
 
             //Act
             var clone = (VariableExpression)expression.Clone();
 
             //Assert
-            Assert.AreEqual(expression.Count.ToNumber(), clone.Count.ToNumber());
+            Assert.AreEqual(expression.Count.Re.ToNumber(), clone.Count.Re.ToNumber());
+            Assert.AreEqual(expression.Count.Im.ToNumber(), clone.Count.Im.ToNumber());
             Assert.AreEqual(expression.Symbol, clone.Symbol);
             Assert.IsFalse(Object.ReferenceEquals(expression.Symbol, clone.Symbol));
             Assert.IsTrue(DimensionKey.Compare(expression.DimensionKey, clone.DimensionKey));
@@ -59,7 +60,7 @@ namespace ExpressionTests.CloneTests
 
             //Assert
             Assert.IsTrue(!Object.ReferenceEquals(actual, expected));
-            Assert.AreEqual(actual.Execute().Count.ToNumber(), expected.Execute().Count.ToNumber());
+            Assert.AreEqual(actual.Execute().Count.Re.ToNumber(), expected.Execute().Count.Re.ToNumber());
         }
 
         [Test]
@@ -72,7 +73,7 @@ namespace ExpressionTests.CloneTests
             var clone = (NumberExpression)expression.Clone();
 
             //Assert
-            Assert.AreEqual(expression.Count.ToNumber(), clone.Count.ToNumber());
+            Assert.AreEqual(expression.Count.Re.ToNumber(), clone.Count.Re.ToNumber());
         }
 
         [Test]
@@ -86,7 +87,7 @@ namespace ExpressionTests.CloneTests
 
             //Assert
             Assert.IsTrue(!Object.ReferenceEquals(actual, expected));
-            Assert.AreEqual(actual.Execute().Count.ToNumber(), expected.Execute().Count.ToNumber());
+            Assert.AreEqual(actual.Execute().Count.Re.ToNumber(), expected.Execute().Count.Re.ToNumber());
         }
     }
 }

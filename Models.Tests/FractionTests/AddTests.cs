@@ -11,6 +11,23 @@ namespace ModelsTests.FractionTests
         public void Add_Integers()
         {
             //Arrange
+            var frac1 = new Fraction(2, 3);
+            var n = 2;
+            var expected = new Fraction(8, 3);
+
+            //Act
+            frac1.Add(n);
+
+            //Assert
+            Assert.AreEqual(expected.Numerator, frac1.Numerator);
+            Assert.AreEqual(expected.Denominator, frac1.Denominator);
+        }
+
+
+        [Test]
+        public void Add_IntegersAsFraction()
+        {
+            //Arrange
             var frac1 = new Fraction(2, 1);
             var frac2 = new Fraction(3, 1);
             var expected = new Fraction(5, 1);

@@ -9,5 +9,29 @@ namespace Mathema.Interfaces
         IFraction Re { get; set; }
 
         IFraction Im { get; set; }
+
+        void Add(IComplex frc);
+
+        void Add(int n);
+
+        void Subtract(IComplex frc);
+
+        void Subtract(int n);
+
+        void Multiply(IComplex frc);
+
+        void Multiply(double n);
+
+        void Divide(IComplex frc);
+
+        void Divide(double n);
+
+        void Pow(IComplex frc);
+
+        //decimal ToNumber();
+
+        IComplex Clone();
+
+        string AsString();
     }
 }

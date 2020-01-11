@@ -13,11 +13,7 @@ namespace Mathema.Models.Expressions
     {
         public IDimensionKey DimensionKey { get; set; } = new DimensionKey(Dimensions.Complex);
 
-        public IFraction Count { get; set; } = new Fraction();
-
-        public IFraction Re { get; set; } = new Fraction();
-
-        public IFraction Im { get; set; } = new Fraction();
+        public IComplex Count { get; set; } = new Complex();
 
         public Dictionary<OperatorTypes, Func<IExpression, IExpression, IExpression>> BinaryOperations { get; } = ComplexOperations.BinaryOperations;
 
@@ -27,7 +23,7 @@ namespace Mathema.Models.Expressions
         {
             if (decimal.TryParse(imVal, out var conv))
             {
-                this.Im = new Fraction(conv, 1);
+                this.Count.Im = new Fraction(conv, 1);
             }
             else
             {
@@ -35,11 +31,16 @@ namespace Mathema.Models.Expressions
             }
         }
 
+        public ComplexExpression(IComplex complex)
+        {
+            this.Count = complex.Clone();
+        }
+
         public ComplexExpression(string reVal, string imVal)
         {
             if (decimal.TryParse(reVal, out var re))
             {
-                this.Re = new Fraction(re, 1);
+                this.Count.Re = new Fraction(re, 1);
             }
             else
             {
@@ -48,7 +49,7 @@ namespace Mathema.Models.Expressions
 
             if (decimal.TryParse(imVal, out var im))
             {
-                this.Im = new Fraction(im, 1);
+                this.Count.Im = new Fraction(im, 1);
             }
             else
             {
@@ -58,31 +59,31 @@ namespace Mathema.Models.Expressions
 
         public ComplexExpression(decimal im)
         {
-            this.Re = new Fraction(0, 1);
-            this.Im = new Fraction(im, 1);
+            this.Count.Re = new Fraction(0, 1);
+            this.Count.Im = new Fraction(im, 1);
         }
 
         public ComplexExpression(decimal re, decimal im)
         {
-            this.Re = new Fraction(re, 1);
-            this.Im = new Fraction(im, 1);
+            this.Count.Re = new Fraction(re, 1);
+            this.Count.Im = new Fraction(im, 1);
         }
 
         public ComplexExpression(IFraction im)
         {
-            this.Re = new Fraction(0, 1);
-            this.Im = im;
+            this.Count.Re = new Fraction(0, 1);
+            this.Count.Im = im;
         }
 
         public ComplexExpression(IFraction re, IFraction im)
         {
-            this.Re = re;
-            this.Im = im;
+            this.Count.Re = re;
+            this.Count.Im = im;
         }
 
         public IComplexExpression Conjugation()
         {
-            return new ComplexExpression(this.Re.Clone(), -(Fraction)this.Im.Clone());
+            return new ComplexExpression(this.Count.Re.Clone(), -(Fraction)this.Count.Im.Clone());
         }
 
         public IExpression Execute()
@@ -92,26 +93,26 @@ namespace Mathema.Models.Expressions
 
         public IExpression Clone()
         {
-            return new ComplexExpression(this.Re.Clone(), this.Im.Clone());
+            return new ComplexExpression(this.Count.Re.Clone(), this.Count.Im.Clone());
         }
 
         public string AsString()
         {
-            if (this.Re.Numerator == 0)
+            if (this.Count.Re.Numerator == 0)
             {
-                if (this.Im.ToNumber() == 1)
+                if (this.Count.Im.ToNumber() == 1)
                 {
                     return "i";
                 }
 
-                return this.Im.AsString() + " * i";
+                return this.Count.Im.AsString() + " * i";
             }
-            else if (this.Im.Numerator == 0)
+            else if (this.Count.Im.Numerator == 0)
             {
-                return this.Re.AsString();
+                return this.Count.Re.AsString();
             }
 
-            return this.Re.AsString() + " + " + this.Im.AsString() + " * i";
+            return this.Count.Re.AsString() + " + " + this.Count.Im.AsString() + " * i";
         }
 
         public override string ToString()

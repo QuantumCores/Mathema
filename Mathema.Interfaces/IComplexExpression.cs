@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Mathema.Interfaces
 {
-    public interface IComplexExpression : IExpression, IComplex
+    public interface IComplexExpression : IExpression
     {
         IComplexExpression Conjugation();
     }

@@ -16,4 +16,8 @@
     <ProjectReference Include="..\Mathema.Models\Mathema.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ComplexTests\" />
+  </ItemGroup>
+
 </Project>

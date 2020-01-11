@@ -19,7 +19,7 @@ namespace Mathema.Models.FunctionExpressions
 
         public IDimensionKey DimensionKey { get; set; } = new DimensionKey(nameof(TanExpression));
 
-        public IFraction Count { get; set; } = new Fraction();
+        public IComplex Count { get; set; } = new Complex();
 
         public Dictionary<OperatorTypes, Func<IExpression, IExpression, IExpression>> BinaryOperations { get; } = FunctionOperations.BinaryOperations;
 
@@ -43,7 +43,7 @@ namespace Mathema.Models.FunctionExpressions
 
             if (arg is INumberExpression)
             {
-                return new NumberExpression((decimal)Math.Tan((double)arg.Count.ToNumber()));
+                return new NumberExpression((decimal)Math.Tan((double)arg.Count.Re.ToNumber()));
             }
             else
             {
@@ -64,7 +64,7 @@ namespace Mathema.Models.FunctionExpressions
 
         public override string ToString()
         {
-            if (this.Count.ToNumber() != 1)
+            if (this.Count.Re.ToNumber() != 1)
             {
                 return this.Count.AsString() + "*" + this.ExpressionKey();
             }

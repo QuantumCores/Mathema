@@ -42,7 +42,7 @@ namespace FlatExpressionTests.VariableTests
             var actual = (FlatMultExpression)(ExpressionBuilder.BuildFlat(rpn.Output).Execute());
 
             //Assert
-            Assert.IsTrue(actual.Count.ToNumber() == 2);
+            Assert.IsTrue(actual.Count.Re.ToNumber() == 2);
             Assert.IsTrue(actual.Expressions.ContainsKey("x"));
             Assert.IsTrue(actual.Expressions.ContainsKey("y"));
         }

@@ -41,8 +41,8 @@ namespace Mathema.Models.ExpressionOperations
             }
             else if (rhe is ComplexExpression rc)
             {
-                res.Count.Add(rc.Re);
-                return new ComplexExpression(res.Count, rc.Im);            
+                res.Count.Add(rc.Count);
+                return new ComplexExpression(res.Count);            
             }
 
 
@@ -59,8 +59,8 @@ namespace Mathema.Models.ExpressionOperations
             }
             else if (rhe is ComplexExpression rc)
             {
-                res.Count.Subtract(rc.Re);
-                return new ComplexExpression(res.Count, rc.Im);
+                res.Count.Subtract(rc.Count);
+                return new ComplexExpression(res.Count);
             }
 
             return null;
@@ -76,9 +76,8 @@ namespace Mathema.Models.ExpressionOperations
             }
             else if (rhe is ComplexExpression rc)
             {
-                res.Count.Multiply(rc.Re);
-                rc.Im.Multiply(res.Count);
-                return new ComplexExpression(res.Count, rc.Im);
+                res.Count.Multiply(rc.Count);
+                return new ComplexExpression(res.Count);
             }
 
             return null;
@@ -94,9 +93,8 @@ namespace Mathema.Models.ExpressionOperations
             }
             else if (rhe is ComplexExpression rc)
             {
-                res.Count.Divide(rc.Re);
-                rc.Im.Divide(res.Count);
-                return new ComplexExpression(res.Count, rc.Im);
+                res.Count.Divide(rc.Count);
+                return new ComplexExpression(res.Count);
             }
 
             return null;
@@ -107,7 +105,7 @@ namespace Mathema.Models.ExpressionOperations
             var res = lhe.Clone();
             if (rhe is INumberExpression)
             {
-                var n = rhe.Count.ToNumber();
+                var n = rhe.Count.Re.ToNumber();
 
                 if (n == 0)
                 {
@@ -117,6 +115,21 @@ namespace Mathema.Models.ExpressionOperations
                 res.Count.Pow(rhe.Count);
                 return res;
             }
+            else if (rhe is IComplexExpression)
+            {
+                if (rhe.Count.Im.Numerator == 0)
+                {
+                    var n = rhe.Count.Re.ToNumber();
+
+                    if (n == 0)
+                    {
+                        return new NumberExpression(1);
+                    }
+
+                    res.Count.Pow(rhe.Count);
+                    return res;
+                }
+            }
 
             return null;
         }
@@ -124,7 +137,7 @@ namespace Mathema.Models.ExpressionOperations
         public static IExpression Sign(IExpression rhe)
         {
             var res = rhe.Clone();
-            res.Count.Numerator *= -1;
+            res.Count.Re.Numerator *= -1;
             return res;
         }
     }
