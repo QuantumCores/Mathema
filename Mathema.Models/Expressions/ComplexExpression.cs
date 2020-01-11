@@ -13,7 +13,7 @@ namespace Mathema.Models.Expressions
     {
         public IDimensionKey DimensionKey { get; set; } = new DimensionKey(Dimensions.Complex);
 
-        public IFraction Count { get { return Re; } set { Re = value; } }
+        public IFraction Count { get; set; } = new Fraction();
 
         public IFraction Re { get; set; } = new Fraction();
 
@@ -99,7 +99,16 @@ namespace Mathema.Models.Expressions
         {
             if (this.Re.Numerator == 0)
             {
+                if (this.Im.ToNumber() == 1)
+                {
+                    return "i";
+                }
+
                 return this.Im.AsString() + " * i";
+            }
+            else if (this.Im.Numerator == 0)
+            {
+                return this.Re.AsString();
             }
 
             return this.Re.AsString() + " + " + this.Im.AsString() + " * i";

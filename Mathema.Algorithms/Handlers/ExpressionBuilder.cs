@@ -51,6 +51,12 @@ namespace Mathema.Algorithms.Handlers
                             stack.RemoveAt(stack.Count - 1);
                             stack.Add(tmp);
                         }
+                        else if (s.Type == SymbolTypes.Imaginary)
+                        {
+                            var tmp = new ComplexExpression(1m);
+                            stack.RemoveAt(stack.Count - 1);
+                            stack.Add(tmp);
+                        }
                     }
                     else
                     {
@@ -76,7 +82,7 @@ namespace Mathema.Algorithms.Handlers
                 for (i = 0; i < RPNStack.Count; i++)
                 {
                     var s = RPNStack[i];
-                    if (s.Type != SymbolTypes.Number && s.Type != SymbolTypes.Variable)
+                    if (s.Type != SymbolTypes.Number && s.Type != SymbolTypes.Variable && s.Type != SymbolTypes.Imaginary)
                     {
                         if (s.Type == SymbolTypes.BinaryOperator)
                         {
@@ -202,6 +208,10 @@ namespace Mathema.Algorithms.Handlers
                         else if (s.Type == SymbolTypes.Variable)
                         {
                             stack.Add(new VariableExpression(s.Value, 1m));
+                        }
+                        else if (s.Type == SymbolTypes.Imaginary)
+                        {
+                            stack.Add(new ComplexExpression(1m));
                         }
                     }
                 }

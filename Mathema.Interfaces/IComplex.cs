@@ -4,8 +4,10 @@ using System.Text;
 
 namespace Mathema.Interfaces
 {
-    public interface IComplexExpression : IExpression, IComplex
+    public interface IComplex
     {
-        IComplexExpression Conjugation();
+        IFraction Re { get; set; }
+
+        IFraction Im { get; set; }
     }
 }

@@ -121,7 +121,12 @@ namespace Mathema.Algorithms.Parsers
 
         private static void FindSymbolForUndefined(ref ISymbol previousSymbol, List<ISymbol> operators, List<ISymbol> output, Dictionary<string, int> variables)
         {
-            if (Constants.TryGetValue(previousSymbol.Value, out var c))
+            if (previousSymbol.Value == "i")
+            {
+                previousSymbol = new Symbol(previousSymbol.Value, SymbolTypes.Imaginary);
+                output.Add(previousSymbol);
+            }
+            else if (Constants.TryGetValue(previousSymbol.Value, out var c))
             {
                 previousSymbol = new Symbol(c.Value.ToString(), SymbolTypes.Number);
                 output.Add(previousSymbol);
