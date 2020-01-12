@@ -36,20 +36,15 @@ namespace Mathema.Models.ExpressionOperations
             var res = (IComplexExpression)lhe.Clone();
             if (rhe is IComplexExpression rc)
             {
-                res.Count.Re.Add(rc.Count.Re);
-                res.Count.Im.Add(rc.Count.Im);
+                res.Count.Add(rc.Count);
 
-                if (res.Count.Im.ToNumber() == 0)
-                {
-                    return new NumberExpression(res.Count.Re);
-                }
-
-                return res;
+                return ReduceExpression(res);
             }
             else if (rhe is INumberExpression nrc)
             {
                 res.Count.Add(nrc.Count);
-                return new ComplexExpression(res.Count.Re, res.Count.Im);
+
+                return ReduceExpression(res);
             }
 
             return null;
@@ -60,20 +55,15 @@ namespace Mathema.Models.ExpressionOperations
             var res = (IComplexExpression)lhe.Clone();
             if (rhe is IComplexExpression rc)
             {
-                res.Count.Re.Subtract(rc.Count.Re);
-                res.Count.Im.Subtract(rc.Count.Im);
+                res.Count.Subtract(rc.Count);
 
-                if (res.Count.Im.ToNumber() == 0)
-                {
-                    return new NumberExpression(res.Count.Re);
-                }
-
-                return res;
+                return ReduceExpression(res);
             }
             else if (rhe is INumberExpression nrc)
             {
                 res.Count.Subtract(nrc.Count);
-                return new ComplexExpression(res.Count.Re, res.Count.Im);
+
+                return ReduceExpression(res);
             }
 
             return null;
@@ -86,12 +76,13 @@ namespace Mathema.Models.ExpressionOperations
             {
                 res.Count.Multiply(rhe.Count);
 
-                return res;
+                return ReduceExpression(res);
             }
             else if (rhe is INumberExpression nrc)
             {
                 res.Count.Multiply(nrc.Count);
-                return new ComplexExpression(res.Count.Re, res.Count.Im);
+
+                return ReduceExpression(res);
             }
 
             return null;
@@ -104,12 +95,13 @@ namespace Mathema.Models.ExpressionOperations
             {
                 res.Count.Divide(rc.Count);
 
-                return res;
+                return ReduceExpression(res);
             }
             else if (rhe is INumberExpression nrc)
             {
                 res.Count.Divide(nrc.Count);
-                return new ComplexExpression(res.Count.Re, res.Count.Im);
+
+                return ReduceExpression(res);
             }
 
             return null;
@@ -169,6 +161,21 @@ namespace Mathema.Models.ExpressionOperations
             var res = (IComplexExpression)rhe.Clone();
             res.Count.Re.Numerator *= -1;
             res.Count.Im.Numerator *= -1;
+            return res;
+        }
+
+        private static IExpression ReduceExpression(IExpression res)
+        {
+            if (res is INumberExpression && res.Count.Im.Numerator != 0)
+            {
+                return new ComplexExpression(res.Count.Re, res.Count.Im);
+            }
+
+            if (res is IComplexExpression && res.Count.Im.Numerator == 0)
+            {
+                return new NumberExpression(res.Count.Re);
+            }
+
             return res;
         }
     }
