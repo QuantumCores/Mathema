@@ -76,7 +76,7 @@ namespace Mathema.Models.ExpressionOperations
 
                 if (res.DimensionKey.Key.Count == 0)
                 {
-                    return new NumberExpression(lhe.Count.ToNumber());
+                    return new ComplexExpression(res.Count);
                 }
 
                 return res;
@@ -99,7 +99,7 @@ namespace Mathema.Models.ExpressionOperations
 
                 if (res.DimensionKey.Key.Count == 0)
                 {
-                    return new NumberExpression(res.Count.ToNumber());
+                    return new ComplexExpression(res.Count);
                 }
 
                 return res.Clone();
@@ -113,18 +113,21 @@ namespace Mathema.Models.ExpressionOperations
             var res = lhe.Clone();
             if (rhe is INumberExpression)
             {
-                var n = rhe.Count.ToNumber();
-
-                if (n == 0)
+                if (rhe.Count.Im.Numerator == 0)
                 {
-                    return new NumberExpression(1);
+                    var n = rhe.Count.Re.ToNumber();
+
+                    if (n == 0)
+                    {
+                        return new NumberExpression(1);
+                    }
+
+                    res.Count.Pow(rhe.Count);
+                    var k = res.DimensionKey.Key.ElementAt(0).Key;
+                    res.DimensionKey.Multiply(k, rhe.Count.Re.ToNumber());
+
+                    return res;
                 }
-
-                res.Count.Pow(rhe.Count);
-                var k = res.DimensionKey.Key.ElementAt(0).Key;
-                res.DimensionKey.Multiply(k, rhe.Count.ToNumber());
-
-                return res;
             }
 
             return null;
@@ -133,7 +136,7 @@ namespace Mathema.Models.ExpressionOperations
         public static IExpression Sign(IExpression rhe)
         {
             var res = rhe.Clone();
-            res.Count.Numerator *= -1;
+            res.Count.Multiply(-1);
             return res;
         }
     }

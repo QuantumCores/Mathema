@@ -38,18 +38,16 @@ namespace Mathema.Models.ExpressionOperations
 
         public static IExpression Add(IExpression lhe, IExpression rhe)
         {
-            var res = (FlatMultExpression)(lhe.Clone());
+            var res = (FlatMultExpression)lhe.Clone();
             if (DimensionKey.Compare(res.DimensionKey, rhe.DimensionKey))
             {
-                if (res.Expressions.ContainsKey(Dimensions.Number))
+                //if (res.Expressions.ContainsKey(Dimensions.Number))
+                //{
+                //    res.Expressions[Dimensions.Number][0].Count.Add(rhe.Count);
+                //}
+                //else
                 {
-                    res.Expressions[Dimensions.Number][0].Count.Add(rhe.Count);
-                }
-                else
-                {
-                    var num = new NumberExpression(rhe.Count);
-                    num.Count.Add(new Fraction(1, 1));
-                    res.Add(num);
+                    res.Count.Add(rhe.Count);
                 }
                 res.Count.Add(rhe.Count);
                 return res;
@@ -60,7 +58,7 @@ namespace Mathema.Models.ExpressionOperations
 
         public static IExpression Subtract(IExpression lhe, IExpression rhe)
         {
-            var res = (FlatMultExpression)(lhe.Clone());
+            var res = (FlatMultExpression)lhe.Clone();
             if (DimensionKey.Compare(res.DimensionKey, rhe.DimensionKey))
             {
                 res.Count.Subtract(rhe.Count);
@@ -139,7 +137,7 @@ namespace Mathema.Models.ExpressionOperations
             var lc = (IFlatExpression)res;
             if (rhe is INumberExpression)
             {
-                var n = rhe.Count.ToNumber();
+                var n = rhe.Count.Re.ToNumber();
 
                 if (n == 0)
                 {
@@ -166,7 +164,7 @@ namespace Mathema.Models.ExpressionOperations
         public static IExpression Sign(IExpression rhe)
         {
             var res = rhe.Clone();
-            res.Count.Numerator *= -1;
+            res.Count.Multiply(-1);
             return res;
         }
     }

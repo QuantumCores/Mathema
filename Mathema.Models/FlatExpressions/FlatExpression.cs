@@ -18,7 +18,7 @@ namespace Mathema.Models.FlatExpressions
 
         public IDimensionKey DimensionKey { get; set; } = new DimensionKey(nameof(FlatExpression));
 
-        public IFraction Count { get; set; } = new Fraction();
+        public IComplex Count { get; set; } = new Complex();
 
         public Dictionary<OperatorTypes, Func<IExpression, IExpression, IExpression>> BinaryOperations { get; set; }
 

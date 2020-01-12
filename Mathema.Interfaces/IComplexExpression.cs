@@ -6,10 +6,6 @@ namespace Mathema.Interfaces
 {
     public interface IComplexExpression : IExpression
     {
-        IFraction Re { get; set; }
-
-        IFraction Im { get; set; }
-
         IComplexExpression Conjugation();
     }
 }

@@ -16,8 +16,8 @@ namespace Mathema.Solver.Solvers
             var res = new EquationSolutions();
             if (expression is FlatAddExpression fa)
             {
-                var a = (Fraction)fa.Expressions["x"][0].Count;
-                var b = (Fraction)fa.Expressions["1"][0].Count;
+                var a = (Fraction)fa.Expressions["x"][0].Count.Re;
+                var b = (Fraction)fa.Expressions["1"][0].Count.Re;
 
                 res.Solutions.Add(new NumberExpression(-b / a));
             }

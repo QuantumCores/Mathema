@@ -46,10 +46,19 @@ namespace Mathema.Models.Numerics
             }
         }
 
+        public void Add(int n)
+        {
+            this.Numerator += n * this.Denominator;
+        }
+
         public void Subtract(IFraction frc)
         {
-            frc.Numerator *= -1;
-            this.Add(frc);
+            this.Add(-(Fraction)frc);
+        }
+
+        public void Subtract(int n)
+        {
+            this.Numerator -= n * this.Denominator;
         }
 
         public void Multiply(IFraction frc)
@@ -95,18 +104,6 @@ namespace Mathema.Models.Numerics
             return this.Numerator / this.Denominator;
         }
 
-        public string AsString()
-        {
-            if (this.Denominator == 1)
-            {
-                return this.Numerator.ToString();
-            }
-            else
-            {
-                return (this.Numerator / this.Denominator).ToString();
-            }
-        }
-
         /// <summary>
         /// Greatest Common Factor
         /// </summary>
@@ -150,6 +147,11 @@ namespace Mathema.Models.Numerics
         public IFraction Clone()
         {
             return new Fraction(this.Numerator, this.Denominator);
+        }
+
+        public string AsString()
+        {
+            return this.ToString();
         }
 
         public override string ToString()

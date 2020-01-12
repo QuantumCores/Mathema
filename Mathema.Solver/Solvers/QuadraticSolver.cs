@@ -26,6 +26,7 @@ namespace Mathema.Solver.Solvers
                 IExpression eb = null;
                 IExpression ec = null;
 
+                //TODO this should work on expressions not on numbers
                 for (int i = 0; i < fa.Expressions.Count; i++)
                 {
                     var kv = fa.Expressions.ElementAt(i);
@@ -33,19 +34,19 @@ namespace Mathema.Solver.Solvers
 
                     if (deg == 2)
                     {
-                        a = (Fraction)kv.Value[0].Count;
+                        a = (Fraction)kv.Value[0].Count.Re;
                         ea = kv.Value[0];
                     }
                     else if (deg == 1)
                     {
                         if (kv.Value[0] is NumberExpression)
                         {
-                            c = (Fraction)kv.Value[0].Count;
+                            c = (Fraction)kv.Value[0].Count.Re;
                             ec = kv.Value[0];
                         }
                         else
                         {
-                            b = (Fraction)kv.Value[0].Count;
+                            b = (Fraction)kv.Value[0].Count.Re;
                             eb = kv.Value[0];
                         }
                     }

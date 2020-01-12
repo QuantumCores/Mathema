@@ -111,17 +111,20 @@ namespace Mathema.Models.ExpressionOperations
 
             if (rhe is INumberExpression)
             {
-                var p = rhe.Count.ToNumber();
-                if (p % 1 == 0)
+                if (rhe.Count.Im.ToNumber() == 0)
                 {
-                    if (p == 0)
+                    var p = rhe.Count.Re.ToNumber();
+                    if (p % 1 == 0)
                     {
-                        return new NumberExpression(1);
-                    }                    
-                    else
-                    {
-                        res.DimensionKey.Key[res.DimensionKey.Key.ElementAt(0).Key] *= p;
-                        return res;
+                        if (p == 0)
+                        {
+                            return new NumberExpression(1);
+                        }
+                        else
+                        {
+                            res.DimensionKey.Key[res.DimensionKey.Key.ElementAt(0).Key] *= p;
+                            return res;
+                        }
                     }
                 }
             }
@@ -132,7 +135,7 @@ namespace Mathema.Models.ExpressionOperations
         public static IExpression Sign(IExpression rhe)
         {
             var res = rhe.Clone();
-            res.Count.Numerator *= -1;
+            res.Count.Multiply(-1);
             return res;
         }
     }

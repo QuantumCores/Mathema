@@ -20,7 +20,7 @@ namespace ExpressionTests.ComplexExpressionTests
             var actual = (NumberExpression)expr.Execute();
 
             //Assert
-            Assert.AreEqual(expected.Count.ToNumber(), actual.Count.ToNumber());
+            Assert.AreEqual(expected.Count.Re.ToNumber(), actual.Count.Re.ToNumber());
         }
 
         [Test]
@@ -36,8 +36,8 @@ namespace ExpressionTests.ComplexExpressionTests
             var actual = (ComplexExpression)expr.Execute();
 
             //Assert
-            Assert.AreEqual(expected.Re.ToNumber(), actual.Re.ToNumber());
-            Assert.AreEqual(expected.Im.ToNumber(), actual.Im.ToNumber());
+            Assert.AreEqual(expected.Count.Re.ToNumber(), actual.Count.Re.ToNumber());
+            Assert.AreEqual(expected.Count.Im.ToNumber(), actual.Count.Im.ToNumber());
         }
 
 
@@ -54,8 +54,8 @@ namespace ExpressionTests.ComplexExpressionTests
             var actual = (ComplexExpression)expr.Execute();
 
             //Assert
-            Assert.AreEqual(expected.Re.ToNumber(), actual.Re.ToNumber());
-            Assert.AreEqual(expected.Im.ToNumber(), actual.Im.ToNumber());
+            Assert.AreEqual(expected.Count.Re.ToNumber(), actual.Count.Re.ToNumber());
+            Assert.AreEqual(expected.Count.Im.ToNumber(), actual.Count.Im.ToNumber());
         }
 
         [Test]
@@ -71,8 +71,8 @@ namespace ExpressionTests.ComplexExpressionTests
             var actual = (ComplexExpression)expr.Execute();
 
             //Assert
-            Assert.AreEqual(expected.Re.ToNumber(), actual.Re.ToNumber());
-            Assert.AreEqual(expected.Im.ToNumber(), actual.Im.ToNumber());
+            Assert.AreEqual(expected.Count.Re.ToNumber(), actual.Count.Re.ToNumber());
+            Assert.AreEqual(expected.Count.Im.ToNumber(), actual.Count.Im.ToNumber());
         }
 
         //[Test]

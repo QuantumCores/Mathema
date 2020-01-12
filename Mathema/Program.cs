@@ -91,9 +91,9 @@ namespace Mathema
                     var expr = ExpressionBuilder.Build(rpn.Output);
                     var exprf = ExpressionBuilder.BuildFlat(rpn.Output);
                     Console.WriteLine("Equation r: " + expr.ToString());
-                    Console.WriteLine("Result   r: " + expr.Execute().Count.ToNumber());
+                    Console.WriteLine("Result   r: " + expr.Execute().Count.AsString());
                     Console.WriteLine("Equation f: " + exprf.ToString());
-                    Console.WriteLine("Result   f: " + exprf.Execute().Count.ToNumber());
+                    Console.WriteLine("Result   f: " + exprf.Execute().Count.AsString());
                 }
             }
             catch (Exception ex)

@@ -13,7 +13,8 @@ namespace Mathema.Enums.Symbols
         LeftParenthesis = 4,
         RightParenthesis = 5,
         Function = 6,
-        Variable = 7
+        Variable = 7,
+        Imaginary = 8
     }
 
 }

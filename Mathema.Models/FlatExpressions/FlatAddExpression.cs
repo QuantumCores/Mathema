@@ -50,12 +50,13 @@ namespace Mathema.Models.FlatExpressions
                 {
                     var exec = exp.Execute();
                     // Calling Vlaue simplifies expressions
-                    if (exec is FlatAddExpression mult)
+                    if (exec is FlatAddExpression fae)
                     {
-                        foreach (var mel in mult.Expressions)
+                        foreach (var mel in fae.Expressions)
                         {
                             foreach (var me in mel.Value)
                             {
+                                me.Count.Multiply(exec.Count);
                                 all.Add(me);
                             }
                         }
@@ -74,7 +75,7 @@ namespace Mathema.Models.FlatExpressions
             var dims = new Dictionary<string, List<IExpression>>();
             foreach (var exp in all)
             {
-                if (exp.Count.Numerator != 0)
+                if (exp.Count.Re.Numerator != 0 || exp.Count.Im.Numerator != 0)
                 {
                     var key = exp.DimensionKey.ToString();
                     if (!dims.ContainsKey(key))
@@ -86,7 +87,7 @@ namespace Mathema.Models.FlatExpressions
                         if (key != nameof(BinaryExpression) && key != nameof(UnaryExpression))
                         {
                             var res = dims[key][0].BinaryOperations[OperatorTypes.Add](dims[key][0], exp);
-                            if (res.Count.Numerator == 0)
+                            if (res.Count.Re.Numerator == 0 && res.Count.Im.Numerator == 0)
                             {
                                 dims.Remove(key);
                                 break;
@@ -115,7 +116,7 @@ namespace Mathema.Models.FlatExpressions
             {
                 return new NumberExpression(0);
             }
-            else if (this.Expressions.Count == 1 && this.Expressions.ContainsKey(Dimensions.Number))
+            else if (this.Expressions.Count == 1 && this.Expressions.ElementAt(0).Key == Dimensions.Number)
             {
                 return this.Expressions[Dimensions.Number][0];
             }

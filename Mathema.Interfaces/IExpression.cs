@@ -4,7 +4,7 @@ namespace Mathema.Interfaces
 {
     public interface IExpression : IOperationDispatcher
     {
-        IFraction Count { get; set; }
+        IComplex Count { get; set; }
 
         IDimensionKey DimensionKey { get; set; }
 

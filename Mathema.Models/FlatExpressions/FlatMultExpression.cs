@@ -37,9 +37,9 @@ namespace Mathema.Models.FlatExpressions
 
                 this.Expressions[key].Add(expression);
             }
-            else if (expression is NumberExpression)
+            else if (expression is NumberExpression || expression is ComplexExpression)
             {
-                //do not add
+                //do not add beacuse we use them only to calculate Count
             }
             else
             {
@@ -88,10 +88,10 @@ namespace Mathema.Models.FlatExpressions
             //TODO FlatMult DimensionKey is invalid
             foreach (var exp in all)
             {
-                if (exp.Count.Numerator != 0)
+                if (exp.Count.Re.Numerator != 0 || exp.Count.Im.Numerator != 0)
                 {
                     var key = exp.DimensionKey.Key.ElementAt(0).Key;
-                    if (key == Dimensions.Number)
+                    if (key == Dimensions.Number || key == Dimensions.Complex)
                     {
                         this.Count.Multiply(exp.Count);
                         continue;
@@ -107,7 +107,7 @@ namespace Mathema.Models.FlatExpressions
                         if (key != nameof(BinaryExpression) && key != nameof(UnaryExpression))
                         {
                             this.Count.Multiply(exp.Count);
-                            exp.Count = new Fraction();
+                            exp.Count = new Complex();
 
                             Reduce(dims, exp, key);
                         }
@@ -120,7 +120,8 @@ namespace Mathema.Models.FlatExpressions
                 else
                 {
                     dims = new Dictionary<string, List<IExpression>>();
-                    this.Count.Numerator = 0;
+                    this.Count.Re.Numerator = 0;
+                    this.Count.Im.Numerator = 0;
                     break;
                 }
             }
@@ -162,13 +163,13 @@ namespace Mathema.Models.FlatExpressions
             this.Squash();
             if (this.Expressions.Count == 0)
             {
-                if (this.Count.Numerator == 0)
+                if (this.Count.Im.Numerator == 0)
                 {
-                    return new NumberExpression(0);
+                    return new NumberExpression(this.Count.Re);
                 }
                 else
                 {
-                    return new NumberExpression(this.Count);
+                    return new ComplexExpression(this.Count);
                 }
             }
             else if (this.Expressions.Count == 1)
@@ -176,7 +177,7 @@ namespace Mathema.Models.FlatExpressions
                 var res = this.Expressions.ElementAt(0).Value[0];
                 res.Count.Multiply(this.Count);
                 //Reset counter when extracting
-                this.Count = new Fraction();
+                this.Count = new Complex();
                 return res;
             }
             else
@@ -273,7 +274,7 @@ namespace Mathema.Models.FlatExpressions
         {
             var sb = new List<string>();
             var addOne = true;
-            if (this.Count.ToNumber() != 1)
+            if (this.Count.Re.ToNumber() != 1 && this.Count.Im.ToNumber() == 0)
             {
                 sb.Add(this.Count.AsString());
                 addOne = false;
@@ -314,25 +315,4 @@ namespace Mathema.Models.FlatExpressions
             return "( " + string.Join("", sb) + ")";
         }
     }
-
-    class NewKeyExpressionPair
-    {
-        public NewKeyExpressionPair(IExpression expr)
-        {
-            //TODO I don't think we need that property and this class at all
-            //this.NewKey = expr.DimensionKey.Clone();
-            this.Expression = expr;
-        }
-
-        public NewKeyExpressionPair(string key, IExpression expr)
-        {
-            //this.NewKey = new DimensionKey(key);
-            this.Expression = expr;
-        }
-
-        //internal IDimensionKey NewKey { get; set; }
-
-        internal IExpression Expression { get; set; }
-    }
-
 }

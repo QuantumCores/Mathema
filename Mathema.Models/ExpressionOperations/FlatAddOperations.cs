@@ -165,45 +165,48 @@ namespace Mathema.Models.ExpressionOperations
 
             if (rhe is INumberExpression)
             {
-                var p = rhe.Count.ToNumber();
-                if (p % 1 == 0)
+                if (rhe.Count.Im.ToNumber() == 0)
                 {
-                    if (p == 0)
+                    var p = rhe.Count.Re.ToNumber();
+                    if (p % 1 == 0)
                     {
-                        return new NumberExpression(1);
-                    }
-                    //else if (p == 1)
-                    //{
-                    //    return lc;
-                    //}
-                    //else if (p > 1)
-                    //{
-                    //    for (int i = 1; i < (int)p; i++)
-                    //    {
-                    //        foreach (var expA in allA)
-                    //        {
-                    //            foreach (var expB in allB)
-                    //            {
-                    //                result.Add(expA.BinaryOperations[OperatorTypes.Multiply](expA, expB));
-                    //            }
-                    //        }
+                        if (p == 0)
+                        {
+                            return new NumberExpression(1);
+                        }
+                        //else if (p == 1)
+                        //{
+                        //    return lc;
+                        //}
+                        //else if (p > 1)
+                        //{
+                        //    for (int i = 1; i < (int)p; i++)
+                        //    {
+                        //        foreach (var expA in allA)
+                        //        {
+                        //            foreach (var expB in allB)
+                        //            {
+                        //                result.Add(expA.BinaryOperations[OperatorTypes.Multiply](expA, expB));
+                        //            }
+                        //        }
 
-                    //        allB = result.ToList();
-                    //        result.Clear();
-                    //    }
+                        //        allB = result.ToList();
+                        //        result.Clear();
+                        //    }
 
-                    //    var flat = new FlatAddExpression();
-                    //    foreach (var expB in allB)
-                    //    {
-                    //        flat.Add(expB);
-                    //    }
+                        //    var flat = new FlatAddExpression();
+                        //    foreach (var expB in allB)
+                        //    {
+                        //        flat.Add(expB);
+                        //    }
 
-                    //    return flat.Execute();
-                    //}
-                    else
-                    {
-                        lc.DimensionKey.Key[lc.DimensionKey.Key.ElementAt(0).Key] *= p;
-                        return lc;
+                        //    return flat.Execute();
+                        //}
+                        else
+                        {
+                            lc.DimensionKey.Key[lc.DimensionKey.Key.ElementAt(0).Key] *= p;
+                            return lc;
+                        }
                     }
                 }
             }
@@ -214,7 +217,7 @@ namespace Mathema.Models.ExpressionOperations
         public static IExpression Sign(IExpression rhe)
         {
             var res = rhe.Clone();
-            res.Count.Numerator *= -1;
+            res.Count.Multiply(-1);
             return res;
         }
     }

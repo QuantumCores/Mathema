@@ -12,7 +12,11 @@ namespace Mathema.Interfaces
 
         void Add(IFraction frc);
 
+        void Add(int n);
+
         void Subtract(IFraction frc);
+
+        void Subtract(int n);
 
         void Multiply(IFraction frc);
 

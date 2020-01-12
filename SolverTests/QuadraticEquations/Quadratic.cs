@@ -22,8 +22,8 @@ namespace SolverTests.QuadraticEquations
 
             //Assert
             Assert.IsTrue(sut.Solutions.Count == 2);
-            Assert.AreEqual(sut.Solutions[0].Count.ToNumber(), 5);
-            Assert.AreEqual(sut.Solutions[1].Count.ToNumber(), -1);
+            Assert.AreEqual(sut.Solutions[0].Count.Re.ToNumber(), 5);
+            Assert.AreEqual(sut.Solutions[1].Count.Re.ToNumber(), -1);
         }
 
         [Test]
@@ -39,7 +39,7 @@ namespace SolverTests.QuadraticEquations
 
             //Assert
             Assert.IsTrue(sut.Solutions.Count == 1);
-            Assert.AreEqual(sut.Solutions[0].Count.ToNumber(), 1);
+            Assert.AreEqual(sut.Solutions[0].Count.Re.ToNumber(), 1);
         }
 
         [Test]

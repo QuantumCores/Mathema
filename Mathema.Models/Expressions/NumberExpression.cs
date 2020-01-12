@@ -14,7 +14,7 @@ namespace Mathema.Models.Expressions
     {
         public IDimensionKey DimensionKey { get; set; } = new DimensionKey(Dimensions.Number);
 
-        public IFraction Count { get; set; } = new Fraction();
+        public IComplex Count { get; set; } = new Complex();
 
         public Dictionary<OperatorTypes, Func<IExpression, IExpression, IExpression>> BinaryOperations { get; } = NumberOperations.BinaryOperations;
 
@@ -24,7 +24,7 @@ namespace Mathema.Models.Expressions
         {
             if (decimal.TryParse(val, out var conv))
             {
-                this.Count = new Fraction(conv, 1);
+                this.Count = new Complex(conv, 0);
             }
             else
             {
@@ -34,12 +34,12 @@ namespace Mathema.Models.Expressions
 
         public NumberExpression(decimal val)
         {
-            this.Count = new Fraction(val, 1);
+            this.Count = new Complex(val, 0);
         }
 
         public NumberExpression(IFraction frac)
         {
-            this.Count = frac;
+            this.Count = new Complex(frac, new Fraction(0, 1));
         }
 
         public IExpression Execute()
@@ -49,7 +49,7 @@ namespace Mathema.Models.Expressions
 
         public IExpression Clone()
         {
-            return new NumberExpression(this.Count.Clone());
+            return new NumberExpression(this.Count.Re.Clone());
         }
 
         public string AsString()

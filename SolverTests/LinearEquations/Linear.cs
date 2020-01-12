@@ -25,7 +25,7 @@ namespace SolverTests.LinearEquations
 
             //Assert
             Assert.IsTrue(sut.Solutions.Count == 1);
-            Assert.AreEqual(sut.Solutions[0].Count.ToNumber(), 2);
+            Assert.AreEqual(sut.Solutions[0].Count.Re.ToNumber(), 2);
         }
     }
 }

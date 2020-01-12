@@ -18,7 +18,7 @@ namespace Mathema.Models.Expressions
 
         public IDimensionKey DimensionKey { get; set; } = new DimensionKey();
 
-        public IFraction Count { get; set; } = new Fraction();
+        public IComplex Count { get; set; } = new Complex();
 
         public Dictionary<OperatorTypes, Func<IExpression, IExpression, IExpression>> BinaryOperations { get; } = VariableOperations.BinaryOperations;
 
@@ -40,8 +40,7 @@ namespace Mathema.Models.Expressions
         {
             var res = new VariableExpression(string.Copy(this.Symbol), this.Val);
             res.DimensionKey = new DimensionKey();
-            res.Count.Numerator = this.Count.Numerator;
-            res.Count.Denominator = this.Count.Denominator;
+            res.Count = this.Count.Clone();
             foreach (var key in this.DimensionKey.Key)
             {
                 res.DimensionKey.Add(string.Copy(key.Key), key.Value);
@@ -62,21 +61,44 @@ namespace Mathema.Models.Expressions
 
         public override string ToString()
         {
-            var num = this.Count.ToNumber();
-            if (num != 1 && num != -1)
+            if (this.Count.Im.Numerator == 0)
             {
-                if (this.Count.Denominator % 1 == 0 && this.Count.Denominator != 1 && this.Count.Numerator % 1 == 0)
+                var num = this.Count.Re.ToNumber();
+                if (num != 1 && num != -1)
                 {
-                    return this.Count.Numerator.ToString() + " / " + this.Count.Denominator + " * " + this.DimensionKey.ToString();
+                    if (this.Count.Re.Denominator % 1 == 0 && this.Count.Re.Denominator != 1 && this.Count.Re.Numerator % 1 == 0)
+                    {
+                        return this.Count.Re.Numerator.ToString() + " / " + this.Count.Re.Denominator + " * " + this.DimensionKey.ToString();
+                    }
+
+                    if (num % 1 == 0)
+                    {
+                        return num.ToString() + " * " + this.DimensionKey.ToString();
+                    }
                 }
 
-                if (num % 1 == 0)
+                return num == -1 ? "-" + this.DimensionKey.ToString() : this.DimensionKey.ToString();
+            }
+            else if (this.Count.Re.Numerator == 0)
+            {
+                var num = this.Count.Im.ToNumber();
+                if (num != 1 && num != -1)
                 {
-                    return num.ToString() + " * " + this.DimensionKey.ToString();
+                    if (this.Count.Im.Denominator % 1 == 0 && this.Count.Im.Denominator != 1 && this.Count.Im.Numerator % 1 == 0)
+                    {
+                        return this.Count.Im.Numerator.ToString() + " / " + this.Count.Im.Denominator + " * " + this.DimensionKey.ToString();
+                    }
+
+                    if (num % 1 == 0)
+                    {
+                        return num.ToString() + " * " + this.DimensionKey.ToString();
+                    }
                 }
+
+                return num == -1 ? "-" + this.DimensionKey.ToString() : this.DimensionKey.ToString();
             }
 
-            return num == -1 ? "-" + this.DimensionKey.ToString() : this.DimensionKey.ToString();
+            return "(" + this.Count.ToString() + ") * " + this.DimensionKey.ToString();
         }
     }
 }

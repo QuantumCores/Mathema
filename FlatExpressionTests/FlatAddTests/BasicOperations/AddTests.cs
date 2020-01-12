@@ -42,5 +42,22 @@ namespace FlatExpressionTests.FlatAddTests.BasicOperations
             //Assert
             Assert.IsTrue(RPNComparer.Compare(expected.Output, actual.Output), $"Expected: {expText} but was {expr.ToString()}");
         }
+
+        [Test]
+        public void Add_FlatAddReal_FlatAddImagined_TheSame()
+        {
+            //Arrange
+            var test = "2 + x + i * (x + 2)";
+            var expText = "(1 + i) * x + 2 + 2 * i"; // "(2 + x) * (1 + i)";
+            var expected = RPNParser.Parse(expText);
+
+            //Act
+            var rpn = RPNParser.Parse(test);
+            var expr = ExpressionBuilder.BuildFlat(rpn.Output).Execute();
+            var actual = RPNParser.Parse(expr.ToString());
+
+            //Assert
+            Assert.IsTrue(RPNComparer.Compare(expected.Output, actual.Output), $"Expected: {expText} but was {expr.ToString()}");
+        }
     }
 }

@@ -16,7 +16,7 @@ namespace Mathema.Models.Expressions
 
         public IDimensionKey DimensionKey { get; set; } = new DimensionKey(nameof(UnaryExpression));
 
-        public IFraction Count { get; set; } = new Fraction();
+        public IComplex Count { get; set; } = new Complex();
 
         public Dictionary<OperatorTypes, Func<IExpression, IExpression, IExpression>> BinaryOperations { get; }
 
