@@ -26,6 +26,7 @@ namespace Mathema.Solver.Solvers
                 IExpression eb = null;
                 IExpression ec = null;
 
+                //TODO this should work on expressions not on numbers
                 for (int i = 0; i < fa.Expressions.Count; i++)
                 {
                     var kv = fa.Expressions.ElementAt(i);

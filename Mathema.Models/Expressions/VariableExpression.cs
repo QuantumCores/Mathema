@@ -79,8 +79,26 @@ namespace Mathema.Models.Expressions
 
                 return num == -1 ? "-" + this.DimensionKey.ToString() : this.DimensionKey.ToString();
             }
+            else if (this.Count.Re.Numerator == 0)
+            {
+                var num = this.Count.Im.ToNumber();
+                if (num != 1 && num != -1)
+                {
+                    if (this.Count.Im.Denominator % 1 == 0 && this.Count.Im.Denominator != 1 && this.Count.Im.Numerator % 1 == 0)
+                    {
+                        return this.Count.Im.Numerator.ToString() + " / " + this.Count.Im.Denominator + " * " + this.DimensionKey.ToString();
+                    }
 
-            return this.Count.ToString() + " * " + this.DimensionKey.ToString();
+                    if (num % 1 == 0)
+                    {
+                        return num.ToString() + " * " + this.DimensionKey.ToString();
+                    }
+                }
+
+                return num == -1 ? "-" + this.DimensionKey.ToString() : this.DimensionKey.ToString();
+            }
+
+            return "(" + this.Count.ToString() + ") * " + this.DimensionKey.ToString();
         }
     }
 }

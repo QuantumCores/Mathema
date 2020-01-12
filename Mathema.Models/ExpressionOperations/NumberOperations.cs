@@ -39,10 +39,10 @@ namespace Mathema.Models.ExpressionOperations
                 res.Count.Add(rhe.Count);
                 return res;
             }
-            else if (rhe is ComplexExpression rc)
+            else if (rhe is IComplexExpression)
             {
-                res.Count.Add(rc.Count);
-                return new ComplexExpression(res.Count);            
+                res.Count.Add(rhe.Count);
+                return res;
             }
 
 

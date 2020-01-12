@@ -50,12 +50,13 @@ namespace Mathema.Models.FlatExpressions
                 {
                     var exec = exp.Execute();
                     // Calling Vlaue simplifies expressions
-                    if (exec is FlatAddExpression mult)
+                    if (exec is FlatAddExpression fae)
                     {
-                        foreach (var mel in mult.Expressions)
+                        foreach (var mel in fae.Expressions)
                         {
                             foreach (var me in mel.Value)
                             {
+                                me.Count.Multiply(exec.Count);
                                 all.Add(me);
                             }
                         }

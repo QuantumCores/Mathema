@@ -190,7 +190,24 @@ namespace Mathema.Models.Numerics
             }
             else if (this.Im.Numerator == 0)
             {
+                if (this.Re.Numerator == 0)
+                {
+                    return "";
+                }
+
                 return this.Re.AsString();
+            }
+            else 
+            {
+                if (this.Im.ToNumber() == 1)
+                {
+                    return this.Re.AsString() + " + i";
+                }
+
+                if (this.Im.ToNumber() == -1)
+                {
+                    return this.Re.AsString() + " - i";
+                }
             }
 
             return this.Re.AsString() + " + " + this.Im.AsString() + " * i";

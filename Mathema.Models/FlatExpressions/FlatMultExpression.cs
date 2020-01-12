@@ -37,9 +37,9 @@ namespace Mathema.Models.FlatExpressions
 
                 this.Expressions[key].Add(expression);
             }
-            else if (expression is NumberExpression)
+            else if (expression is NumberExpression || expression is ComplexExpression)
             {
-                //do not add
+                //do not add beacuse we use them only to calculate Count
             }
             else
             {
@@ -91,7 +91,7 @@ namespace Mathema.Models.FlatExpressions
                 if (exp.Count.Re.Numerator != 0 || exp.Count.Im.Numerator != 0)
                 {
                     var key = exp.DimensionKey.Key.ElementAt(0).Key;
-                    if (key == Dimensions.Number)
+                    if (key == Dimensions.Number || key == Dimensions.Complex)
                     {
                         this.Count.Multiply(exp.Count);
                         continue;
