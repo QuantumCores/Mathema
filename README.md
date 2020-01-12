@@ -1,5 +1,7 @@
 # Mathema
-Mathema was created to read and solve simple equations
+Mathema was created to read and solve simple equations as POC project. At current state it can solve linear and quadratic equations.
+
+P.S. I have learned a lot about processing mathematical equations and decided to put this project on hold. There is a lot of CAS programs out there that are easy to use and offer a lot for free. It was working on this project for a month. Maybe I'll get back to some day. Cheers!
 
 **Example**
 (2+1)^2-Cos(0)*-2-1  
