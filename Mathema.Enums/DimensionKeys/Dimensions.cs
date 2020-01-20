@@ -8,6 +8,6 @@ namespace Mathema.Enums.DimensionKeys
     {
         public const string Number = "1";
 
-        public static string Complex = "i";
+        public const string Complex = "i";
     }
 }

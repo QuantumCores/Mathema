@@ -88,6 +88,11 @@ namespace Mathema.Models.Expressions
 
         public IExpression Execute()
         {
+            if (this.Count.Im.Numerator == 0)
+            {
+                return new NumberExpression(this.Count.Re);
+            }
+
             return this;
         }
 

@@ -28,7 +28,9 @@ namespace Mathema.Models.FlatExpressions
 
         public abstract void Squash();
 
-        public abstract void Add(IExpression expression);        
+        public abstract void Add(IExpression expression);
+
+        public abstract void Remove(string key, decimal value);
 
         public abstract IExpression Clone();
 

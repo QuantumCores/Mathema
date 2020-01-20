@@ -1,6 +1,7 @@
 ﻿using Mathema.Enums.Operators;
 using Mathema.Interfaces;
 using Mathema.Models.Expressions;
+using Mathema.Models.Numerics;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -36,13 +37,13 @@ namespace Mathema.Models.ExpressionOperations
             var res = lhe.Clone();
             if (rhe is INumberExpression)
             {
-                res.Count.Add(rhe.Count);                
+                res.Count.Add(rhe.Count);
 
                 return ReduceExpression(res);
             }
             else if (rhe is IComplexExpression)
             {
-                res.Count.Add(rhe.Count);                
+                res.Count.Add(rhe.Count);
 
                 return ReduceExpression(res);
             }
@@ -119,6 +120,28 @@ namespace Mathema.Models.ExpressionOperations
                     return new NumberExpression(1);
                 }
 
+                if (Math.Abs(n) < 1)
+                {
+                    if (res.Count.Re.Numerator < 0 && res.Count.Re.Denominator > 0)
+                    {
+                        res.Count.Re.Numerator *= -1;
+                        res.Count.Re.Pow(rhe.Count.Re);
+                        res.Count.Im = res.Count.Re;
+                        res.Count.Re = new Fraction(0, 1);
+
+                        return new ComplexExpression(res.Count);
+                    }
+                    else if (res.Count.Re.Numerator > 0 && res.Count.Re.Denominator < 0)
+                    {
+                        res.Count.Re.Denominator *= -1;
+                        res.Count.Re.Pow(rhe.Count.Re);
+                        res.Count.Im = res.Count.Re;
+                        res.Count.Re = new Fraction(0, 1);
+
+                        return new ComplexExpression(res.Count);
+                    }
+                }
+
                 res.Count.Pow(rhe.Count);
                 return res;
             }
@@ -150,7 +173,7 @@ namespace Mathema.Models.ExpressionOperations
 
         private static IExpression ReduceExpression(IExpression res)
         {
-            if ( res is INumberExpression && res.Count.Im.Numerator != 0)
+            if (res is INumberExpression && res.Count.Im.Numerator != 0)
             {
                 return new ComplexExpression(res.Count.Re, res.Count.Im);
             }

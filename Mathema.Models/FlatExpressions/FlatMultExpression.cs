@@ -52,6 +52,14 @@ namespace Mathema.Models.FlatExpressions
             }
         }
 
+        public override void Remove(string key, decimal value)
+        {
+            if (this.Expressions.ContainsKey(key))
+            {
+                this.Expressions.Remove(key);
+            }
+        }
+
         public override void Squash()
         {
             var all = new List<IExpression>();

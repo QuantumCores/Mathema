@@ -78,6 +78,11 @@ namespace Mathema.Models.FlatExpressions
                 if (exp.Count.Re.Numerator != 0 || exp.Count.Im.Numerator != 0)
                 {
                     var key = exp.DimensionKey.ToString();
+                    if (key == Dimensions.Complex || key == Dimensions.Number)
+                    {
+                        key = Dimensions.Complex;
+                    }
+
                     if (!dims.ContainsKey(key))
                     {
                         dims.Add(key, new List<IExpression>() { exp });
@@ -221,6 +226,14 @@ namespace Mathema.Models.FlatExpressions
             }
 
             return "( " + string.Join(" + ", sb) + ")";
+        }
+
+        public override void Remove(string key, decimal value)
+        {
+            if (this.Expressions.ContainsKey(key))
+            {
+                this.Expressions.Remove(key);
+            }
         }
     }
 }

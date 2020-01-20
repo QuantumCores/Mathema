@@ -11,7 +11,7 @@ namespace Mathema.Solver.Solvers
 {
     public class LinearSolver : ISolver
     {
-        public IEquationSolutions Solve(IExpression expression)
+        public IEquationSolutions Solve(IExpression expression, string variable)
         {
             var res = new EquationSolutions();
             if (expression is FlatAddExpression fa)
