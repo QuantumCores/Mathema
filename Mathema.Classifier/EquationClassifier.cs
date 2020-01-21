@@ -2,6 +2,7 @@
 using Mathema.Enums.Equations;
 using Mathema.Interfaces;
 using Mathema.Models.Equations;
+using Mathema.Models.Expressions;
 using Mathema.Models.FlatExpressions;
 using System;
 using System.Collections.Generic;
@@ -41,18 +42,35 @@ namespace Mathema.Classifier
             {
                 var all = fa.Expressions.SelectMany(x => x.Value).ToList();
                 var keys = all.Select(x => x.DimensionKey.Key.ElementAt(0));
-
                 var result = new Dictionary<string, List<decimal>>();
-                foreach (var k in keys)
-                {
-                    if (k.Key != Dimensions.Number && k.Key == variable)
-                    {
-                        if (!result.ContainsKey(k.Key))
-                        {
-                            result.Add(k.Key, new List<decimal>());
-                        }
 
-                        result[k.Key].Add(k.Value);
+                foreach (var e in fa.Expressions)
+                {
+                    if (e.Value[0] is FlatExpression flat)
+                    {
+                        var t = flat.Expressions.Where(x => x.Key == variable).FirstOrDefault().Value[0];
+                        if (t != null)
+                        {
+                            if (!result.ContainsKey(variable))
+                            {
+                                result.Add(variable, new List<decimal>());
+                            }
+
+                            result[variable].Add(t.DimensionKey.Key.ElementAt(0).Value);
+                        }
+                    }
+                    else
+                    {
+                        var k = e.Value[0].DimensionKey.Key.ElementAt(0).Key;
+                        if (k == variable)
+                        {
+                            if (!result.ContainsKey(variable))
+                            {
+                                result.Add(variable, new List<decimal>());
+                            }
+
+                            result[variable].Add(e.Value[0].DimensionKey.Key.ElementAt(0).Value);
+                        }
                     }
                 }
 
@@ -86,6 +104,6 @@ namespace Mathema.Classifier
             }
 
             return EquationTypes.Undefined;
-        }        
+        }
     }
 }

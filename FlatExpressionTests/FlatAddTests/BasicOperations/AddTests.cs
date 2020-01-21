@@ -48,7 +48,7 @@ namespace FlatExpressionTests.FlatAddTests.BasicOperations
         {
             //Arrange
             var test = "2 + x + i * (x + 2)";
-            var expText = "(1 + i) * x + 2 + 2 * i"; // "(2 + x) * (1 + i)";
+            var expText = " 2 + 2 * i(1 + i) * x"; // "(2 + x) * (1 + i)";
             var expected = RPNParser.Parse(expText);
 
             //Act

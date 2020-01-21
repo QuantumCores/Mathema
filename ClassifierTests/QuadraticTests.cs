@@ -12,7 +12,7 @@ namespace ClassifierTests
     {
 
         [Test]
-        public void Quadratic_1()
+        public void Quadratic_NumbersOnly()
         {
             //Arrange
             var text = "2*x + 2*x^2 - 2 + 3*x - 4*x^2 + 1";
@@ -21,6 +21,22 @@ namespace ClassifierTests
 
             //Act
             var sut = EquationClassifier.Classify(equation, "x");
+
+            //Assert
+            Assert.AreEqual(EquationTypes.Quadratic, sut.Type);
+        }
+
+
+        [Test]
+        public void Quadratic_Variables_3()
+        {
+            //Arrange
+            var text = "y * y *x - 4*y + 5";
+            var expression = ExpressionBuilder.BuildFlat(RPNParser.Parse(text).Output).Execute();
+            var equation = new Equation(text, expression, null);
+
+            //Act
+            var sut = EquationClassifier.Classify(equation, "y");
 
             //Assert
             Assert.AreEqual(EquationTypes.Quadratic, sut.Type);

@@ -220,7 +220,7 @@ namespace Mathema.Models.FlatExpressions
             }
         }
 
-        private void UpdateDimensionKey()
+        public void UpdateDimensionKey()
         {
             var newDim = new Dictionary<string, decimal>();
             newDim.Add(this.ExpressionKey(), this.DimensionKey.Key.ElementAt(0).Value);
@@ -232,11 +232,39 @@ namespace Mathema.Models.FlatExpressions
             var sb = new List<string>();
             foreach (var key in this.Expressions.Keys.OrderBy(k => k))
             {
+                var expr = this.Expressions[key][0];
                 var sub = string.Join(" + ", this.Expressions[key].OrderBy(e => e.ToString()));
+
+                if (sb.Count != 0)
+                {
+                    if (expr.Count.Im.Numerator == 0)
+                    {
+                        if (expr.Count.Re.ToNumber() > 0)
+                        {
+                            sub = " + " + sub;
+                        }
+                    }
+                    else if (expr.Count.Re.Numerator == 0)
+                    {
+                        if (expr.Count.Im.ToNumber() > 0)
+                        {
+                            sub = " + " + sub;
+                        }
+                    }
+                }
+
                 sb.Add(sub);
             }
 
-            return "( " + string.Join(" + ", sb) + ")";
+            if (sb.Count == 1)
+            {
+                return sb[0];
+            }
+            else
+            {
+                return "( " + string.Join("", sb) + ")";
+            }
+
         }
 
         public override void Remove(string key, decimal value)

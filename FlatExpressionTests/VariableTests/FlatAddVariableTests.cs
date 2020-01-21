@@ -50,7 +50,7 @@ namespace FlatExpressionTests.VariableTests
         {
             //Arrange
             var text = "2 - x  +1";
-            var expected = "( 3 + -x)";
+            var expected = "( 3-x)";
 
             //Act
             var rpn = RPNParser.Parse(text);
@@ -65,7 +65,7 @@ namespace FlatExpressionTests.VariableTests
         {
             //Arrange
             var text = "2 - x  + 1 - x";
-            var expected = "( 3 + -2 * x)";
+            var expected = "( 3-2 * x)";
 
             //Act
             var rpn = RPNParser.Parse(text);
@@ -81,7 +81,7 @@ namespace FlatExpressionTests.VariableTests
         {
             //Arrange
             var text = "y + 2 - x  + 1 - x + y + y";
-            var expected = "( 3 + -2 * x + 3 * y)";
+            var expected = "( 3-2 * x + 3 * y)";
 
             //Act
             var rpn = RPNParser.Parse(text);

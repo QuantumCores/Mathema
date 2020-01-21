@@ -5,22 +5,22 @@ using System.Text;
 
 namespace Mathema.Interfaces
 {
-    public interface IExpressionOperations
+    public interface IExpressionOperations<T>
     {
-        Dictionary<OperatorTypes, Func<IExpression, IExpression>> BinaryOperations { get; }
+        Dictionary<OperatorTypes, Func<T, IExpression, IExpression>> BinaryOperations { get; }
 
-        Dictionary<OperatorTypes, Func<IExpression>> UnaryOperations { get; }
+        Dictionary<OperatorTypes, Func<T, IExpression>> UnaryOperations { get; }
 
-        IExpression Add(IExpression rhe);
+        IExpression Add(T lhe, IExpression rhe);
 
-        IExpression Subtract(IExpression rhe);
+        IExpression Subtract(T lhe, IExpression rhe);
 
-        IExpression Multiply(IExpression rhe);
+        IExpression Multiply(T lhe, IExpression rhe);
 
-        IExpression Divide(IExpression rhe);
+        IExpression Divide(T lhe, IExpression rhe);
 
-        IExpression Pow(IExpression rhe);
+        IExpression Pow(T lhe, IExpression rhe);
 
-        IExpression Sign();
+        IExpression Sign(T target);
     }
 }

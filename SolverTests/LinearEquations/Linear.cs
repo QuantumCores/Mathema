@@ -66,5 +66,24 @@ namespace SolverTests.LinearEquations
             Assert.IsTrue(sut.Solutions.Count == 1);
             Assert.IsTrue(RPNComparer.Compare(expected.Output, actual.Output), $"Expected: {expText} but was {sut.Solutions[0].ToString()}");
         }
+
+        [Test]
+        public void Linear_WithVariable_3()
+        {
+            //Arrange
+            var text = "y*x - 4 + z";
+            var expText = "(4 - z)/y";
+            var expected = RPNParser.Parse(expText);
+            var expression = ExpressionBuilder.BuildFlat(RPNParser.Parse(text).Output).Execute();
+            var equation = new Equation(text, expression, null);
+
+            //Act
+            var sut = Solver.Solve(equation, "x");
+            var actual = RPNParser.Parse(sut.Solutions[0].ToString());
+
+            //Assert
+            Assert.IsTrue(sut.Solutions.Count == 1);
+            Assert.IsTrue(RPNComparer.Compare(expected.Output, actual.Output), $"Expected: {expText} but was {sut.Solutions[0].ToString()}");
+        }
     }
 }

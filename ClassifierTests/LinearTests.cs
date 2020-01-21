@@ -57,5 +57,20 @@ namespace ClassifierTests
             //Assert
             Assert.AreEqual(EquationTypes.Linear, sut.Type);
         }
+
+        [Test]
+        public void Linear_Variables_3()
+        {
+            //Arrange
+            var text = "y*y*x - 4*y + 5";
+            var expression = ExpressionBuilder.BuildFlat(RPNParser.Parse(text).Output).Execute();
+            var equation = new Equation(text, expression, null);
+
+            //Act
+            var sut = EquationClassifier.Classify(equation, "x");
+
+            //Assert
+            Assert.AreEqual(EquationTypes.Linear, sut.Type);
+        }
     }
 }

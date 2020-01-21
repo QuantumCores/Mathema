@@ -140,18 +140,25 @@ namespace Mathema.Models.ExpressionOperations
 
         public static IExpression Divide(IExpression lhe, IExpression rhe)
         {
-            var res = lhe.Clone();
-            if (rhe is IVariableExpression)
+            if (rhe is NumberExpression || rhe is ComplexExpression)
             {
+                var res = lhe.Clone();
                 res.Count.Divide(rhe.Count);
-
-                foreach (var key in rhe.DimensionKey.Key)
-                {
-                    res.DimensionKey.Remove(key.Key, key.Value);
-                }
-
                 return res;
             }
+            
+            //var res = lhe.Clone();
+            //if (rhe is IVariableExpression)
+            //{
+            //    res.Count.Divide(rhe.Count);
+
+            //    foreach (var key in rhe.DimensionKey.Key)
+            //    {
+            //        res.DimensionKey.Remove(key.Key, key.Value);
+            //    }
+
+            //    return res;
+            //}
 
             return null;
         }
@@ -217,7 +224,17 @@ namespace Mathema.Models.ExpressionOperations
         public static IExpression Sign(IExpression rhe)
         {
             var res = rhe.Clone();
-            res.Count.Multiply(-1);
+
+            if (res is FlatAddExpression fa)
+            {
+                foreach (var kve in fa.Expressions)
+                {
+                    kve.Value[0].Count.Multiply(-1);
+                }
+
+                fa.UpdateDimensionKey();
+            }
+
             return res;
         }
     }
