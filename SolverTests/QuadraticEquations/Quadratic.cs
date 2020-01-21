@@ -18,7 +18,7 @@ namespace SolverTests.QuadraticEquations
             var equation = new Equation(text, expression, null);
 
             //Act
-            var sut = Solver.Solve(equation);
+            var sut = Solver.Solve(equation, "x");
 
             //Assert
             Assert.IsTrue(sut.Solutions.Count == 2);
@@ -35,7 +35,7 @@ namespace SolverTests.QuadraticEquations
             var equation = new Equation(text, expression, null);
 
             //Act
-            var sut = Solver.Solve(equation);
+            var sut = Solver.Solve(equation, "x");
 
             //Assert
             Assert.IsTrue(sut.Solutions.Count == 2);
@@ -52,10 +52,14 @@ namespace SolverTests.QuadraticEquations
             var equation = new Equation(text, expression, null);
 
             //Act
-            var sut = Solver.Solve(equation);
+            var sut = Solver.Solve(equation, "x");
 
             //Assert
             Assert.IsTrue(sut.Solutions.Count == 2);
+            Assert.AreEqual(sut.Solutions[0].Count.Re.ToNumber(), -3);
+            Assert.AreEqual(sut.Solutions[0].Count.Im.ToNumber(), 1);
+            Assert.AreEqual(sut.Solutions[1].Count.Re.ToNumber(), -3);
+            Assert.AreEqual(sut.Solutions[1].Count.Im.ToNumber(), -1);
         }
 
     }

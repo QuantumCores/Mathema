@@ -103,21 +103,7 @@ namespace Mathema.Models.Expressions
 
         public string AsString()
         {
-            if (this.Count.Re.Numerator == 0)
-            {
-                if (this.Count.Im.ToNumber() == 1)
-                {
-                    return "i";
-                }
-
-                return this.Count.Im.AsString() + " * i";
-            }
-            else if (this.Count.Im.Numerator == 0)
-            {
-                return this.Count.Re.AsString();
-            }
-
-            return this.Count.Re.AsString() + " + " + this.Count.Im.AsString() + " * i";
+            return this.Count.AsString();
         }
 
         public override string ToString()

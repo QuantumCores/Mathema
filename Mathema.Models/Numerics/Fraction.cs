@@ -170,6 +170,14 @@ namespace Mathema.Models.Numerics
                 {
                     return "-" + this.Numerator + "/" + this.Denominator;
                 }
+                else if (this.Numerator < 0 && this.Denominator > 0)
+                {
+                    return "-" + (-this.Numerator) + "/" + this.Denominator;
+                }
+                else if (this.Numerator > 0 && this.Denominator < 0)
+                {
+                    return "-" + this.Numerator + "/" + (-this.Denominator);
+                }
                 else
                 {
                     return this.Numerator + "/" + this.Denominator;

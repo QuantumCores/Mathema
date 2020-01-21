@@ -10,10 +10,10 @@ namespace Mathema.Solver
 {
     public class Solver
     {
-        public static IEquationSolutions Solve(Equation equation)
+        public static IEquationSolutions Solve(Equation equation, string variable)
         {
-            var equationType = EquationClassifier.Classify(equation);
-            return Solve(equationType.Type, equation.Left, "x");
+            var equationType = EquationClassifier.Classify(equation, variable);
+            return Solve(equationType.Type, equation.Left, variable);
 
         }
 

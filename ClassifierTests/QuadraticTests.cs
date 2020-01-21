@@ -20,7 +20,7 @@ namespace ClassifierTests
             var equation = new Equation(text, expression, null);
 
             //Act
-            var sut = EquationClassifier.Classify(equation);
+            var sut = EquationClassifier.Classify(equation, "x");
 
             //Assert
             Assert.AreEqual(EquationTypes.Quadratic, sut.Type);

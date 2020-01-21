@@ -125,6 +125,10 @@ namespace Mathema.Models.FlatExpressions
             {
                 return this.Expressions[Dimensions.Number][0];
             }
+            else if (this.Expressions.Count == 1 && this.Expressions.ElementAt(0).Key == Dimensions.Complex)
+            {
+                return this.Expressions[Dimensions.Complex][0];
+            }
             else
             {
                 return this;
@@ -191,21 +195,28 @@ namespace Mathema.Models.FlatExpressions
 
         public override string ToString()
         {
+            var count = "";
+
+            if (this.Count.Re.ToNumber() != 1 && this.Count.Im.ToNumber() == 0)
+            {
+                count = this.Count.AsString() + " * ";
+            }
+
             var kv = this.DimensionKey.Key.ElementAt(0);
             if (Math.Abs(kv.Value) != 1)
             {
                 if (kv.Value > 0)
                 {
-                    return "(" + kv.Key + ")^" + kv.Value;
+                    return count + "(" + kv.Key + ")^" + kv.Value;
                 }
                 else
                 {
-                    return "(" + kv.Key + ")^(" + kv.Value + ")";
+                    return count + "(" + kv.Key + ")^(" + kv.Value + ")";
                 }
             }
             else
             {
-                return kv.Key;
+                return count + kv.Key;
             }
         }
 

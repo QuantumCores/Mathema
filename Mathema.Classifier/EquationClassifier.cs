@@ -18,20 +18,20 @@ namespace Mathema.Classifier
             this.equation = equation;
         }
 
-        public EquationTypes Classify()
+        public EquationTypes Classify(string variable)
         {
-            return EquationClassifier.Classify(this.equation.Left);
+            return EquationClassifier.Classify(this.equation.Left, variable);
         }
 
-        public static Equation Classify(Equation equation)
+        public static Equation Classify(Equation equation, string variable)
         {
             var ec = new EquationClassifier(equation);
-            ec.equation.Type = ec.Classify();
+            ec.equation.Type = ec.Classify(variable);
 
             return ec.equation;
         }
 
-        public static EquationTypes Classify(IExpression expr)
+        public static EquationTypes Classify(IExpression expr, string variable)
         {
             if (expr is FlatMultExpression fm)
             {
@@ -45,7 +45,7 @@ namespace Mathema.Classifier
                 var result = new Dictionary<string, List<decimal>>();
                 foreach (var k in keys)
                 {
-                    if (k.Key != Dimensions.Number)
+                    if (k.Key != Dimensions.Number && k.Key == variable)
                     {
                         if (!result.ContainsKey(k.Key))
                         {

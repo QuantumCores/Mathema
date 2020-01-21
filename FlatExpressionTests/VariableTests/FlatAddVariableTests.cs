@@ -41,7 +41,7 @@ namespace FlatExpressionTests.VariableTests
             var actual = (FlatAddExpression)(ExpressionBuilder.BuildFlat(rpn.Output).Execute());
 
             //Assert
-            Assert.IsTrue(actual.Expressions.ContainsKey(Dimensions.Number));
+            Assert.IsTrue(actual.Expressions.ContainsKey(Dimensions.Number) || actual.Expressions.ContainsKey(Dimensions.Complex));
             Assert.IsTrue(actual.Expressions.ContainsKey("x"));
         }
 
