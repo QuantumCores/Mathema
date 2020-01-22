@@ -70,7 +70,8 @@ namespace Mathema.Algorithms.Parsers
                     }
                     else if (symbol.Type == SymbolTypes.BinaryOperator || symbol.Type == SymbolTypes.UnaryOperator)
                     {
-                        if (previousSymbol.Type != SymbolTypes.Number && previousSymbol.Type != SymbolTypes.Variable && symbol.Value == "-")
+                        if (previousSymbol.Type != SymbolTypes.Number && previousSymbol.Type != SymbolTypes.Variable && previousSymbol.Type != SymbolTypes.RightParenthesis 
+							 && symbol.Value == "-")
                         {
                             symbol.Type = SymbolTypes.UnaryOperator;
                             symbol.Value = OperatorTypes.Sign.ToString();

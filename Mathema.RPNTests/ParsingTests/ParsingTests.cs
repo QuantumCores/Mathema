@@ -7,13 +7,7 @@ namespace Mathema.RPNTests.ParsingTests
     [TestFixture]
     public class ParsingTests
     {
-
         string d = System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
-
-        [SetUp]
-        public void Setup()
-        {
-        }
 
         [Test]
         public void Add_TwoSingleDigitIntegers()
