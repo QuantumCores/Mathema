@@ -14,8 +14,9 @@ namespace Mathema.Models.FunctionExpressions
 {
     public class CosExpression : IFunctionExpression
     {
-        private FunctionTypes type;
-        private IExpression argument;
+        public FunctionTypes Type { get; private set; }
+
+        public IExpression Argument { get; private set; }
 
         public IDimensionKey DimensionKey { get; set; } = new DimensionKey(nameof(CosExpression));
 
@@ -27,14 +28,14 @@ namespace Mathema.Models.FunctionExpressions
 
         public CosExpression(FunctionTypes type, IExpression argument)
         {
-            this.type = type;
-            this.argument = argument;
+            this.Type = type;
+            this.Argument = argument;
             UpdateDimensionKey();
         }
 
         public IExpression Execute()
         {
-            var arg = this.argument.Execute();
+            var arg = this.Argument.Execute();
 
             if (arg == null)
             {
@@ -47,14 +48,14 @@ namespace Mathema.Models.FunctionExpressions
             }
             else
             {
-                this.argument = arg;
+                this.Argument = arg;
                 return this;
             }
         }
 
         public IExpression Clone()
         {
-            return new CosExpression(this.type, this.argument.Clone());
+            return new CosExpression(this.Type, this.Argument.Clone());
         }
 
         public string AsString()
@@ -94,7 +95,7 @@ namespace Mathema.Models.FunctionExpressions
 
         private string ExpressionKey()
         {
-            return type.ToString() + "(" + argument.ToString() + ")";
+            return Type.ToString() + "(" + Argument.ToString() + ")";
         }
     }
 }

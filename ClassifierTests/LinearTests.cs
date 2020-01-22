@@ -13,8 +13,24 @@ namespace ClassifierTests
     [TestFixture]
     public class LinearTests
     {
-        [Test]
-        public void Linear_NumbersOnly()
+
+		[Test]
+		public void Linear_NumbersOnly()
+		{
+			//Arrange
+			var text = "2*x+1";
+			var expression = ExpressionBuilder.BuildFlat(RPNParser.Parse(text).Output).Execute();
+			var equation = new Equation(text, expression, null);
+
+			//Act
+			var sut = EquationClassifier.Classify(equation, "x");
+
+			//Assert
+			Assert.AreEqual(EquationTypes.Linear, sut.Type);
+		}
+
+		[Test]
+        public void Linear_NumbersOnly_Contract()
         {
             //Arrange
             var text = "2*x^2 + 3*x - 2*x^2";
