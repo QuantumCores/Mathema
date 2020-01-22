@@ -23,7 +23,7 @@ namespace ClassifierTests
             var sut = EquationClassifier.Classify(equation, "x");
 
             //Assert
-            Assert.AreEqual(EquationTypes.Quadratic, sut.Type);
+            Assert.AreEqual(EquationTypes.Quadratic, sut.Classification.EquationType);
         }
 
 
@@ -39,7 +39,7 @@ namespace ClassifierTests
             var sut = EquationClassifier.Classify(equation, "y");
 
             //Assert
-            Assert.AreEqual(EquationTypes.Quadratic, sut.Type);
+            Assert.AreEqual(EquationTypes.Quadratic, sut.Classification.EquationType);
         }
     }
 }

@@ -14,7 +14,7 @@ namespace Mathema.Models.Equations
 
         public IExpression Right { get; }
 
-        public EquationTypes Type { get; set; }
+        public ClassificationResult Classification { get; set; }
 
         public Equation(string equation, IExpression left, IExpression right)
         {

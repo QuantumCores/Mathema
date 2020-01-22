@@ -26,7 +26,7 @@ namespace ClassifierTests
 			var sut = EquationClassifier.Classify(equation, "x");
 
 			//Assert
-			Assert.AreEqual(EquationTypes.Linear, sut.Type);
+			Assert.AreEqual(EquationTypes.Linear, sut.Classification.EquationType);
 		}
 
 		[Test]
@@ -41,7 +41,7 @@ namespace ClassifierTests
             var sut = EquationClassifier.Classify(equation, "x");
 
             //Assert
-            Assert.AreEqual(EquationTypes.Linear, sut.Type);
+            Assert.AreEqual(EquationTypes.Linear, sut.Classification.EquationType);
         }
 
         [Test]
@@ -56,7 +56,7 @@ namespace ClassifierTests
             var sut = EquationClassifier.Classify(equation, "x");
 
             //Assert
-            Assert.AreEqual(EquationTypes.Linear, sut.Type);
+            Assert.AreEqual(EquationTypes.Linear, sut.Classification.EquationType);
         }
 
         [Test]
@@ -71,7 +71,7 @@ namespace ClassifierTests
             var sut = EquationClassifier.Classify(equation, "x");
 
             //Assert
-            Assert.AreEqual(EquationTypes.Linear, sut.Type);
+            Assert.AreEqual(EquationTypes.Linear, sut.Classification.EquationType);
         }
 
         [Test]
@@ -86,7 +86,7 @@ namespace ClassifierTests
             var sut = EquationClassifier.Classify(equation, "x");
 
             //Assert
-            Assert.AreEqual(EquationTypes.Linear, sut.Type);
+            Assert.AreEqual(EquationTypes.Linear, sut.Classification.EquationType);
         }
     }
 }

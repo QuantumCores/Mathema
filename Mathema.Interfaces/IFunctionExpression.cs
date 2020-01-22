@@ -7,8 +7,8 @@ namespace Mathema.Interfaces
 {
     public interface IFunctionExpression : IExpression
     {
-		FunctionTypes Type { get; }
+        FunctionTypes Type { get; }
 
-		IExpression Argument { get; }
-	}
+        IExpression Argument { get; set; }
+    }
 }

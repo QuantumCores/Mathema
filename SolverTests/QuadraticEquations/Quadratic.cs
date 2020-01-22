@@ -67,7 +67,7 @@ namespace SolverTests.QuadraticEquations
         public void Quadratic_ForFunction()
         {
             //Arrange
-            var text = "2*Cos(x)^2 - 2*Cos(x) - 3";
+            var text = "Cos(x)^2 - 4*Cos(x) - 5";
             var expression = ExpressionBuilder.BuildFlat(RPNParser.Parse(text).Output).Execute();
             var equation = new Equation(text, expression, null);
 

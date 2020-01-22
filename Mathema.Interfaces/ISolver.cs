@@ -6,6 +6,6 @@ namespace Mathema.Interfaces
 {
     public interface ISolver
     {
-        IEquationSolutions Solve(IExpression expression, string variable);
+        IEquationSolutions Solve(IExpression expression, string variable, IClassificationResult classification);
     }
 }

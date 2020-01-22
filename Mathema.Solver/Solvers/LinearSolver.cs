@@ -12,7 +12,7 @@ namespace Mathema.Solver.Solvers
 {
     public class LinearSolver : ISolver
     {
-        public IEquationSolutions Solve(IExpression expression, string variable)
+        public IEquationSolutions Solve(IExpression expression, string variable, IClassificationResult classification)
         {
             var res = new EquationSolutions();
             IExpression a = null;

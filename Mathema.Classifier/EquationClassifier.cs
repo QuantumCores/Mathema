@@ -19,7 +19,7 @@ namespace Mathema.Classifier
 			this.equation = equation;
 		}
 
-		public EquationTypes Classify(string variable)
+		public ClassificationResult Classify(string variable)
 		{
 			return EquationClassifier.Classify(this.equation.Left, variable);
 		}
@@ -27,19 +27,19 @@ namespace Mathema.Classifier
 		public static Equation Classify(Equation equation, string variable)
 		{
 			var ec = new EquationClassifier(equation);
-			ec.equation.Type = ec.Classify(variable);
+			ec.equation.Classification = ec.Classify(variable);
 
 			return ec.equation;
 		}
 
 
-		public static EquationTypes Classify(IExpression expr, string variable)
+		public static ClassificationResult Classify(IExpression expr, string variable)
 		{
-			var result = new Dictionary<string, List<decimal>>();
-			Search(expr, e => e.DimensionKey.Key.ElementAt(0).Key == variable, result);
-			var type = FindType(result);
+			var classification = new ClassificationResult();
+			Search(expr, e => e.DimensionKey.Key.ElementAt(0).Key == variable, classification.SearchResult);
+			classification.EquationType = FindType(classification.SearchResult);
 
-			return type;
+			return classification;
 		}
 
 		public static EquationTypes Classify2(IExpression expr, string variable)
@@ -164,9 +164,9 @@ namespace Mathema.Classifier
 
 				return isFound;
 			}
-			else if (expression is IFunctionExpression)
+			else if (expression is IFunctionExpression fe)
 			{
-				if (Search(expression, predicate, result, true))
+				if (Search(fe.Argument, predicate, result, true))
 				{
 					if (!dontAdd)
 					{

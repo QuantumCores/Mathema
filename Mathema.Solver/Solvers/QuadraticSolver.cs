@@ -13,10 +13,20 @@ namespace Mathema.Solver.Solvers
 {
     public class QuadraticSolver : ISolver
     {
-        public IEquationSolutions Solve(IExpression expression, string variable)
+        public IEquationSolutions Solve(IExpression expression, string variable, IClassificationResult classification)
         {
+            var clone = expression.Clone();
+            var varS = variable;
+            if (classification.SearchResult.ElementAt(0).Key != variable)
+            {
+                //substitute               
+                varS = "u";
+                var sub = new VariableExpression("u", 1);
+                Substitute(ref clone, sub, classification.SearchResult.ElementAt(0).Key);
+            }
+
             var res = new EquationSolutions();
-            if (expression is FlatAddExpression fa)
+            if (clone is FlatAddExpression fa)
             {
                 IExpression a = null;
                 IExpression b = null;
@@ -31,7 +41,7 @@ namespace Mathema.Solver.Solvers
                     var key = kv.Value[0].DimensionKey.Key.ElementAt(0).Key;
                     var expr = kv.Value[0];
 
-                    if (deg == 2 && key == variable)
+                    if (deg == 2 && key == varS)
                     {
                         if (expr is VariableExpression)
                         {
@@ -40,11 +50,11 @@ namespace Mathema.Solver.Solvers
                         else
                         {
                             var tmp = (FlatExpression)expr.Clone();
-                            tmp.Remove(variable, 2);
+                            tmp.Remove(varS, 2);
                             a = tmp;
                         }
                     }
-                    else if (deg == 1 && key == variable)
+                    else if (deg == 1 && key == varS)
                     {
                         if (expr is VariableExpression)
                         {
@@ -53,7 +63,7 @@ namespace Mathema.Solver.Solvers
                         else
                         {
                             var tmp = (FlatExpression)expr.Clone();
-                            tmp.Remove(variable, 2);
+                            tmp.Remove(varS, 2);
                             b = tmp;
                         }
                     }
@@ -128,6 +138,72 @@ namespace Mathema.Solver.Solvers
             }
 
             return res;
+        }
+
+        private void Substitute(ref IExpression expression, IExpression sub, string key)
+        {
+            if (expression is FlatAddExpression fae)
+            {
+                foreach (var kvel in fae.Expressions)
+                {
+                    for (int i = 0; i < kvel.Value.Count; i++)
+                    {
+                        var e = kvel.Value[i];
+                        if (e.DimensionKey.Key.ElementAt(0).Key == key)
+                        {
+                            //kvel.Value[i] = sub.Clone();
+                            Substitute(ref e, sub, key);
+                            kvel.Value[i] = e;
+                        }
+                    }
+                }
+
+                fae.UpdateDimensionKey();
+            }
+            else if (expression is FlatMultExpression fme)
+            {
+                foreach (var kvel in fme.Expressions)
+                {
+                    for (int i = 0; i < kvel.Value.Count; i++)
+                    {
+                        var e = kvel.Value[i];
+                        if (e.DimensionKey.Key.ElementAt(0).Key == key)
+                        {
+                            Substitute(ref e, sub, key);
+                            kvel.Value[i] = e;
+                        }
+                    }
+                }
+            }
+            else if (expression is IFunctionExpression fe)
+            {
+                if (fe.DimensionKey.Key.ElementAt(0).Key == key)
+                {
+                    Swap(ref expression, sub);
+                }
+                else
+                {
+                    var a = fe.Argument;
+                    Substitute(ref a, sub, key);
+                    fe.Argument = a;
+                }
+            }
+            else
+            {
+                if (expression.DimensionKey.Key.ElementAt(0).Key == key)
+                {
+                    Swap(ref expression, sub);
+                }
+            }
+        }
+
+        private void Swap(ref IExpression expression, IExpression sub)
+        {
+            var tmp = sub.Clone();
+            tmp.Count = expression.Count;
+            var tmpKey = tmp.DimensionKey.Key.ElementAt(0).Key;
+            tmp.DimensionKey.Key[tmpKey] = expression.DimensionKey.Key.ElementAt(0).Value;
+            expression = tmp;
         }
 
         private IExpression Delta(IExpression a, IExpression b, IExpression c)

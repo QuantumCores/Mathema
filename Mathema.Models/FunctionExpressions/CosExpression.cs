@@ -16,7 +16,7 @@ namespace Mathema.Models.FunctionExpressions
     {
         public FunctionTypes Type { get; private set; }
 
-        public IExpression Argument { get; private set; }
+        public IExpression Argument { get; set; }
 
         public IDimensionKey DimensionKey { get; set; } = new DimensionKey(nameof(CosExpression));
 

@@ -14,11 +14,11 @@ namespace Mathema.Models.FunctionExpressions
 {
     class TanExpression : IFunctionExpression
     {
-		public FunctionTypes Type { get; private set; }
+        public FunctionTypes Type { get; private set; }
 
-		public IExpression Argument { get; private set; }
+        public IExpression Argument { get; set; }
 
-		public IDimensionKey DimensionKey { get; set; } = new DimensionKey(nameof(TanExpression));
+        public IDimensionKey DimensionKey { get; set; } = new DimensionKey(nameof(TanExpression));
 
         public IComplex Count { get; set; } = new Complex();
 
