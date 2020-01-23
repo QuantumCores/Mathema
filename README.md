@@ -22,6 +22,7 @@ gives
     * 'cos' Cosinus
 	* 'tan' Tangens
 	* 'cot' Cotangens
+	* 'log' Logarithm with base 10
   * Constants
     * 'Pi' - ratio of a circle's circumference to its diameter
     * 'e' - natural logarithm base
@@ -32,11 +33,10 @@ gives
   * Funcions with variables
     * recognizes variables in functions
     * manages grouping, adding and multiplying functions with variables
-	
-**WIP**   
-   - solving equations (linear, quadratic, cubic)
-   - complex numbers
-   - logarithms
+
+
+**Solves**
+  * Linear and quadratic equations
 
 **Plans**   
    - solution with 'step by step'
