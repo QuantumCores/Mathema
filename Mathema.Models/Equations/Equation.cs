@@ -6,20 +6,23 @@ using System.Text;
 
 namespace Mathema.Models.Equations
 {
-    public class Equation
-    {
-        public string Original { get; }
+	public class Equation
+	{
+		public string Original { get; }
 
-        public IExpression Left { get; }
+		public IExpression Left { get; }
 
-        public IExpression Right { get; }
+		public IExpression Right { get; }
 
-        public ClassificationResult Classification { get; set; }
+		public ClassificationResult Classification { get; set; }
 
-        public Equation(string equation, IExpression left, IExpression right)
-        {
-            this.Left = left;
-            this.Right = right;
-        }
-    }
+		public Dictionary<string, int> Variables { get; set; } = new Dictionary<string, int>();
+
+		public Equation(string equation, IExpression left, IExpression right, Dictionary<string, int> variables = null)
+		{
+			this.Left = left;
+			this.Right = right;
+			this.Variables = variables ?? new Dictionary<string, int>();
+		}
+	}
 }
