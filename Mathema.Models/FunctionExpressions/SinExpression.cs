@@ -26,14 +26,23 @@ namespace Mathema.Models.FunctionExpressions
 
         public Dictionary<OperatorTypes, Func<IExpression, IExpression>> UnaryOperations { get; } = FunctionOperations.UnaryOperations;
 
-        public SinExpression(FunctionTypes type, IExpression argument)
-        {
-            this.Type = type;
-            this.Argument = argument;
-            UpdateDimensionKey();
-        }
+		public SinExpression(IExpression argument, decimal count)
+		{
+			this.Type = FunctionTypes.Sin;
+			this.Argument = argument;
+			this.Count = new Complex(count, 0);
+			UpdateDimensionKey();
+		}
 
-        public IExpression Execute()
+		public SinExpression(IExpression argument, IComplex count)
+		{
+			this.Type = FunctionTypes.Sin;
+			this.Argument = argument;
+			this.Count = count;
+			UpdateDimensionKey();
+		}
+
+		public IExpression Execute()
         {
             var arg = this.Argument.Execute();
 
@@ -55,7 +64,7 @@ namespace Mathema.Models.FunctionExpressions
 
         public IExpression Clone()
         {
-            return new SinExpression(this.Type, this.Argument.Clone());
+            return new SinExpression(this.Argument.Clone(), this.Count.Clone());
         }
 
         public string AsString()

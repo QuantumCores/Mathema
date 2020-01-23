@@ -205,9 +205,11 @@ namespace Mathema.Models.FlatExpressions
                     res.Add(exp.Clone());
                 }
             }
-            res.DimensionKey = this.DimensionKey.Clone();
 
-            return res;
+            res.DimensionKey = this.DimensionKey.Clone();
+			res.Count = this.Count.Clone();
+
+			return res;
         }
 
         public static FlatMultExpression operator *(FlatMultExpression lhe, FlatMultExpression rhe)

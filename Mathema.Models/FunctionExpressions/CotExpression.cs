@@ -12,90 +12,106 @@ using System.Text;
 
 namespace Mathema.Models.FunctionExpressions
 {
-    public class CotExpression : IFunctionExpression
-    {
+	public class CotExpression : IFunctionExpression
+	{
 		public FunctionTypes Type { get; private set; }
 
 		public IExpression Argument { get; set; }
 
 		public IDimensionKey DimensionKey { get; set; } = new DimensionKey(nameof(CotExpression));
 
-        public IComplex Count { get; set; } = new Complex();
+		public IComplex Count { get; set; } = new Complex();
 
-        public Dictionary<OperatorTypes, Func<IExpression, IExpression, IExpression>> BinaryOperations { get; } = FunctionOperations.BinaryOperations;
+		public Dictionary<OperatorTypes, Func<IExpression, IExpression, IExpression>> BinaryOperations { get; } = FunctionOperations.BinaryOperations;
 
-        public Dictionary<OperatorTypes, Func<IExpression, IExpression>> UnaryOperations { get; } = FunctionOperations.UnaryOperations;
+		public Dictionary<OperatorTypes, Func<IExpression, IExpression>> UnaryOperations { get; } = FunctionOperations.UnaryOperations;
 
-        public CotExpression(FunctionTypes type, IExpression argument)
-        {
-            this.Type = type;
-            this.Argument = argument;
-            UpdateDimensionKey();
-        }
+		public CotExpression(IExpression argument)
+		{
+			this.Type = FunctionTypes.Cot;
+			this.Argument = argument;
+			UpdateDimensionKey();
+		}
 
-        public IExpression Execute()
-        {
-            var arg = this.Argument.Execute();
+		public CotExpression(IExpression argument, decimal count)
+		{
+			this.Type = FunctionTypes.Cot;
+			this.Argument = argument;
+			this.Count = new Complex(count, 0);
+			UpdateDimensionKey();
+		}
 
-            if (arg == null)
-            {
-                return this;
-            }
+		public CotExpression(IExpression argument, IComplex count)
+		{
+			this.Type = FunctionTypes.Cot;
+			this.Argument = argument;
+			this.Count = count;
+			UpdateDimensionKey();
+		}
 
-            if (arg is INumberExpression)
-            {
-                return new NumberExpression(1/ (decimal)Math.Tan((double)arg.Count.Re.ToNumber()));
-            }
-            else
-            {
-                this.Argument = arg;
-                return this;
-            }
-        }
+		public IExpression Execute()
+		{
+			var arg = this.Argument.Execute();
 
-        public IExpression Clone()
-        {
-            return new CotExpression(this.Type, this.Argument.Clone());
-        }
+			if (arg == null)
+			{
+				return this;
+			}
 
-        public string AsString()
-        {
-            return this.ToString();
-        }
+			if (arg is INumberExpression)
+			{
+				return new NumberExpression(1 / (decimal)Math.Tan((double)arg.Count.Re.ToNumber()));
+			}
+			else
+			{
+				this.Argument = arg;
+				return this;
+			}
+		}
 
-        public override string ToString()
-        {
-            if (this.Count.Re.ToNumber() != 1)
-            {
-                return this.Count.AsString() + "*" + this.ExpressionKey();
-            }
+		public IExpression Clone()
+		{
+			return new CotExpression(this.Argument.Clone(), this.Count.Clone());
+		}
 
-            var kv = this.DimensionKey.Key.ElementAt(0);
-            if (Math.Abs(kv.Value) != 1)
-            {
-                if (kv.Value > 0)
-                {
-                    return "(" + kv.Key + ")^" + kv.Value;
-                }
-                else
-                {
-                    return "(" + kv.Key + ")^(" + kv.Value + ")";
-                }
-            }
+		public string AsString()
+		{
+			return this.ToString();
+		}
 
-            return this.ExpressionKey();
-        }
+		public override string ToString()
+		{
+			if (this.Count.Re.ToNumber() != 1)
+			{
+				return this.Count.AsString() + "*" + this.ExpressionKey();
+			}
 
-        private void UpdateDimensionKey()
-        {
-            var newDim = new Dictionary<string, decimal>();
-            newDim.Add(this.ExpressionKey(), this.DimensionKey.Key.ElementAt(0).Value);
-            this.DimensionKey.Key = newDim;
-        }
+			var kv = this.DimensionKey.Key.ElementAt(0);
+			if (Math.Abs(kv.Value) != 1)
+			{
+				if (kv.Value > 0)
+				{
+					return "(" + kv.Key + ")^" + kv.Value;
+				}
+				else
+				{
+					return "(" + kv.Key + ")^(" + kv.Value + ")";
+				}
+			}
 
-        private string ExpressionKey()
-        {
-            return Type.ToString() + "(" + Argument.ToString() + ")";
-        }
-    }
+			return this.ExpressionKey();
+		}
+
+		private void UpdateDimensionKey()
+		{
+			var newDim = new Dictionary<string, decimal>();
+			newDim.Add(this.ExpressionKey(), this.DimensionKey.Key.ElementAt(0).Value);
+			this.DimensionKey.Key = newDim;
+		}
+
+		private string ExpressionKey()
+		{
+			return Type.ToString() + "(" + Argument.ToString() + ")";
+		}
+	}
 }

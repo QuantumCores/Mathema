@@ -150,6 +150,8 @@ namespace Mathema.Models.FlatExpressions
                 res.DimensionKey.Key.Add(kv.Key, kv.Value);
             }
 
+			res.Count = this.Count.Clone();
+
             return res;
         }
 

@@ -12,7 +12,7 @@ using System.Text;
 
 namespace Mathema.Models.FunctionExpressions
 {
-    class TanExpression : IFunctionExpression
+    public class TanExpression : IFunctionExpression
     {
         public FunctionTypes Type { get; private set; }
 
@@ -26,14 +26,23 @@ namespace Mathema.Models.FunctionExpressions
 
         public Dictionary<OperatorTypes, Func<IExpression, IExpression>> UnaryOperations { get; } = FunctionOperations.UnaryOperations;
 
-        public TanExpression(FunctionTypes type, IExpression argument)
-        {
-            this.Type = type;
-            this.Argument = argument;
-            UpdateDimensionKey();
-        }
+		public TanExpression(IExpression argument, decimal count)
+		{
+			this.Type = FunctionTypes.Tan;
+			this.Argument = argument;
+			this.Count = new Complex(count, 0);
+			UpdateDimensionKey();
+		}
 
-        public IExpression Execute()
+		public TanExpression(IExpression argument, IComplex count)
+		{
+			this.Type = FunctionTypes.Tan;
+			this.Argument = argument;
+			this.Count = count;
+			UpdateDimensionKey();
+		}
+
+		public IExpression Execute()
         {
             var arg = this.Argument.Execute();
 
@@ -55,7 +64,7 @@ namespace Mathema.Models.FunctionExpressions
 
         public IExpression Clone()
         {
-            return new TanExpression(this.Type, this.Argument.Clone());
+            return new TanExpression(this.Argument.Clone(), this.Count.Clone());
         }
 
         public string AsString()

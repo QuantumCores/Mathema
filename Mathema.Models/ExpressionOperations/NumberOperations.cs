@@ -73,20 +73,24 @@ namespace Mathema.Models.ExpressionOperations
         public static IExpression Multiply(IExpression lhe, IExpression rhe)
         {
             var res = lhe.Clone();
-            if (rhe is INumberExpression)
-            {
-                res.Count.Multiply(rhe.Count);
+			if (rhe is INumberExpression)
+			{
+				res.Count.Multiply(rhe.Count);
 
-                return ReduceExpression(res);
-            }
-            else if (rhe is ComplexExpression rc)
-            {
-                res.Count.Multiply(rc.Count);
+				return ReduceExpression(res);
+			}
+			else if (rhe is ComplexExpression rc)
+			{
+				res.Count.Multiply(rc.Count);
 
-                return ReduceExpression(res);
-            }
-
-            return null;
+				return ReduceExpression(res);
+			}
+			else
+			{
+				var other = rhe.Clone();
+				other.Count.Multiply(res.Count);
+				return other;
+			}
         }
 
         public static IExpression Divide(IExpression lhe, IExpression rhe)
@@ -104,8 +108,12 @@ namespace Mathema.Models.ExpressionOperations
 
                 return ReduceExpression(res);
             }
-
-            return null;
+			else
+			{
+				var other = rhe.Clone();
+				other.Count.Divide(res.Count);
+				return other;
+			}
         }
 
         public static IExpression Pow(IExpression lhe, IExpression rhe)

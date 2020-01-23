@@ -84,8 +84,12 @@ namespace Mathema.Models.ExpressionOperations
 
                 return ReduceExpression(res);
             }
-
-            return null;
+			else
+			{
+				var other = rhe.Clone();
+				other.Count.Multiply(res.Count);
+				return other;
+			}
         }
 
         public static IExpression Divide(IExpression lhe, IExpression rhe)
@@ -103,8 +107,12 @@ namespace Mathema.Models.ExpressionOperations
 
                 return ReduceExpression(res);
             }
-
-            return null;
+			else
+			{
+				var other = rhe.Clone();
+				other.Count.Divide(res.Count);
+				return other;
+			}
         }
 
         public static IExpression Pow(IExpression lhe, IExpression rhe)

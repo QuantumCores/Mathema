@@ -26,14 +26,23 @@ namespace Mathema.Models.FunctionExpressions
 
         public Dictionary<OperatorTypes, Func<IExpression, IExpression>> UnaryOperations { get; } = FunctionOperations.UnaryOperations;
 
-        public LogExpression(FunctionTypes type, IExpression argument)
-        {
-            this.Type = type;
-            this.Argument = argument;
-            UpdateDimensionKey();
-        }
+		public LogExpression(IExpression argument, decimal count)
+		{
+			this.Type = FunctionTypes.Log;
+			this.Argument = argument;
+			this.Count = new Complex(count, 0);
+			UpdateDimensionKey();
+		}
 
-        public IExpression Execute()
+		public LogExpression(IExpression argument, IComplex count)
+		{
+			this.Type = FunctionTypes.Log;
+			this.Argument = argument;
+			this.Count = count;
+			UpdateDimensionKey();
+		}
+
+		public IExpression Execute()
         {
             var arg = this.Argument.Execute();
 
@@ -55,7 +64,7 @@ namespace Mathema.Models.FunctionExpressions
 
         public IExpression Clone()
         {
-            return new LogExpression(this.Type, this.Argument.Clone());
+            return new LogExpression(this.Argument.Clone(), this.Count.Clone());
         }
 
         public string AsString()
