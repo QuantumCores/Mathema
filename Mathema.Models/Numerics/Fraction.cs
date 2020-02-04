@@ -241,6 +241,21 @@ namespace Mathema.Models.Numerics
             return res;
         }
 
+        public static Fraction operator +(Fraction l, decimal r)
+        {
+            var res = new Fraction(l);
+            res.Add(new Fraction(r, 1));
+
+            return res;
+        }
+
+        public static Fraction operator +(decimal l, Fraction r)
+        {
+            var res = new Fraction(l, 1);
+            res.Add(r);
+
+            return res;
+        }
 
         public static Fraction operator -(Fraction l, Fraction r)
         {
@@ -293,6 +308,22 @@ namespace Mathema.Models.Numerics
         public static Fraction operator -(double l, Fraction r)
         {
             var res = new Fraction((decimal)l, 1);
+            res.Subtract(r);
+
+            return res;
+        }
+
+        public static Fraction operator -(Fraction l, decimal r)
+        {
+            var res = new Fraction(l);
+            res.Subtract(new Fraction(r, 1));
+
+            return res;
+        }
+
+        public static Fraction operator -(decimal l, Fraction r)
+        {
+            var res = new Fraction(l, 1);
             res.Subtract(r);
 
             return res;
@@ -354,6 +385,22 @@ namespace Mathema.Models.Numerics
             return res;
         }
 
+        public static Fraction operator *(Fraction l, decimal r)
+        {
+            var res = new Fraction(l);
+            res.Multiply(new Fraction(r, 1));
+
+            return res;
+        }
+
+        public static Fraction operator *(decimal l, Fraction r)
+        {
+            var res = new Fraction(l, 1);
+            res.Multiply(r);
+
+            return res;
+        }
+
         public static Fraction operator /(Fraction l, Fraction r)
         {
             var res = new Fraction(l);
@@ -405,6 +452,22 @@ namespace Mathema.Models.Numerics
         public static Fraction operator /(double l, Fraction r)
         {
             var res = new Fraction((decimal)l, 1);
+            res.Divide(r);
+
+            return res;
+        }
+
+        public static Fraction operator /(Fraction l, decimal r)
+        {
+            var res = new Fraction(l);
+            res.Divide(new Fraction(r, 1));
+
+            return res;
+        }
+
+        public static Fraction operator /(decimal l, Fraction r)
+        {
+            var res = new Fraction(l, 1);
             res.Divide(r);
 
             return res;

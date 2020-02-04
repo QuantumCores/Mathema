@@ -77,12 +77,41 @@ namespace Mathema.Models.Expressions
 				{
 					if (this.Count.Re.Denominator % 1 == 0 && this.Count.Re.Denominator != 1 && this.Count.Re.Numerator % 1 == 0)
 					{
-						return this.Count.Re.Numerator.ToString() + " / " + this.Count.Re.Denominator + " * " + this.DimensionKey.ToString();
+                        if (this.Count.Re.Numerator == 1)
+                        {
+                            return this.DimensionKey.ToString() + " / " + this.Count.Re.Denominator;
+                        }
+
+                        return this.Count.Re.Numerator.ToString() + " / " + this.Count.Re.Denominator + " * " + this.DimensionKey.ToString();
 					}
 
 					if (num % 1 == 0)
 					{
-						return num.ToString() + " * " + this.DimensionKey.ToString();
+                        var p = this.DimensionKey.Value.ToNumber();
+                        if (p < 0)
+                        {
+                            if (p == -1)
+                            {
+                                return num + " / " + this.DimensionKey.Key;
+                            }
+                            else
+                            {
+                                var tmp = this.DimensionKey.Value.Clone();
+                                tmp.Multiply(new Fraction(-1, 1));
+                                return "(" + this.DimensionKey.Key + ")^" + tmp.ToString();
+                            }
+                        }
+                        else
+                        {
+                            if (p == 1)
+                            {
+                                return num + " * " + this.DimensionKey.Key;
+                            }
+                            else
+                            {
+                                return num + " * " + "(" + this.DimensionKey.Key + ")^" + this.DimensionKey.Value.ToString();
+                            }
+                        }
 					}
 				}
 
@@ -95,13 +124,42 @@ namespace Mathema.Models.Expressions
 				{
 					if (this.Count.Im.Denominator % 1 == 0 && this.Count.Im.Denominator != 1 && this.Count.Im.Numerator % 1 == 0)
 					{
-						return this.Count.Im.Numerator.ToString() + " / " + this.Count.Im.Denominator + " * " + this.DimensionKey.ToString();
+                        if (this.Count.Im.Numerator == 1)
+                        {
+                            return this.DimensionKey.ToString() + " / " + this.Count.Im.Denominator;
+                        }
+
+                        return this.Count.Im.Numerator.ToString() + " / " + this.Count.Im.Denominator + " * " + this.DimensionKey.ToString();
 					}
 
 					if (num % 1 == 0)
 					{
-						return num.ToString() + " * " + this.DimensionKey.ToString();
-					}
+                        var p = this.DimensionKey.Value.ToNumber();
+                        if (p < 0)
+                        {
+                            if (p == -1)
+                            {
+                                return num + " / " + this.DimensionKey.Key;
+                            }
+                            else
+                            {
+                                var tmp = this.DimensionKey.Value.Clone();
+                                tmp.Multiply(new Fraction(-1, 1));
+                                return "(" + this.DimensionKey.Key + ")^" + tmp.ToString();
+                            }
+                        }
+                        else
+                        {
+                            if (p == 1)
+                            {
+                                return num + " * " + this.DimensionKey.Key;
+                            }
+                            else
+                            {
+                                return num + " * " + "(" + this.DimensionKey.Key + ")^" + this.DimensionKey.Value.ToString();
+                            }
+                        }
+                    }
 				}
 
 				return num == -1 ? "-" + this.DimensionKey.ToString() : this.DimensionKey.ToString();

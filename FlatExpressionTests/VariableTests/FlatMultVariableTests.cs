@@ -87,7 +87,7 @@ namespace FlatExpressionTests.VariableTests
         {
             //Arrange
             var text = "y * 2 * x  * 3 * x * y * y";
-            var expText = "( 6 * x * x * y * y * y)";
+            var expText = "6 * (y)^3 * (x)^2";
             var expected = RPNParser.Parse(expText);
 
             //Act

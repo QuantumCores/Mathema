@@ -46,9 +46,9 @@ namespace Mathema.Models.ExpressionOperations
                 //    res.Expressions[Dimensions.Number][0].Count.Add(rhe.Count);
                 //}
                 //else
-                {
-                    res.Count.Add(rhe.Count);
-                }
+                //{
+                //    res.Count.Add(rhe.Count);
+                //}
                 res.Count.Add(rhe.Count);
                 return res;
             }

@@ -62,17 +62,14 @@ namespace Mathema.Models.ExpressionOperations
 
         public static IExpression Multiply(IExpression lhe, IExpression rhe)
         {
-            //var res = lhe.Clone();
-            //var lc = (IFlatExpression)res;
-            //if (rhe is INumberExpression)
-            //{
-            //    foreach (var key in rhe.DimensionKey.Key)
-            //    {
-            //        lc.Expressions[Dimensions.Number].Add(rhe);
-            //    }
+            var res = lhe.Clone();
+            var lc = (IFlatExpression)res;
+            if (rhe is INumberExpression)
+            {
+                lc.Count.Multiply(rhe.Count);
 
-            //    return res;
-            //}
+                return res;
+            }
             //else if (rhe is IVariableExpression)
             //{
             //    var tmp = rhe.DimensionKey.Key;
@@ -101,44 +98,42 @@ namespace Mathema.Models.ExpressionOperations
 
             //    return res;
             //}
-            //else if (rhe is FlatAddExpression rc)
-            //{
-            //    var ret = new FlatAddExpression();
-            //    if (lc.DimensionKey.Key.ElementAt(0).Key == rc.DimensionKey.Key.ElementAt(0).Key)
-            //    {
-            //        lc.DimensionKey.Key[lc.DimensionKey.Key.ElementAt(0).Key] += rc.DimensionKey.Key.ElementAt(0).Value;
+            else if (rhe is FlatAddExpression rc)
+            {
+                var ret = new FlatAddExpression();
+                if (lc.DimensionKey.Key == rc.DimensionKey.Key)
+                {
+                    lc.DimensionKey.Value += (Fraction)rc.DimensionKey.Value;
 
-            //        if (lc.DimensionKey.Key.ElementAt(0).Value == 0)
-            //        {
-            //            return new NumberExpression(1);
-            //        }
+                    if (lc.DimensionKey.Value.Numerator == 0)
+                    {
+                        return new NumberExpression(1);
+                    }
 
-            //        return lc;
-            //    }
-            //    else
-            //    {
-            //        foreach (var expl in lc.Expressions)
-            //        {
-            //            foreach (var li in expl.Value)
-            //            {
-            //                foreach (var expr in rc.Expressions)
-            //                {
-            //                    foreach (var ri in expr.Value)
-            //                    {
-            //                        var tmp = li.BinaryOperations[OperatorTypes.Multiply](li, ri);
-            //                        ret.Add(tmp);
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
+                    return lc;
+                }
+                else
+                {
+                    foreach (var expl in lc.Expressions)
+                    {
+                        foreach (var li in expl.Value)
+                        {
+                            foreach (var expr in rc.Expressions)
+                            {
+                                foreach (var ri in expr.Value)
+                                {
+                                    var tmp = li.BinaryOperations[OperatorTypes.Multiply](li, ri);
+                                    ret.Add(tmp);
+                                }
+                            }
+                        }
+                    }
+                }
 
-            //    return ret;
-            //}
-            var res = new FlatMultExpression();
-            res.Add(lhe);
-            res.Add(rhe);
-            return res;
+                return ret;
+            }
+
+            return null;
         }
 
         public static IExpression Divide(IExpression lhe, IExpression rhe)

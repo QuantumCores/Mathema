@@ -86,7 +86,7 @@ namespace Mathema.Models.FunctionExpressions
             }
 
             var dim = this.DimensionKey;
-            if (dim.Value.Numerator != 1 && dim.Value.Denominator != 1)
+            if (dim.Value.Numerator != 1 || dim.Value.Denominator != 1)
             {
                 if (dim.Value.ToNumber() > 0)
                 {

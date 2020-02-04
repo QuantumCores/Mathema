@@ -17,6 +17,8 @@ namespace Mathema.Models.Dimension
 
         public DimensionKey()
         {
+            this.Key = string.Empty;
+            this.Value = new Fraction();
         }
 
         public DimensionKey(string dim)
@@ -55,48 +57,16 @@ namespace Mathema.Models.Dimension
             //}
         }
 
-        public void Remove(string dim)
-        {
-            //if (this.Key.ContainsKey(dim))
-            //{
-            //    this.Key[dim] -= 1;
-            //    if (this.Key[dim] == 0)
-            //    {
-            //        this.Key.Remove(dim);
-            //    }
-            //}
-            //else
-            //{
-            //    this.Key.Add(dim, -1);
-            //}
-        }
-
-        public void Remove(string dim, decimal val)
-        {
-            //if (this.Key.ContainsKey(dim))
-            //{
-            //    this.Key[dim] -= val;
-            //    if (this.Key[dim] == 0)
-            //    {
-            //        this.Key.Remove(dim);
-            //    }
-            //}
-            //else
-            //{
-            //    this.Key.Add(dim, -val);
-            //}
-        }
-
         public void Multiply(string dim, decimal val)
         {
-            //if (this.Key.ContainsKey(dim))
-            //{
-            //    this.Key[dim] *= val;
-            //}
-            //else
-            //{
-            //    throw new ArgumentException($"Couldn't find that key '{dim}' in expression dimensions");
-            //}
+            if (this.Key == dim)
+            {
+                this.Value = (Fraction)this.Value * val;
+            }
+            else
+            {
+                throw new ArgumentException($"Couldn't find that key '{dim}' in expression dimensions");
+            }
         }
 
         public static bool Compare(IDimensionKey a, IDimensionKey b)
@@ -139,7 +109,7 @@ namespace Mathema.Models.Dimension
             var res = new DimensionKey();
 
             res.Key = this.Key;
-            res.Value = this.Value;
+            res.Value = this.Value.Clone();
 
             return res;
         }
@@ -173,7 +143,7 @@ namespace Mathema.Models.Dimension
 
             //return string.Join("", sb);
 
-            if (this.Value.Numerator != 1 && this.Value.Denominator != 1)
+            if (this.Value.Numerator != 1 || this.Value.Denominator != 1)
             {
                 return "(" + this.Key + ")^" + this.Value.AsString();
             }

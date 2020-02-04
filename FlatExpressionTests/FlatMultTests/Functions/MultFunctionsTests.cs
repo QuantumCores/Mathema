@@ -32,7 +32,7 @@ namespace FlatExpressionTests.FlatMultTests.Functions
         {
             //Arrange
             var test = "Sin(x) * Sin(2*x)";
-            var expText = " Sin(x) * Sin(2*x)";
+            var expText = "Sin(2*x) * Sin(x)";
             var expected = RPNParser.Parse(expText);
 
             //Act

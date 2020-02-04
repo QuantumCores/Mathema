@@ -16,19 +16,19 @@ namespace Mathema.Solver
 		public static IEquationSolutions Solve(Equation equation, string variable)
         {
             EquationClassifier.Classify(equation, variable);
-           
+            var varS = variable;
+
             if (equation.Classification.SearchResult.ElementAt(0).Key != variable)
             {
                 var expression = equation.Left;
                 var classification = equation.Classification;
-                var clone = expression.Clone();
-                var varS = variable;
+                var clone = expression.Clone();                
                 varS = GetNewVariableForSub(equation);
                 var sub = new VariableExpression(varS, 1);
                 clone.Substitute(ref clone, sub, classification.SearchResult.ElementAt(0).Key);
             }
 
-            var sols = Solve(variable, equation.Left, equation.Classification);
+            var sols = Solve(varS, equation.Left, equation.Classification);
 
             foreach (var s in sols.Solutions)
             {

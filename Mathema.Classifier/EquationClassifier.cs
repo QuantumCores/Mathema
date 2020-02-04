@@ -122,7 +122,7 @@ namespace Mathema.Classifier
             if (result.Count == 1)
             {
                 var dim = result.ElementAt(0);
-                var ord = dim.Value.OrderBy(x => x).ToArray();
+                var ord = dim.Value.OrderBy(x => x.ToNumber()).ToArray();
                 if (ord.Length == 1)
                 {
                     if (ord[0].ToNumber() == 1)

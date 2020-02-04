@@ -70,7 +70,7 @@ namespace Mathema.Models.ExpressionOperations
             var res = lhe.Clone();
             if (rhe is IVariableExpression)
             {
-                res.Count.Divide(rhe.Count);
+                res.Count.Multiply(rhe.Count);
 
                 if (rhe.DimensionKey.Key == res.DimensionKey.Key)
                 {
@@ -78,7 +78,7 @@ namespace Mathema.Models.ExpressionOperations
 
                     if (res.DimensionKey.Value.Numerator == 0)
                     {
-                        return new ComplexExpression(res.Count);
+                        return FromCount(res.Count);
                     }
 
                     return res;
@@ -88,8 +88,21 @@ namespace Mathema.Models.ExpressionOperations
             var tmp = new FlatMultExpression();
             tmp.Add(res);
             tmp.Add(rhe.Clone());
+            var r = tmp.Execute();
 
-            return tmp;
+            return r;
+        }
+
+        private static IExpression FromCount(IComplex count)
+        {
+            if (count.Im.Numerator != 0)
+            {
+                return new ComplexExpression(count.Re, count.Im);
+            }
+            else //(count.Im.Numerator == 0)
+            {
+                return new NumberExpression(count.Re);
+            }
         }
 
         public static IExpression Divide(IExpression lhe, IExpression rhe)
@@ -111,12 +124,18 @@ namespace Mathema.Models.ExpressionOperations
                     return res;
                 }
             }
+            else if (rhe is NumberExpression || rhe is ComplexExpression)
+            {
+                res.Count.Divide(rhe.Count);
+                return res;
+            }
 
             var tmp = new FlatMultExpression();
             tmp.Add(res);
-            tmp.Add(rhe.Clone());
+            tmp.Add(new BinaryExpression(rhe.Clone(), OperatorTypes.Power, new NumberExpression(-1)));
+            var r = tmp.Execute();
 
-            return tmp;
+            return r;
         }
 
         public static IExpression Pow(IExpression lhe, IExpression rhe)
@@ -135,7 +154,7 @@ namespace Mathema.Models.ExpressionOperations
 
                     res.Count.Pow(rhe.Count);
                     var k = res.DimensionKey.Key;
-                    res.DimensionKey.Multiply(k, rhe.Count.Re.ToNumber());
+                    res.DimensionKey.Multiply(k, n);
 
                     return res;
                 }

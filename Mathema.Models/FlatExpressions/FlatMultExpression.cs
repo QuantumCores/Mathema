@@ -26,6 +26,7 @@ namespace Mathema.Models.FlatExpressions
         public override void Add(IExpression expression)
         {
             this.Count.Multiply(expression.Count);
+            expression.Count = new Complex(1, 0);
 
             if (expression is FlatAddExpression)
             {
@@ -114,6 +115,7 @@ namespace Mathema.Models.FlatExpressions
                     {
                         if (key != nameof(BinaryExpression) && key != nameof(UnaryExpression))
                         {
+                            //TODO when exp has DimKey value 2 then count is (n)^2?
                             this.Count.Multiply(exp.Count);
                             exp.Count = new Complex();
 
@@ -135,10 +137,12 @@ namespace Mathema.Models.FlatExpressions
             }
 
             this.Expressions = dims;
-            foreach (var item in this.Expressions)
-            {
-                this.DimensionKey.Add(item.Value[0].DimensionKey);
-            }
+            //foreach (var item in this.Expressions)
+            //{
+            //    this.DimensionKey.Add(item.Value[0].DimensionKey);
+            //}
+
+            this.UpdateDimensionKey(false);
         }
 
         private static void Reduce(Dictionary<string, List<IExpression>> dims, IExpression exp, string key)
@@ -203,9 +207,78 @@ namespace Mathema.Models.FlatExpressions
                 }
             }
 
-            this.DimensionKey.Key = this.AsString();
+            this.DimensionKey.Key = string.Join("", this.Dimension());
 
             return;
+        }
+
+        private List<string> Dimension()
+        {
+            var sb = new List<string>();
+            var addOne = true;
+
+            foreach (var kv in this.Expressions.OrderByDescending(e => e.Value[0].DimensionKey.Value.ToNumber()).ThenBy(e => e.Value[0].DimensionKey.Key))
+            {
+                var expr = kv.Value[0];
+                var p = expr.DimensionKey.Value.ToNumber();
+                if (p > 0)
+                {
+                    addOne = false;
+                }
+
+                if (sb.Count > 0)
+                {
+                    if (expr.DimensionKey.Value.ToNumber() < 0)
+                    {
+                        sb.Add(" / ");
+                    }
+                    else
+                    {
+                        sb.Add(" * ");
+                        addOne = false;
+                    }
+                }
+
+                if (kv.Value.Count > 1)
+                {
+                    sb.Add(string.Join("*", kv.Value.Select(e => e.DimensionKey.ToString())));
+                }
+                else
+                {
+                    if (p < 0)
+                    {
+                        if (p == -1)
+                        {
+                            sb.Add(expr.DimensionKey.Key);
+                        }
+                        else
+                        {
+                            var tmp = expr.DimensionKey.Value.Clone();
+                            tmp.Multiply(new Fraction(-1, 1));
+                            sb.Add("(" + expr.DimensionKey.Key + ")^" + tmp.ToString());
+                        }
+                    }
+                    else
+                    {
+                        if (p == 1)
+                        {
+                            sb.Add(expr.DimensionKey.Key);
+                        }
+                        else
+                        {
+                            sb.Add("(" + expr.DimensionKey.Key + ")^" + expr.DimensionKey.Value.ToString());
+                        }
+                    }
+                }
+            }
+
+            if (addOne)
+            {
+                sb.Insert(0, "1 / ");
+            }
+
+            //return "( " + string.Join("", sb) + ")";
+            return sb;
         }
 
         public override IExpression Clone()
@@ -221,9 +294,9 @@ namespace Mathema.Models.FlatExpressions
             }
 
             res.DimensionKey = this.DimensionKey.Clone();
-			res.Count = this.Count.Clone();
+            res.Count = this.Count.Clone();
 
-			return res;
+            return res;
         }
 
         public static FlatMultExpression operator *(FlatMultExpression lhe, FlatMultExpression rhe)
@@ -296,47 +369,18 @@ namespace Mathema.Models.FlatExpressions
 
         public override string ToString()
         {
-            var sb = new List<string>();
-            var addOne = true;
+            var sb = this.Dimension();
             if (this.Count.Re.ToNumber() != 1 && this.Count.Im.ToNumber() == 0)
             {
-                sb.Add(this.Count.AsString());
-                addOne = false;
+                if (sb[0] == "1 / ")
+                {
+                    sb.RemoveAt(0);
+                }
+                sb.Insert(0, this.Count.AsString() + " * ");
             }
 
-            //TODO order by expr.ToString
-            foreach (var kv in this.Expressions)
-            {
-                var expr = this.Expressions[kv.Key][0];
-                if (sb.Count > 0)
-                {
-                    if (expr.DimensionKey.Value.ToNumber() < 0)
-                    {
-                        sb.Add(" / ");
-                    }
-                    else
-                    {
-                        sb.Add(" * ");
-                        addOne = false;
-                    }
-                }
-
-                if (kv.Value.Count > 1)
-                {
-                    sb.Add(string.Join("*", kv.Value));
-                }
-                else
-                {
-                    sb.Add(expr.ToString());
-                }
-            }
-
-            if (addOne)
-            {
-                sb.Insert(0, "1 / ");
-            }
-
-            return "( " + string.Join("", sb) + ")";
+            //return "( " + string.Join("", sb) + ")";
+            return string.Join("", sb);
         }
     }
 }

@@ -14,14 +14,16 @@ namespace FlatExpressionTests.VariableOperations
         {
             //Arrange
             var text = "x*x";
-            var expected = RPNParser.Parse("x*x");
+            var expText = "(x)^2";
+            var expected = RPNParser.Parse(expText);
 
             //Act
             var rpn = RPNParser.Parse(text);
-            var actual = RPNParser.Parse(ExpressionBuilder.BuildFlat(rpn.Output).Execute().ToString());
+            var expr = ExpressionBuilder.BuildFlat(rpn.Output).Execute();
+            var actual = RPNParser.Parse(expr.ToString());
 
             //Assert
-            Assert.IsTrue(RPNComparer.Compare(expected.Output, actual.Output));
+            Assert.IsTrue(RPNComparer.Compare(expected.Output, actual.Output), $"Expected: {expText} but was {expr.ToString()}");
         }
 
         [Test]
@@ -29,14 +31,16 @@ namespace FlatExpressionTests.VariableOperations
         {
             //Arrange
             var text = "x*y";
-            var expected = RPNParser.Parse("x*y");
+            var expText = "x*y";
+            var expected = RPNParser.Parse(expText);
 
             //Act
             var rpn = RPNParser.Parse(text);
-            var actual = RPNParser.Parse(ExpressionBuilder.BuildFlat(rpn.Output).Execute().ToString());
+            var expr = ExpressionBuilder.BuildFlat(rpn.Output).Execute();
+            var actual = RPNParser.Parse(expr.ToString());
 
             //Assert
-            Assert.IsTrue(RPNComparer.Compare(expected.Output, actual.Output));
+            Assert.IsTrue(RPNComparer.Compare(expected.Output, actual.Output), $"Expected: {expText} but was {expr.ToString()}");
         }
 
         [Test]
@@ -44,14 +48,16 @@ namespace FlatExpressionTests.VariableOperations
         {
             //Arrange
             var text = "x*y*fun*x";
-            var expected = RPNParser.Parse("fun*x*x*y");
+            var expText = "fun*(x)^2*y";
+            var expected = RPNParser.Parse(expText);
 
             //Act
             var rpn = RPNParser.Parse(text);
-            var actual = RPNParser.Parse(ExpressionBuilder.BuildFlat(rpn.Output).Execute().ToString());
+            var expr = ExpressionBuilder.BuildFlat(rpn.Output).Execute();
+            var actual = RPNParser.Parse(expr.ToString());
 
             //Assert
-            Assert.IsTrue(RPNComparer.Compare(expected.Output, actual.Output));
+            Assert.IsTrue(RPNComparer.Compare(expected.Output, actual.Output), $"Expected: {expText} but was {expr.ToString()}");
         }
     }
 }
