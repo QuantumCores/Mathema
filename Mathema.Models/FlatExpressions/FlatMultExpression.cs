@@ -98,7 +98,7 @@ namespace Mathema.Models.FlatExpressions
             {
                 if (exp.Count.Re.Numerator != 0 || exp.Count.Im.Numerator != 0)
                 {
-                    var key = exp.DimensionKey.Key.ElementAt(0).Key;
+                    var key = exp.DimensionKey.Key;
                     if (key == Dimensions.Number || key == Dimensions.Complex)
                     {
                         this.Count.Multiply(exp.Count);
@@ -144,7 +144,7 @@ namespace Mathema.Models.FlatExpressions
         private static void Reduce(Dictionary<string, List<IExpression>> dims, IExpression exp, string key)
         {
             var res = dims[key][0].BinaryOperations[OperatorTypes.Multiply](dims[key][0], exp);
-            if (key != res.DimensionKey.Key.ElementAt(0).Key)
+            if (key != res.DimensionKey.Key)
             {
                 dims.Remove(key);
                 var resKey = res.DimensionKey.ToString();
@@ -192,6 +192,20 @@ namespace Mathema.Models.FlatExpressions
             {
                 return this;
             }
+        }
+        public override void UpdateDimensionKey(bool deep)
+        {
+            if (deep)
+            {
+                foreach (var kv in this.Expressions)
+                {
+                    kv.Value.ForEach(e => e.UpdateDimensionKey(true));
+                }
+            }
+
+            this.DimensionKey.Key = this.AsString();
+
+            return;
         }
 
         public override IExpression Clone()
@@ -251,11 +265,11 @@ namespace Mathema.Models.FlatExpressions
         {
             //TODO this is wrong because we change rhe
             var res = (FlatMultExpression)lhe.Clone();
-            for (int i = 0; i < rhe.DimensionKey.Key.Count; i++)
-            {
-                var key = rhe.DimensionKey.Key.ElementAt(i).Key;
-                rhe.DimensionKey.Multiply(key, -1);
-            }
+            //for (int i = 0; i < rhe.DimensionKey.Key.Count; i++)
+            //{
+            //    var key = rhe.DimensionKey.Key.ElementAt(i).Key;
+            //    rhe.DimensionKey.Multiply(key, -1);
+            //}
 
             res.Add(rhe);
 
@@ -265,10 +279,10 @@ namespace Mathema.Models.FlatExpressions
         public static FlatMultExpression operator /(IExpression lhe, FlatMultExpression rhe)
         {
             var res = lhe.Clone();
-            foreach (var kv in lhe.DimensionKey.Key)
-            {
-                lhe.DimensionKey.Multiply(kv.Key, -1);
-            }
+            //foreach (var kv in lhe.DimensionKey.Key)
+            //{
+            //    lhe.DimensionKey.Multiply(kv.Key, -1);
+            //}
 
             rhe.Add(lhe);
 
@@ -296,7 +310,7 @@ namespace Mathema.Models.FlatExpressions
                 var expr = this.Expressions[kv.Key][0];
                 if (sb.Count > 0)
                 {
-                    if (expr.DimensionKey.Key.ElementAt(0).Value < 0)
+                    if (expr.DimensionKey.Value.ToNumber() < 0)
                     {
                         sb.Add(" / ");
                     }

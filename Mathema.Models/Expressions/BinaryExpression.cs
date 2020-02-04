@@ -51,6 +51,17 @@ namespace Mathema.Models.Expressions
             return res;
         }
 
+        public void UpdateDimensionKey(bool deep)
+        {
+            if (deep)
+            {
+                this.rhe.UpdateDimensionKey(deep);
+                this.lhe.UpdateDimensionKey(deep);
+            }
+
+            return;
+        }
+
         public IExpression Clone()
         {
             return new BinaryExpression(this.lhe.Clone(), this.op, this.rhe.Clone());
@@ -65,7 +76,5 @@ namespace Mathema.Models.Expressions
         {
             return " (" + this.lhe.ToString() + Operators.Operators.Get(op).Symbol + this.rhe.ToString() + ")";
         }
-
-        
     }
 }

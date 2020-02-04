@@ -28,32 +28,34 @@ namespace Mathema.Models.Expressions
 		{
 			this.Symbol = symbol;
 			this.Count = new Complex(count, 0);
-			this.DimensionKey.Add(symbol);
+			this.DimensionKey.Set(symbol);
 		}
 
 		public VariableExpression(string symbol, IComplex count)
 		{
 			this.Symbol = symbol;
 			this.Count = count;
-			this.DimensionKey.Add(symbol);
+			this.DimensionKey.Set(symbol);
 		}
 
 		public IExpression Execute()
 		{
 			return this;
 		}
+        public void UpdateDimensionKey(bool deep)
+        {
+            return;
+        }
 
-		public IExpression Clone()
+        public IExpression Clone()
 		{
 			var res = new VariableExpression(string.Copy(this.Symbol), this.Count.Clone());
 			res.DimensionKey = new DimensionKey();
 			res.Count = this.Count.Clone();
-			foreach (var key in this.DimensionKey.Key)
-			{
-				res.DimensionKey.Add(string.Copy(key.Key), key.Value);
-			}
+            res.DimensionKey.Key = this.DimensionKey.Key;
+            res.DimensionKey.Value = this.DimensionKey.Value;
 
-			return res;
+            return res;
 		}
 
 		public bool CompareDimensions(IVariableExpression variable)

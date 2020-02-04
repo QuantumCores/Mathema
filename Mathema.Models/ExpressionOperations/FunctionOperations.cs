@@ -2,6 +2,7 @@
 using Mathema.Interfaces;
 using Mathema.Models.Expressions;
 using Mathema.Models.FunctionExpressions;
+using Mathema.Models.Numerics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,7 +39,7 @@ namespace Mathema.Models.ExpressionOperations
             var res = lhe.Clone();
             if (rhe is IFunctionExpression)
             {
-                if (lhe.DimensionKey.Key.ElementAt(0).Key == rhe.DimensionKey.Key.ElementAt(0).Key)
+                if (lhe.DimensionKey.Key == rhe.DimensionKey.Key)
                 {
                     res.Count.Add(rhe.Count);
                     return res;
@@ -53,7 +54,7 @@ namespace Mathema.Models.ExpressionOperations
             var res = lhe.Clone();
             if (rhe is IFunctionExpression)
             {
-                if (lhe.DimensionKey.Key.ElementAt(0).Key == rhe.DimensionKey.Key.ElementAt(0).Key)
+                if (lhe.DimensionKey.Key == rhe.DimensionKey.Key)
                 {
                     res.Count.Subtract(rhe.Count);
                     return res;
@@ -68,11 +69,11 @@ namespace Mathema.Models.ExpressionOperations
             var res = lhe.Clone();
             if (rhe is IFunctionExpression)
             {
-                if (lhe.DimensionKey.Key.ElementAt(0).Key == rhe.DimensionKey.Key.ElementAt(0).Key)
+                if (lhe.DimensionKey.Key == rhe.DimensionKey.Key)
                 {
-                    res.DimensionKey.Key[res.DimensionKey.Key.ElementAt(0).Key] += res.DimensionKey.Key.ElementAt(0).Value;
+                    res.DimensionKey.Value += (Fraction)res.DimensionKey.Value;
 
-                    if (res.DimensionKey.Key.ElementAt(0).Value == 0)
+                    if (res.DimensionKey.Value.Numerator == 0)
                     {
                         return new NumberExpression(1);
                     }
@@ -89,11 +90,11 @@ namespace Mathema.Models.ExpressionOperations
             var res = lhe.Clone();
             if (rhe is IFunctionExpression)
             {
-                if (lhe.DimensionKey.Key.ElementAt(0).Key == rhe.DimensionKey.Key.ElementAt(0).Key)
+                if (lhe.DimensionKey.Value == rhe.DimensionKey.Value)
                 {
-                    res.DimensionKey.Key[res.DimensionKey.Key.ElementAt(0).Key] -= res.DimensionKey.Key.ElementAt(0).Value;
+                    res.DimensionKey.Value -= (Fraction)res.DimensionKey.Value;
 
-                    if (res.DimensionKey.Key.ElementAt(0).Value == 0)
+                    if (res.DimensionKey.Value.Numerator == 0)
                     {
                         return new NumberExpression(1);
                     }
@@ -122,7 +123,7 @@ namespace Mathema.Models.ExpressionOperations
                         }
                         else
                         {
-                            res.DimensionKey.Key[res.DimensionKey.Key.ElementAt(0).Key] *= p;
+                            res.DimensionKey.Value = (Fraction)res.DimensionKey.Value * (int)p;
                             return res;
                         }
                     }

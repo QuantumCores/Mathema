@@ -47,6 +47,11 @@ namespace Mathema.Models.Expressions
             return this;
         }
 
+        public void UpdateDimensionKey(bool deep)
+        {
+            return;
+        }
+
         public IExpression Clone()
         {
             return new NumberExpression(this.Count.Re.Clone());

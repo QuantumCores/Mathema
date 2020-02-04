@@ -12,6 +12,8 @@ namespace Mathema.Interfaces
 
         IExpression Clone();
 
+        void UpdateDimensionKey(bool deep);
+
         string AsString();
     }
 }

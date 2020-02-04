@@ -62,6 +62,12 @@ namespace Mathema.Models.FunctionExpressions
             }
         }
 
+        public void UpdateDimensionKey(bool deep)
+        {
+            this.DimensionKey.Key = this.AsString();
+            return;
+        }
+
         public IExpression Clone()
         {
             return new CosExpression(this.Argument.Clone(), this.Count.Clone());
@@ -79,16 +85,16 @@ namespace Mathema.Models.FunctionExpressions
                 return this.Count.AsString() + "*" + this.ExpressionKey();
             }
 
-            var kv = this.DimensionKey.Key.ElementAt(0);
-            if (Math.Abs(kv.Value) != 1)
+            var dim = this.DimensionKey;
+            if (dim.Value.Numerator != 1 && dim.Value.Denominator != 1)
             {
-                if (kv.Value > 0)
+                if (dim.Value.ToNumber() > 0)
                 {
-                    return "(" + kv.Key + ")^" + kv.Value;
+                    return "(" + dim.Key + ")^" + dim.Value;
                 }
                 else
                 {
-                    return "(" + kv.Key + ")^(" + kv.Value + ")";
+                    return "(" + dim.Key + ")^(" + dim.Value + ")";
                 }
             }
 
@@ -97,9 +103,7 @@ namespace Mathema.Models.FunctionExpressions
 
         private void UpdateDimensionKey()
         {
-            var newDim = new Dictionary<string, decimal>();
-            newDim.Add(this.ExpressionKey(), this.DimensionKey.Key.ElementAt(0).Value);
-            this.DimensionKey.Key = newDim;
+            this.DimensionKey.Key = this.ExpressionKey();
         }
 
         private string ExpressionKey()

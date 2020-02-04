@@ -34,7 +34,7 @@ namespace ExpressionTests.CloneTests
 			//Arrange
 			var expression = new VariableExpression("x", 2);
 			expression.Count = new Complex(3, 2);
-			expression.DimensionKey.Add("y", 3);
+			expression.DimensionKey.Set("y", 3);
 
 			//Act
 			var clone = (VariableExpression)expression.Clone();

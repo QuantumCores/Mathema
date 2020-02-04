@@ -2,6 +2,8 @@
 using Mathema.Interfaces;
 using Mathema.Models.Dimension;
 using Mathema.Models.Expressions;
+using Mathema.Models.FlatExpressions;
+using Mathema.Models.Numerics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -68,21 +70,26 @@ namespace Mathema.Models.ExpressionOperations
             var res = lhe.Clone();
             if (rhe is IVariableExpression)
             {
-                res.Count.Multiply(rhe.Count);
-                foreach (var key in rhe.DimensionKey.Key)
-                {
-                    res.DimensionKey.Add(string.Copy(key.Key), key.Value);
-                }
+                res.Count.Divide(rhe.Count);
 
-                if (res.DimensionKey.Key.Count == 0)
+                if (rhe.DimensionKey.Key == res.DimensionKey.Key)
                 {
-                    return new ComplexExpression(res.Count);
-                }
+                    res.DimensionKey.Value += (Fraction)rhe.DimensionKey.Value;
 
-                return res;
+                    if (res.DimensionKey.Value.Numerator == 0)
+                    {
+                        return new ComplexExpression(res.Count);
+                    }
+
+                    return res;
+                }
             }
 
-            return null;
+            var tmp = new FlatMultExpression();
+            tmp.Add(res);
+            tmp.Add(rhe.Clone());
+
+            return tmp;
         }
 
         public static IExpression Divide(IExpression lhe, IExpression rhe)
@@ -92,20 +99,24 @@ namespace Mathema.Models.ExpressionOperations
             {
                 res.Count.Divide(rhe.Count);
 
-                foreach (var key in rhe.DimensionKey.Key)
+                if (rhe.DimensionKey.Key == res.DimensionKey.Key)
                 {
-                    res.DimensionKey.Remove(key.Key, key.Value);
-                }
+                    res.DimensionKey.Value -= (Fraction)rhe.DimensionKey.Value;
 
-                if (res.DimensionKey.Key.Count == 0)
-                {
-                    return new ComplexExpression(res.Count);
-                }
+                    if (res.DimensionKey.Value.Numerator == 0)
+                    {
+                        return new ComplexExpression(res.Count);
+                    }
 
-                return res.Clone();
+                    return res;
+                }
             }
 
-            return null;
+            var tmp = new FlatMultExpression();
+            tmp.Add(res);
+            tmp.Add(rhe.Clone());
+
+            return tmp;
         }
 
         public static IExpression Pow(IExpression lhe, IExpression rhe)
@@ -123,7 +134,7 @@ namespace Mathema.Models.ExpressionOperations
                     }
 
                     res.Count.Pow(rhe.Count);
-                    var k = res.DimensionKey.Key.ElementAt(0).Key;
+                    var k = res.DimensionKey.Key;
                     res.DimensionKey.Multiply(k, rhe.Count.Re.ToNumber());
 
                     return res;

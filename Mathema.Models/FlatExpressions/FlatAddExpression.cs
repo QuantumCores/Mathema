@@ -37,7 +37,7 @@ namespace Mathema.Models.FlatExpressions
                     this.Expressions.Add(tmp, new List<IExpression>());
                 }
                 this.Expressions[tmp].Add(expression);
-                this.UpdateDimensionKey();
+                this.UpdateDimensionKey(false);
             }
         }
 
@@ -111,7 +111,7 @@ namespace Mathema.Models.FlatExpressions
             }
 
             this.Expressions = dims;
-            this.UpdateDimensionKey();
+            this.UpdateDimensionKey(false);
         }
 
         public override IExpression Execute()
@@ -144,13 +144,8 @@ namespace Mathema.Models.FlatExpressions
                 res.Expressions.Add(kv.Key, kv.Value);
             }
 
-            res.DimensionKey.Key.Clear();
-            foreach (var kv in this.DimensionKey.Key)
-            {
-                res.DimensionKey.Key.Add(kv.Key, kv.Value);
-            }
-
-			res.Count = this.Count.Clone();
+            res.DimensionKey = this.DimensionKey.Clone();
+            res.Count = this.Count.Clone();
 
             return res;
         }
@@ -204,29 +199,35 @@ namespace Mathema.Models.FlatExpressions
                 count = this.Count.AsString() + " * ";
             }
 
-            var kv = this.DimensionKey.Key.ElementAt(0);
-            if (Math.Abs(kv.Value) != 1)
+            var dim = this.DimensionKey;
+            if (dim.Value.Numerator != 1 && dim.Value.Denominator !=1 )
             {
-                if (kv.Value > 0)
+                if (dim.Value.ToNumber() > 0)
                 {
-                    return count + "(" + kv.Key + ")^" + kv.Value;
+                    return count + "(" + dim.Key + ")^" + dim.Value;
                 }
                 else
                 {
-                    return count + "(" + kv.Key + ")^(" + kv.Value + ")";
+                    return count + "(" + dim.Key + ")^(" + dim.Value + ")";
                 }
             }
             else
             {
-                return count + kv.Key;
+                return count + dim.Key;
             }
         }
 
-        public void UpdateDimensionKey()
+        public override void UpdateDimensionKey(bool deep)
         {
-            var newDim = new Dictionary<string, decimal>();
-            newDim.Add(this.ExpressionKey(), this.DimensionKey.Key.ElementAt(0).Value);
-            this.DimensionKey.Key = newDim;
+            if (deep)
+            {
+                foreach (var kv in this.Expressions)
+                {
+                    kv.Value.ForEach(e => e.UpdateDimensionKey(true));
+                }
+            }
+
+            this.DimensionKey.Key = this.ExpressionKey();
         }
 
         private string ExpressionKey()

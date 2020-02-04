@@ -18,7 +18,7 @@ namespace Mathema.Models.Extensions
 					for (int i = 0; i < kvel.Value.Count; i++)
 					{
 						var e = kvel.Value[i];
-						if (e.DimensionKey.Key.ElementAt(0).Key == key)
+						if (e.DimensionKey.Key == key)
 						{
 							//kvel.Value[i] = sub.Clone();
 							e.Substitute(ref e, sub, key);
@@ -27,7 +27,7 @@ namespace Mathema.Models.Extensions
 					}
 				}
 
-				fae.UpdateDimensionKey();
+				fae.UpdateDimensionKey(true);
 			}
 			else if (expression is FlatMultExpression fme)
 			{
@@ -36,7 +36,7 @@ namespace Mathema.Models.Extensions
 					for (int i = 0; i < kvel.Value.Count; i++)
 					{
 						var e = kvel.Value[i];
-						if (e.DimensionKey.Key.ElementAt(0).Key == key)
+						if (e.DimensionKey.Key == key)
 						{
 							e.Substitute(ref e, sub, key);
 							kvel.Value[i] = e;
@@ -46,7 +46,7 @@ namespace Mathema.Models.Extensions
 			}
 			else if (expression is IFunctionExpression fe)
 			{
-				if (fe.DimensionKey.Key.ElementAt(0).Key == key)
+				if (fe.DimensionKey.Key == key)
 				{
 					Swap(ref expression, sub);
 				}
@@ -59,7 +59,7 @@ namespace Mathema.Models.Extensions
 			}
 			else
 			{
-				if (expression.DimensionKey.Key.ElementAt(0).Key == key)
+				if (expression.DimensionKey.Key == key)
 				{
 					Swap(ref expression, sub);
 				}
@@ -72,8 +72,8 @@ namespace Mathema.Models.Extensions
 		{
 			var tmp = sub.Clone();
 			tmp.Count = expression.Count;
-			var tmpKey = tmp.DimensionKey.Key.ElementAt(0).Key;
-			tmp.DimensionKey.Key[tmpKey] = expression.DimensionKey.Key.ElementAt(0).Value;
+			var tmpKey = tmp.DimensionKey.Key;
+			tmp.DimensionKey.Value = expression.DimensionKey.Value;
 			expression = tmp;
 		}
 	}

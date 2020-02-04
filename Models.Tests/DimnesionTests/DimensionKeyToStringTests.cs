@@ -18,8 +18,8 @@ namespace ModelsTests.DimnesionTests
 
             //Act
             var dimk = new DimensionKey();
-            dimk.Add("x", 1);
-            dimk.Add("y", 1);
+            dimk.Set("x", 1);
+            dimk.Set("y", 1);
             var actual = dimk.ToString();
 
             //Assert
@@ -34,8 +34,8 @@ namespace ModelsTests.DimnesionTests
 
             //Act
             var dimk = new DimensionKey();
-            dimk.Add("x", 1);
-            dimk.Add("y", -1);
+            dimk.Set("x", 1);
+            dimk.Set("y", -1);
             var actual = dimk.ToString();
 
             //Assert
@@ -50,9 +50,9 @@ namespace ModelsTests.DimnesionTests
 
             //Act
             var dimk = new DimensionKey();
-            dimk.Add(Dimensions.Number, 1);
-            dimk.Add("x", -1);
-            dimk.Add("y", -1);
+            dimk.Set(Dimensions.Number, 1);
+            dimk.Set("x", -1);
+            dimk.Set("y", -1);
             var actual = dimk.ToString();
 
             //Assert
