@@ -46,6 +46,15 @@ namespace Mathema.Models.Expressions
 
             return res;
         }
+        public void UpdateDimensionKey(bool deep)
+        {
+            if (deep)
+            {
+                this.rhe.UpdateDimensionKey(deep);
+            }
+
+            return;
+        }
 
         public IExpression Clone()
         {

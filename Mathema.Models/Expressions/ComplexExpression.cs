@@ -96,6 +96,11 @@ namespace Mathema.Models.Expressions
             return this;
         }
 
+        public void UpdateDimensionKey(bool deep)
+        {
+            return;
+        }
+
         public IExpression Clone()
         {
             return new ComplexExpression(this.Count.Re.Clone(), this.Count.Im.Clone());

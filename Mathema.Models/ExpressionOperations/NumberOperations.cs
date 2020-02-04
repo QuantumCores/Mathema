@@ -1,6 +1,7 @@
 ﻿using Mathema.Enums.Operators;
 using Mathema.Interfaces;
 using Mathema.Models.Expressions;
+using Mathema.Models.FlatExpressions;
 using Mathema.Models.Numerics;
 using System;
 using System.Collections.Generic;
@@ -110,9 +111,11 @@ namespace Mathema.Models.ExpressionOperations
             }
 			else
 			{
-				var other = rhe.Clone();
-				other.Count.Divide(res.Count);
-				return other;
+                var tmp = new FlatMultExpression();
+                tmp.Add(lhe);
+                tmp.Add(new BinaryExpression(rhe.Clone(), OperatorTypes.Power, new NumberExpression(-1)));
+                var r = tmp.Execute();
+                return r;
 			}
         }
 

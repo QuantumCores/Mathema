@@ -6,17 +6,16 @@ namespace Mathema.Interfaces
 {
     public interface IDimensionKey
     {
-        Dictionary<string, decimal> Key { get; set; }
+        //Dictionary<string, decimal> Key { get; set; }
+        string Key { get; set; }
 
-        void Add(string dim);
+        IFraction Value { get; set; }
 
-        void Add(string dim, decimal val);
+        void Set(string dim);
+
+        void Set(string dim, decimal val);
 
         void Add(IDimensionKey dimensionKey);
-
-        void Remove(string dim);
-
-        void Remove(string dim, decimal val);
 
         void Multiply(string dim, decimal val);
 

@@ -46,7 +46,7 @@ namespace FlatExpressionTests.VariableOperations
         {
             //Arrange
             var text = "x/y/fun/x";
-            var expText = "1/fun/y";
+            var expText = "1 / fun / y";
             var expected = RPNParser.Parse(expText);
 
             //Act
@@ -63,7 +63,7 @@ namespace FlatExpressionTests.VariableOperations
         {
             //Arrange
             var text = "1/x/y/fun/x";
-            var expText = "1/fun/x/x/y";
+            var expText = "1 / fun / y / (x)^2";
             var expected = RPNParser.Parse(expText);
 
             //Act

@@ -16,7 +16,7 @@ namespace Mathema.Solver.Solvers
 		public IEquationSolutions Solve(IExpression expression, string variable, IClassificationResult classification)
 		{
 			var res = new EquationSolutions();
-			if (clone is FlatAddExpression fa)
+			if (expression is FlatAddExpression fa)
 			{
 				IExpression a = null;
 				IExpression b = null;
@@ -26,11 +26,11 @@ namespace Mathema.Solver.Solvers
 				for (int i = 0; i < fa.Expressions.Count; i++)
 				{
 					var kv = fa.Expressions.ElementAt(i);
-					var deg = kv.Value[0].DimensionKey.Key.ElementAt(0).Value;
-					var key = kv.Value[0].DimensionKey.Key.ElementAt(0).Key;
+					var deg = kv.Value[0].DimensionKey.Value;
+					var key = kv.Value[0].DimensionKey.Key;
 					var expr = kv.Value[0];
 
-					if (deg == 2 && key == varS)
+					if (deg.ToNumber() == 2 && key == variable)
 					{
 						if (expr is VariableExpression)
 						{
@@ -39,11 +39,11 @@ namespace Mathema.Solver.Solvers
 						else
 						{
 							var tmp = (FlatExpression)expr.Clone();
-							tmp.Remove(varS, 2);
+							tmp.Remove(variable, 2);
 							a = tmp;
 						}
 					}
-					else if (deg == 1 && key == varS)
+					else if (deg.ToNumber() == 1 && key == variable)
 					{
 						if (expr is VariableExpression)
 						{
@@ -52,7 +52,7 @@ namespace Mathema.Solver.Solvers
 						else
 						{
 							var tmp = (FlatExpression)expr.Clone();
-							tmp.Remove(varS, 2);
+							tmp.Remove(variable, 2);
 							b = tmp;
 						}
 					}
@@ -112,20 +112,20 @@ namespace Mathema.Solver.Solvers
 		private IExpression X1X2(IExpression b, IExpression dsqrt, IExpression a, bool isAdd)
 		{
 			var oneOvera2 = new BinaryExpression(new BinaryExpression(new NumberExpression(2), Enums.Operators.OperatorTypes.Multiply, a), Enums.Operators.OperatorTypes.Power, new NumberExpression(-1));
-			if (isAdd)
-			{
-				var bds = new FlatAddExpression();
-				bds.Add(new UnaryExpression(Enums.Operators.OperatorTypes.Sign, b));
-				bds.Add(dsqrt);
-				return new BinaryExpression(bds, Enums.Operators.OperatorTypes.Multiply, oneOvera2);
+
+            var bds = new FlatAddExpression();
+            bds.Add(new UnaryExpression(Enums.Operators.OperatorTypes.Sign, b));
+
+            if (isAdd)
+			{				
+				bds.Add(dsqrt);				
 			}
 			else
 			{
-				var bds = new FlatAddExpression();
-				bds.Add(new UnaryExpression(Enums.Operators.OperatorTypes.Sign, b));
 				bds.Add(new UnaryExpression(Enums.Operators.OperatorTypes.Sign, dsqrt));
-				return new BinaryExpression(bds, Enums.Operators.OperatorTypes.Multiply, oneOvera2);
 			}
-		}
+
+            return new BinaryExpression(bds, Enums.Operators.OperatorTypes.Multiply, oneOvera2);
+        }
 	}
 }

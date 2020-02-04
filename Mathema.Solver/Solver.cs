@@ -14,37 +14,54 @@ namespace Mathema.Solver
 	public class Solver
 	{
 		public static IEquationSolutions Solve(Equation equation, string variable)
-		{
-			EquationClassifier.Classify(equation, variable);
-			
-			var expression = equation.Left;
-			var classification = equation.Classification;
-			var clone = expression.Clone();
-			var varS = variable;
-			if (classification.SearchResult.ElementAt(0).Key != variable)
-			{
-				varS = GetNewVariableForSub(equation);
-				var sub = new VariableExpression("u", 1);
-				clone.Substitute(ref clone, sub, classification.SearchResult.ElementAt(0).Key);
-			}
+        {
+            EquationClassifier.Classify(equation, variable);
+            var varS = variable;
 
-			if (classification.EquationType == EquationTypes.Linear)
-			{
-				var solver = new LinearSolver();
-				return solver.Solve(expression, variable, classification);
-			}
-			else if (classification.EquationType == EquationTypes.Quadratic)
-			{
-				var solver = new QuadraticSolver();
-				return solver.Solve(expression, variable, classification);
-			}
-			else
-			{
-				return null;
-			}
-		}
+            if (equation.Classification.SearchResult.ElementAt(0).Key != variable)
+            {
+                var expression = equation.Left;
+                var classification = equation.Classification;
+                var clone = expression.Clone();                
+                varS = GetNewVariableForSub(equation);
+                var sub = new VariableExpression(varS, 1);
+                clone.Substitute(ref clone, sub, classification.SearchResult.ElementAt(0).Key);
+            }
 
-		private static string GetNewVariableForSub(Equation equation)
+            var sols = Solve(varS, equation.Left, equation.Classification);
+
+            foreach (var s in sols.Solutions)
+            {
+                if (s.DimensionKey.Key != variable)
+                {
+                    //var tmp  = Solve();
+                    //remove from sols
+                    //add tmp
+                }
+            }
+
+            return sols;
+        }
+
+        private static IEquationSolutions Solve(string variable, IExpression expression, ClassificationResult classification)
+        {
+            if (classification.EquationType == EquationTypes.Linear)
+            {
+                var solver = new LinearSolver();
+                return solver.Solve(expression, variable, classification);
+            }
+            else if (classification.EquationType == EquationTypes.Quadratic)
+            {
+                var solver = new QuadraticSolver();
+                return solver.Solve(expression, variable, classification);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        private static string GetNewVariableForSub(Equation equation)
 		{
 			var goodVars = new List<string>() { "k", "l", "m", "u", "v", "w", "r", "s", "t" };
 

@@ -46,9 +46,9 @@ namespace Mathema.Models.ExpressionOperations
                 //    res.Expressions[Dimensions.Number][0].Count.Add(rhe.Count);
                 //}
                 //else
-                {
-                    res.Count.Add(rhe.Count);
-                }
+                //{
+                //    res.Count.Add(rhe.Count);
+                //}
                 res.Count.Add(rhe.Count);
                 return res;
             }
@@ -74,16 +74,12 @@ namespace Mathema.Models.ExpressionOperations
             var lc = (IFlatExpression)res;
             if (rhe is INumberExpression)
             {
-                foreach (var key in rhe.DimensionKey.Key)
-                {
-                    lc.Expressions[Dimensions.Number].Add(rhe);
-                }
-
+                res.Count.Multiply(rhe.Count);
                 return res;
             }
             else if (rhe is IVariableExpression)
             {
-                var tmp = rhe.DimensionKey.Key.ElementAt(0).Key;
+                var tmp = rhe.DimensionKey.Key;
                 if (lc.Expressions.ContainsKey(tmp))
                 {
                     lc.Expressions[tmp].Add(rhe);
@@ -93,19 +89,12 @@ namespace Mathema.Models.ExpressionOperations
                     lc.Expressions.Add(tmp, new List<IExpression>() { rhe });
                 }
 
-                foreach (var key in rhe.DimensionKey.Key)
-                {
-                    res.DimensionKey.Add(key.Key, key.Value);
-                }
-
                 return res;
             }
             else if (rhe is IFlatMultExpression)
             {
-                foreach (var key in rhe.DimensionKey.Key)
-                {
-                    res.DimensionKey.Add(key.Key, key.Value);
-                }
+                lc.Add(rhe.Clone());
+                lc.Execute();
 
                 return res;
             }
@@ -116,14 +105,12 @@ namespace Mathema.Models.ExpressionOperations
         public static IExpression Divide(IExpression lhe, IExpression rhe)
         {
             var res = lhe.Clone();
+            var lc = (IFlatExpression)res;
             if (rhe is IVariableExpression)
             {
-                res.Count.Divide(rhe.Count);
-
-                foreach (var key in rhe.DimensionKey.Key)
-                {
-                    res.DimensionKey.Remove(key.Key, key.Value);
-                }
+                var tmp = new BinaryExpression(rhe.Clone(), OperatorTypes.Power, new NumberExpression(-1));
+                lc.Add(tmp);
+                lc.Execute();
 
                 return res;
             }

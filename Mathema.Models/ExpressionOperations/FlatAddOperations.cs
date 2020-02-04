@@ -4,6 +4,7 @@ using Mathema.Interfaces;
 using Mathema.Models.Dimension;
 using Mathema.Models.Expressions;
 using Mathema.Models.FlatExpressions;
+using Mathema.Models.Numerics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -65,49 +66,46 @@ namespace Mathema.Models.ExpressionOperations
             var lc = (IFlatExpression)res;
             if (rhe is INumberExpression)
             {
-                foreach (var key in rhe.DimensionKey.Key)
-                {
-                    lc.Expressions[Dimensions.Number].Add(rhe);
-                }
+                lc.Count.Multiply(rhe.Count);
 
                 return res;
             }
-            else if (rhe is IVariableExpression)
-            {
-                var tmp = rhe.DimensionKey.Key.ElementAt(0).Key;
-                if (lc.Expressions.ContainsKey(tmp))
-                {
-                    lc.Expressions[tmp].Add(rhe);
-                }
-                else
-                {
-                    lc.Expressions.Add(tmp, new List<IExpression>() { rhe });
-                }
+            //else if (rhe is IVariableExpression)
+            //{
+            //    var tmp = rhe.DimensionKey.Key;
+            //    if (lc.Expressions.ContainsKey(tmp))
+            //    {
+            //        lc.Expressions[tmp].Add(rhe);
+            //    }
+            //    else
+            //    {
+            //        lc.Expressions.Add(tmp, new List<IExpression>() { rhe });
+            //    }
 
-                foreach (var key in rhe.DimensionKey.Key)
-                {
-                    res.DimensionKey.Add(key.Key, key.Value);
-                }
+            //    foreach (var key in rhe.DimensionKey.Key)
+            //    {
+            //        res.DimensionKey.Add(key.Key, key.Value);
+            //    }
 
-                return res;
-            }
-            else if (rhe is IFlatMultExpression)
-            {
-                foreach (var key in rhe.DimensionKey.Key)
-                {
-                    res.DimensionKey.Add(key.Key, key.Value);
-                }
+            //    return res;
+            //}
+            //else if (rhe is IFlatMultExpression)
+            //{
+            //    foreach (var key in rhe.DimensionKey.Key)
+            //    {
+            //        res.DimensionKey.Add(key.Key, key.Value);
+            //    }
 
-                return res;
-            }
+            //    return res;
+            //}
             else if (rhe is FlatAddExpression rc)
             {
                 var ret = new FlatAddExpression();
-                if (lc.DimensionKey.Key.ElementAt(0).Key == rc.DimensionKey.Key.ElementAt(0).Key)
+                if (lc.DimensionKey.Key == rc.DimensionKey.Key)
                 {
-                    lc.DimensionKey.Key[lc.DimensionKey.Key.ElementAt(0).Key] += rc.DimensionKey.Key.ElementAt(0).Value;
+                    lc.DimensionKey.Value += (Fraction)rc.DimensionKey.Value;
 
-                    if (lc.DimensionKey.Key.ElementAt(0).Value == 0)
+                    if (lc.DimensionKey.Value.Numerator == 0)
                     {
                         return new NumberExpression(1);
                     }
@@ -146,7 +144,7 @@ namespace Mathema.Models.ExpressionOperations
                 res.Count.Divide(rhe.Count);
                 return res;
             }
-            
+
             //var res = lhe.Clone();
             //if (rhe is IVariableExpression)
             //{
@@ -211,7 +209,7 @@ namespace Mathema.Models.ExpressionOperations
                         //}
                         else
                         {
-                            lc.DimensionKey.Key[lc.DimensionKey.Key.ElementAt(0).Key] *= p;
+                            lc.DimensionKey.Value.Multiply(new Fraction(p, 1));
                             return lc;
                         }
                     }
@@ -232,7 +230,7 @@ namespace Mathema.Models.ExpressionOperations
                     kve.Value[0].Count.Multiply(-1);
                 }
 
-                fa.UpdateDimensionKey();
+                fa.UpdateDimensionKey(false);
             }
 
             return res;

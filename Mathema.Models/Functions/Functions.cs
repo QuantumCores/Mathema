@@ -15,10 +15,10 @@ namespace Mathema.Models.Functions
 		{
 			var result = new Dictionary<string, Func<IExpression, IFunctionExpression>>();
 			result.Add(FunctionTypes.Sin.ToString().ToLower(), arg => new SinExpression(arg, 1));
-			result.Add(FunctionTypes.Cos.ToString().ToLower(), arg => new SinExpression(arg, 1));
-			result.Add(FunctionTypes.Tan.ToString().ToLower(), arg => new SinExpression(arg, 1));
-			result.Add(FunctionTypes.Cot.ToString().ToLower(), arg => new SinExpression(arg, 1));
-			result.Add(FunctionTypes.Log.ToString().ToLower(), arg => new SinExpression(arg, 1));
+			result.Add(FunctionTypes.Cos.ToString().ToLower(), arg => new CosExpression(arg, 1));
+			result.Add(FunctionTypes.Tan.ToString().ToLower(), arg => new TanExpression(arg, 1));
+			result.Add(FunctionTypes.Cot.ToString().ToLower(), arg => new CotExpression(arg, 1));
+			result.Add(FunctionTypes.Log.ToString().ToLower(), arg => new LogExpression(arg, 1));
 
 			return result;
 		}

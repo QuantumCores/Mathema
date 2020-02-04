@@ -9,6 +9,6 @@ namespace Mathema.Interfaces
     {
         EquationTypes EquationType { get; set; }
 
-        Dictionary<string, List<decimal>> SearchResult { get; set; }
+        Dictionary<string, List<IFraction>> SearchResult { get; set; }
     }
 }

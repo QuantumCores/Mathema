@@ -26,6 +26,8 @@ namespace Mathema.Models.FlatExpressions
 
         public abstract IExpression Execute();
 
+        public abstract void UpdateDimensionKey(bool deep);
+
         public abstract void Squash();
 
         public abstract void Add(IExpression expression);

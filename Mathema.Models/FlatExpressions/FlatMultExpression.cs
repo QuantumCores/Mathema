@@ -26,6 +26,7 @@ namespace Mathema.Models.FlatExpressions
         public override void Add(IExpression expression)
         {
             this.Count.Multiply(expression.Count);
+            expression.Count = new Complex(1, 0);
 
             if (expression is FlatAddExpression)
             {
@@ -98,7 +99,7 @@ namespace Mathema.Models.FlatExpressions
             {
                 if (exp.Count.Re.Numerator != 0 || exp.Count.Im.Numerator != 0)
                 {
-                    var key = exp.DimensionKey.Key.ElementAt(0).Key;
+                    var key = exp.DimensionKey.Key;
                     if (key == Dimensions.Number || key == Dimensions.Complex)
                     {
                         this.Count.Multiply(exp.Count);
@@ -114,6 +115,7 @@ namespace Mathema.Models.FlatExpressions
                     {
                         if (key != nameof(BinaryExpression) && key != nameof(UnaryExpression))
                         {
+                            //TODO when exp has DimKey value 2 then count is (n)^2?
                             this.Count.Multiply(exp.Count);
                             exp.Count = new Complex();
 
@@ -135,16 +137,18 @@ namespace Mathema.Models.FlatExpressions
             }
 
             this.Expressions = dims;
-            foreach (var item in this.Expressions)
-            {
-                this.DimensionKey.Add(item.Value[0].DimensionKey);
-            }
+            //foreach (var item in this.Expressions)
+            //{
+            //    this.DimensionKey.Add(item.Value[0].DimensionKey);
+            //}
+
+            this.UpdateDimensionKey(false);
         }
 
         private static void Reduce(Dictionary<string, List<IExpression>> dims, IExpression exp, string key)
         {
             var res = dims[key][0].BinaryOperations[OperatorTypes.Multiply](dims[key][0], exp);
-            if (key != res.DimensionKey.Key.ElementAt(0).Key)
+            if (key != res.DimensionKey.Key)
             {
                 dims.Remove(key);
                 var resKey = res.DimensionKey.ToString();
@@ -193,6 +197,89 @@ namespace Mathema.Models.FlatExpressions
                 return this;
             }
         }
+        public override void UpdateDimensionKey(bool deep)
+        {
+            if (deep)
+            {
+                foreach (var kv in this.Expressions)
+                {
+                    kv.Value.ForEach(e => e.UpdateDimensionKey(true));
+                }
+            }
+
+            this.DimensionKey.Key = string.Join("", this.Dimension());
+
+            return;
+        }
+
+        private List<string> Dimension()
+        {
+            var sb = new List<string>();
+            var addOne = true;
+
+            foreach (var kv in this.Expressions.OrderByDescending(e => e.Value[0].DimensionKey.Value.ToNumber()).ThenBy(e => e.Value[0].DimensionKey.Key))
+            {
+                var expr = kv.Value[0];
+                var p = expr.DimensionKey.Value.ToNumber();
+                if (p > 0)
+                {
+                    addOne = false;
+                }
+
+                if (sb.Count > 0)
+                {
+                    if (expr.DimensionKey.Value.ToNumber() < 0)
+                    {
+                        sb.Add(" / ");
+                    }
+                    else
+                    {
+                        sb.Add(" * ");
+                        addOne = false;
+                    }
+                }
+
+                if (kv.Value.Count > 1)
+                {
+                    sb.Add(string.Join("*", kv.Value.Select(e => e.DimensionKey.ToString())));
+                }
+                else
+                {
+                    if (p < 0)
+                    {
+                        if (p == -1)
+                        {
+                            sb.Add(expr.DimensionKey.Key);
+                        }
+                        else
+                        {
+                            var tmp = expr.DimensionKey.Value.Clone();
+                            tmp.Multiply(new Fraction(-1, 1));
+                            sb.Add("(" + expr.DimensionKey.Key + ")^" + tmp.ToString());
+                        }
+                    }
+                    else
+                    {
+                        if (p == 1)
+                        {
+                            sb.Add(expr.DimensionKey.Key);
+                        }
+                        else
+                        {
+                            sb.Add("(" + expr.DimensionKey.Key + ")^" + expr.DimensionKey.Value.ToString());
+                        }
+                    }
+                }
+            }
+
+            if (addOne)
+            {
+                sb.Insert(0, "1 / ");
+            }
+
+            //return "( " + string.Join("", sb) + ")";
+            return sb;
+        }
 
         public override IExpression Clone()
         {
@@ -207,9 +294,9 @@ namespace Mathema.Models.FlatExpressions
             }
 
             res.DimensionKey = this.DimensionKey.Clone();
-			res.Count = this.Count.Clone();
+            res.Count = this.Count.Clone();
 
-			return res;
+            return res;
         }
 
         public static FlatMultExpression operator *(FlatMultExpression lhe, FlatMultExpression rhe)
@@ -251,11 +338,11 @@ namespace Mathema.Models.FlatExpressions
         {
             //TODO this is wrong because we change rhe
             var res = (FlatMultExpression)lhe.Clone();
-            for (int i = 0; i < rhe.DimensionKey.Key.Count; i++)
-            {
-                var key = rhe.DimensionKey.Key.ElementAt(i).Key;
-                rhe.DimensionKey.Multiply(key, -1);
-            }
+            //for (int i = 0; i < rhe.DimensionKey.Key.Count; i++)
+            //{
+            //    var key = rhe.DimensionKey.Key.ElementAt(i).Key;
+            //    rhe.DimensionKey.Multiply(key, -1);
+            //}
 
             res.Add(rhe);
 
@@ -265,10 +352,10 @@ namespace Mathema.Models.FlatExpressions
         public static FlatMultExpression operator /(IExpression lhe, FlatMultExpression rhe)
         {
             var res = lhe.Clone();
-            foreach (var kv in lhe.DimensionKey.Key)
-            {
-                lhe.DimensionKey.Multiply(kv.Key, -1);
-            }
+            //foreach (var kv in lhe.DimensionKey.Key)
+            //{
+            //    lhe.DimensionKey.Multiply(kv.Key, -1);
+            //}
 
             rhe.Add(lhe);
 
@@ -282,47 +369,18 @@ namespace Mathema.Models.FlatExpressions
 
         public override string ToString()
         {
-            var sb = new List<string>();
-            var addOne = true;
+            var sb = this.Dimension();
             if (this.Count.Re.ToNumber() != 1 && this.Count.Im.ToNumber() == 0)
             {
-                sb.Add(this.Count.AsString());
-                addOne = false;
+                if (sb[0] == "1 / ")
+                {
+                    sb.RemoveAt(0);
+                }
+                sb.Insert(0, this.Count.AsString() + " * ");
             }
 
-            //TODO order by expr.ToString
-            foreach (var kv in this.Expressions)
-            {
-                var expr = this.Expressions[kv.Key][0];
-                if (sb.Count > 0)
-                {
-                    if (expr.DimensionKey.Key.ElementAt(0).Value < 0)
-                    {
-                        sb.Add(" / ");
-                    }
-                    else
-                    {
-                        sb.Add(" * ");
-                        addOne = false;
-                    }
-                }
-
-                if (kv.Value.Count > 1)
-                {
-                    sb.Add(string.Join("*", kv.Value));
-                }
-                else
-                {
-                    sb.Add(expr.ToString());
-                }
-            }
-
-            if (addOne)
-            {
-                sb.Insert(0, "1 / ");
-            }
-
-            return "( " + string.Join("", sb) + ")";
+            //return "( " + string.Join("", sb) + ")";
+            return string.Join("", sb);
         }
     }
 }
