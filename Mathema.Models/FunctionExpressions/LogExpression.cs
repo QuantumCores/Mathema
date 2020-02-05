@@ -16,7 +16,9 @@ namespace Mathema.Models.FunctionExpressions
     {
 		public FunctionTypes Type { get; private set; }
 
-		public IExpression Argument { get; set; }
+        public FunctionTypes InverseFunction { get; } = (FunctionTypes)0;
+
+        public IExpression Argument { get; set; }
 
 		public IDimensionKey DimensionKey { get; set; } = new DimensionKey(nameof(LogExpression));
 

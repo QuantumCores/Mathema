@@ -9,6 +9,7 @@ using System.Collections.Generic;
 
 namespace Mathema.Models.Expressions
 {
+    //TODO what about x + iy expressions?
     public class ComplexExpression : IComplexExpression
     {
         public IDimensionKey DimensionKey { get; set; } = new DimensionKey(Dimensions.Complex);

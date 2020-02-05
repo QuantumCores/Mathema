@@ -16,6 +16,8 @@ namespace Mathema.Models.FunctionExpressions
     {
         public FunctionTypes Type { get; private set; }
 
+        public FunctionTypes InverseFunction { get; } = FunctionTypes.ATan;
+
         public IExpression Argument { get; set; }
 
         public IDimensionKey DimensionKey { get; set; } = new DimensionKey(nameof(TanExpression));

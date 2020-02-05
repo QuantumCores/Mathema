@@ -7,20 +7,19 @@ using Mathema.Models.Expressions;
 using Mathema.Models.Numerics;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace Mathema.Models.FunctionExpressions
 {
-    public class CosExpression : IFunctionExpression
+    public class ACosExpression : IFunctionExpression
     {
-        public FunctionTypes Type { get; private set; }
+        public FunctionTypes Type { get; private set; } = FunctionTypes.ACos;
 
-        public FunctionTypes InverseFunction { get; } = FunctionTypes.ACos;
+        public FunctionTypes InverseFunction { get; } = FunctionTypes.Cos;
 
         public IExpression Argument { get; set; }
 
-        public IDimensionKey DimensionKey { get; set; } = new DimensionKey(nameof(CosExpression));
+        public IDimensionKey DimensionKey { get; set; } = new DimensionKey(nameof(ACosExpression));
 
         public IComplex Count { get; set; } = new Complex();
 
@@ -28,17 +27,15 @@ namespace Mathema.Models.FunctionExpressions
 
         public Dictionary<OperatorTypes, Func<IExpression, IExpression>> UnaryOperations { get; } = FunctionOperations.UnaryOperations;
 
-        public CosExpression(IExpression argument, decimal count)
+        public ACosExpression(IExpression argument, decimal count)
         {
-            this.Type = FunctionTypes.Cos;
             this.Argument = argument;
             this.Count = new Complex(count, 0);
             UpdateDimensionKey();
         }
 
-        public CosExpression(IExpression argument, IComplex count)
+        public ACosExpression(IExpression argument, IComplex count)
         {
-            this.Type = FunctionTypes.Cos;
             this.Argument = argument;
             this.Count = count;
             UpdateDimensionKey();
@@ -55,7 +52,19 @@ namespace Mathema.Models.FunctionExpressions
 
             if (arg is INumberExpression)
             {
-                return new NumberExpression((decimal)Math.Cos((double)arg.Count.Re.ToNumber()));
+
+                var n = arg.Count.Re.ToNumber();
+                //TODO check function domain using GetDomain() then CheckDomain() and adding property Domain to expression
+                if (n < -1 || n > 1)
+                {
+                    //TODO arg is IComplexExpression
+                    //return new NumberExpression((decimal)Math.Acosh((double)n));
+                    return this;
+                }
+                else
+                {
+                    return new NumberExpression((decimal)Math.Acos((double)n));                    
+                }
             }
             else
             {
@@ -72,7 +81,7 @@ namespace Mathema.Models.FunctionExpressions
 
         public IExpression Clone()
         {
-            return new CosExpression(this.Argument.Clone(), this.Count.Clone());
+            return new ACosExpression(this.Argument.Clone(), this.Count.Clone());
         }
 
         public string AsString()

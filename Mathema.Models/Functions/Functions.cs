@@ -19,8 +19,12 @@ namespace Mathema.Models.Functions
 			result.Add(FunctionTypes.Tan.ToString().ToLower(), arg => new TanExpression(arg, 1));
 			result.Add(FunctionTypes.Cot.ToString().ToLower(), arg => new CotExpression(arg, 1));
 			result.Add(FunctionTypes.Log.ToString().ToLower(), arg => new LogExpression(arg, 1));
+            result.Add(FunctionTypes.ASin.ToString().ToLower(), arg => new ASinExpression(arg, 1));
+            result.Add(FunctionTypes.ACos.ToString().ToLower(), arg => new ACosExpression(arg, 1));
+            result.Add(FunctionTypes.ATan.ToString().ToLower(), arg => new ATanExpression(arg, 1));
+            result.Add(FunctionTypes.ACot.ToString().ToLower(), arg => new ACotExpression(arg, 1));
 
-			return result;
+            return result;
 		}
 
 		public static IFunctionExpression Get(string function, IExpression arg)

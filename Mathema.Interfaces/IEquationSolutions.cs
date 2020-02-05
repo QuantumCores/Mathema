@@ -6,6 +6,6 @@ namespace Mathema.Interfaces
 {
     public interface IEquationSolutions
     {
-        List<IExpression> Solutions { get; set; }
+        Dictionary<string, Tuple<IExpression, List<IExpression>>> Solutions { get; set; }
     }
 }

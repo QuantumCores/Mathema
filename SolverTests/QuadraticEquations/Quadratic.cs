@@ -3,6 +3,7 @@ using Mathema.Algorithms.Parsers;
 using Mathema.Models.Equations;
 using Mathema.Solver;
 using NUnit.Framework;
+using System;
 
 namespace SolverTests.QuadraticEquations
 {
@@ -21,9 +22,9 @@ namespace SolverTests.QuadraticEquations
             var sut = Solver.Solve(equation, "x");
 
             //Assert
-            Assert.IsTrue(sut.Solutions.Count == 2);
-            Assert.AreEqual(sut.Solutions[0].Count.Re.ToNumber(), 5);
-            Assert.AreEqual(sut.Solutions[1].Count.Re.ToNumber(), -1);
+            Assert.IsTrue(sut.Solutions["x"].Item2.Count == 2);
+            Assert.AreEqual(sut.Solutions["x"].Item2[0].Count.Re.ToNumber(), 5);
+            Assert.AreEqual(sut.Solutions["x"].Item2[1].Count.Re.ToNumber(), -1);
         }
 
         [Test]
@@ -38,9 +39,9 @@ namespace SolverTests.QuadraticEquations
             var sut = Solver.Solve(equation, "x");
 
             //Assert
-            Assert.IsTrue(sut.Solutions.Count == 2);
-            Assert.AreEqual(sut.Solutions[0].Count.Re.ToNumber(), 1);
-            Assert.AreEqual(sut.Solutions[1].Count.Re.ToNumber(), 1);
+            Assert.IsTrue(sut.Solutions["x"].Item2.Count == 2);
+            Assert.AreEqual(sut.Solutions["x"].Item2[0].Count.Re.ToNumber(), 1);
+            Assert.AreEqual(sut.Solutions["x"].Item2[1].Count.Re.ToNumber(), 1);
         }
 
         [Test]
@@ -55,11 +56,11 @@ namespace SolverTests.QuadraticEquations
             var sut = Solver.Solve(equation, "x");
 
             //Assert
-            Assert.IsTrue(sut.Solutions.Count == 2);
-            Assert.AreEqual(sut.Solutions[0].Count.Re.ToNumber(), -3);
-            Assert.AreEqual(sut.Solutions[0].Count.Im.ToNumber(), 1);
-            Assert.AreEqual(sut.Solutions[1].Count.Re.ToNumber(), -3);
-            Assert.AreEqual(sut.Solutions[1].Count.Im.ToNumber(), -1);
+            Assert.IsTrue(sut.Solutions["x"].Item2.Count == 2);
+            Assert.AreEqual(sut.Solutions["x"].Item2[0].Count.Re.ToNumber(), -3);
+            Assert.AreEqual(sut.Solutions["x"].Item2[0].Count.Im.ToNumber(), 1);
+            Assert.AreEqual(sut.Solutions["x"].Item2[1].Count.Re.ToNumber(), -3);
+            Assert.AreEqual(sut.Solutions["x"].Item2[1].Count.Im.ToNumber(), -1);
         }
 
 
@@ -75,9 +76,9 @@ namespace SolverTests.QuadraticEquations
             var sut = Solver.Solve(equation, "x");
 
             //Assert
-            Assert.IsTrue(sut.Solutions.Count == 2);
-            Assert.AreEqual(sut.Solutions[0].Count.Re.ToNumber(), 5);
-            Assert.AreEqual(sut.Solutions[1].Count.Re.ToNumber(), -1);
+            Assert.IsTrue(sut.Solutions["x"].Item2.Count == 2);
+            Assert.AreEqual(sut.Solutions["x"].Item2[0].DimensionKey.Key, "ACos(5)");
+            Assert.AreEqual(sut.Solutions["x"].Item2[1].Count.Re.ToNumber(), (decimal)Math.PI);
         }
     }
 }

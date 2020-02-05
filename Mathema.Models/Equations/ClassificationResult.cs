@@ -10,6 +10,6 @@ namespace Mathema.Models.Equations
     {
         public EquationTypes EquationType { get; set; }
 
-        public Dictionary<string, List<IFraction>> SearchResult { get; set; } = new Dictionary<string, List<IFraction>>();
+        public Dictionary<string, Tuple<IExpression, List<IFraction>>> SearchResult { get; set; } = new Dictionary<string, Tuple<IExpression, List<IFraction>>>();
     }
 }

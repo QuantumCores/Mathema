@@ -43,6 +43,7 @@ namespace Mathema.Models.Expressions
 
             var res = arg1.BinaryOperations[op](arg1, arg2);
 
+            //TODO Operation could not be performed in this case convert primitive BinaryExpression into operational expression
             if (res == null)
             {
                 return this;

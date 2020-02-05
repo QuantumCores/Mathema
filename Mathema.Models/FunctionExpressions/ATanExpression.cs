@@ -7,16 +7,15 @@ using Mathema.Models.Expressions;
 using Mathema.Models.Numerics;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace Mathema.Models.FunctionExpressions
 {
-    public class CosExpression : IFunctionExpression
+    public class ATanExpression : IFunctionExpression
     {
-        public FunctionTypes Type { get; private set; }
+        public FunctionTypes Type { get; private set; } = FunctionTypes.ATan;
 
-        public FunctionTypes InverseFunction { get; } = FunctionTypes.ACos;
+        public FunctionTypes InverseFunction { get; } = FunctionTypes.Tan;
 
         public IExpression Argument { get; set; }
 
@@ -28,17 +27,15 @@ namespace Mathema.Models.FunctionExpressions
 
         public Dictionary<OperatorTypes, Func<IExpression, IExpression>> UnaryOperations { get; } = FunctionOperations.UnaryOperations;
 
-        public CosExpression(IExpression argument, decimal count)
+        public ATanExpression(IExpression argument, decimal count)
         {
-            this.Type = FunctionTypes.Cos;
             this.Argument = argument;
             this.Count = new Complex(count, 0);
             UpdateDimensionKey();
         }
 
-        public CosExpression(IExpression argument, IComplex count)
+        public ATanExpression(IExpression argument, IComplex count)
         {
-            this.Type = FunctionTypes.Cos;
             this.Argument = argument;
             this.Count = count;
             UpdateDimensionKey();
@@ -55,7 +52,7 @@ namespace Mathema.Models.FunctionExpressions
 
             if (arg is INumberExpression)
             {
-                return new NumberExpression((decimal)Math.Cos((double)arg.Count.Re.ToNumber()));
+                return new NumberExpression((decimal)Math.Atan((double)arg.Count.Re.ToNumber()));
             }
             else
             {

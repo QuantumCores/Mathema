@@ -7,6 +7,6 @@ namespace Mathema.Models.Equations
 {
     public class EquationSolutions : IEquationSolutions
     {
-        public List<IExpression> Solutions { get; set; } = new List<IExpression>();
+        public Dictionary<string, Tuple<IExpression, List<IExpression>>> Solutions { get; set; } = new Dictionary<string, Tuple<IExpression, List<IExpression>>>();
     }
 }

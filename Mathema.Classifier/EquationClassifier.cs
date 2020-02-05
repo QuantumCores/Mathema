@@ -4,6 +4,8 @@ using Mathema.Interfaces;
 using Mathema.Models.Equations;
 using Mathema.Models.Expressions;
 using Mathema.Models.FlatExpressions;
+using Mathema.Models.FunctionExpressions;
+using Mathema.Models.Numerics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,7 +44,7 @@ namespace Mathema.Classifier
             return classification;
         }
 
-        private static bool Search(IExpression expression, Predicate<IExpression> predicate, Dictionary<string, List<IFraction>> result, bool dontAdd = false)
+        private static bool Search(IExpression expression, Predicate<IExpression> predicate, Dictionary<string, Tuple<IExpression, List<IFraction>>> result, bool dontAdd = false)
         {
             if (expression is FlatAddExpression fae)
             {
@@ -82,8 +84,7 @@ namespace Mathema.Classifier
                 {
                     if (!dontAdd)
                     {
-                        var dim = expression.DimensionKey;
-                        Add(result, dim.Key, dim.Value);
+                        Add(result, expression);
                     }
 
                     return true;
@@ -97,8 +98,7 @@ namespace Mathema.Classifier
                 {
                     if (!dontAdd)
                     {
-                        var dim = expression.DimensionKey;
-                        Add(result, dim.Key, dim.Value);
+                        Add(result, expression);
                     }
                     return true;
                 }
@@ -107,27 +107,40 @@ namespace Mathema.Classifier
             }
         }
 
-        private static void Add(Dictionary<string, List<IFraction>> result, string key, IFraction val)
+        private static void Add(Dictionary<string, Tuple<IExpression, List<IFraction>>> result, IExpression expression)
         {
+            var key = expression.DimensionKey.Key;
             if (!result.ContainsKey(key))
             {
-                result.Add(key, new List<IFraction>());
+                var clone = expression.Clone();
+                clone.Count = new Complex();
+                result.Add(key, new Tuple<IExpression, List<IFraction>>(clone, new List<IFraction>()));
             }
 
-            result[key].Add(val);
+            result[key].Item2.Add(expression.DimensionKey.Value.Clone());
         }
 
-        private static EquationTypes FindType(Dictionary<string, List<IFraction>> result)
+        private static EquationTypes FindType(Dictionary<string, Tuple<IExpression, List<IFraction>>> result)
         {
             if (result.Count == 1)
             {
-                var dim = result.ElementAt(0);
-                var ord = dim.Value.OrderBy(x => x.ToNumber()).ToArray();
+                var expr = result.ElementAt(0).Value.Item1;
+                var ord = result.ElementAt(0).Value.Item2.OrderBy(x => x.ToNumber()).ToArray();
                 if (ord.Length == 1)
                 {
                     if (ord[0].ToNumber() == 1)
                     {
-                        return EquationTypes.Linear;
+                        if (expr is IFunctionExpression)
+                        {
+                            if (expr is CosExpression || expr is SinExpression || expr is TanExpression || expr is CotExpression)
+                            {
+                                return EquationTypes.Trigonometric;
+                            }
+                        }
+                        else if (expr is VariableExpression)
+                        {
+                            return EquationTypes.Linear;
+                        }
                     }
                     else if (ord[0].ToNumber() == 2)
                     {

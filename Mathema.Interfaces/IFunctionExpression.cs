@@ -10,5 +10,7 @@ namespace Mathema.Interfaces
         FunctionTypes Type { get; }
 
         IExpression Argument { get; set; }
+
+        FunctionTypes InverseFunction { get; }
     }
 }

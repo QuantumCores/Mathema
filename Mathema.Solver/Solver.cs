@@ -4,6 +4,7 @@ using Mathema.Interfaces;
 using Mathema.Models.Equations;
 using Mathema.Models.Expressions;
 using Mathema.Models.Extensions;
+using Mathema.Models.FlatExpressions;
 using Mathema.Solver.Solvers;
 using System;
 using System.Collections.Generic;
@@ -11,69 +12,112 @@ using System.Linq;
 
 namespace Mathema.Solver
 {
-	public class Solver
-	{
-		public static IEquationSolutions Solve(Equation equation, string variable)
+    public class Solver
+    {
+        public static IEquationSolutions Solve(Equation equation, string variable)
         {
             EquationClassifier.Classify(equation, variable);
-            var varS = variable;
+            var sols = Solve(variable, equation.Left, equation.Classification);
 
-            if (equation.Classification.SearchResult.ElementAt(0).Key != variable)
+            var newSols = new EquationSolutions();
+            RecursiveSolve(variable, sols, newSols);
+
+            return newSols;
+        }
+
+        private static void RecursiveSolve(string variable, IEquationSolutions sols, IEquationSolutions newSols)
+        {
+            var keys = sols.Solutions.Keys.ToList();
+            foreach (var k in keys)
             {
-                var expression = equation.Left;
-                var classification = equation.Classification;
-                var clone = expression.Clone();                
-                varS = GetNewVariableForSub(equation);
-                var sub = new VariableExpression(varS, 1);
-                clone.Substitute(ref clone, sub, classification.SearchResult.ElementAt(0).Key);
-            }
-
-            var sols = Solve(varS, equation.Left, equation.Classification);
-
-            foreach (var s in sols.Solutions)
-            {
-                if (s.DimensionKey.Key != variable)
+                if (k != variable)
                 {
-                    //var tmp  = Solve();
-                    //remove from sols
-                    //add tmp
+                    var s = sols.Solutions[k];
+                    foreach (var e in s.Item2)
+                    {
+                        var tmpEq = new FlatAddExpression();
+                        tmpEq.Add(s.Item1);
+                        tmpEq.Add(new UnaryExpression(Enums.Operators.OperatorTypes.Sign, e));
+                        var emp = tmpEq.Execute();
+
+                        var c = EquationClassifier.Classify(emp, variable);
+                        var tmp = Solve(variable, tmpEq, c);
+                        foreach (var ns in tmp.Solutions)
+                        {
+                            RecursiveSolve(variable, tmp, newSols);
+                        }
+                    }
+                }
+                else
+                {
+                    var s = sols.Solutions[k];
+                    if (!newSols.Solutions.ContainsKey(variable))
+                    {
+                        newSols.Solutions.Add(variable, new Tuple<IExpression, List<IExpression>>(s.Item1, new List<IExpression>()));
+                    }
+
+                    newSols.Solutions[variable].Item2.AddRange(s.Item2);
                 }
             }
-
-            return sols;
         }
 
         private static IEquationSolutions Solve(string variable, IExpression expression, ClassificationResult classification)
         {
-            if (classification.EquationType == EquationTypes.Linear)
+            if (classification.EquationType == EquationTypes.Undefined)
             {
-                var solver = new LinearSolver();
-                return solver.Solve(expression, variable, classification);
+                return new EquationSolutions();
             }
-            else if (classification.EquationType == EquationTypes.Quadratic)
+
+            if (classification.SearchResult.ElementAt(0).Key != variable)
             {
-                var solver = new QuadraticSolver();
-                return solver.Solve(expression, variable, classification);
+                //var expression = equation.Left;
+                //var classification = equation.Classification;
+                //var clone = expression.Clone();
+                //substitute = new Tuple<string, string>(variable, GetNewVariableForSub(equation));
+                //var sub = new VariableExpression(substitute.Item2, 1);
+                //clone.Substitute(ref clone, sub, classification.SearchResult.ElementAt(0).Key);
+
+                var sols = Solve(classification.SearchResult.ElementAt(0).Key, expression, classification);
+                return sols;
+
             }
             else
             {
-                return null;
+                if (classification.EquationType == EquationTypes.Linear)
+                {
+                    var solver = new LinearSolver();
+                    return solver.Solve(expression, variable, classification);
+                }
+                else if (classification.EquationType == EquationTypes.Quadratic)
+                {
+                    var solver = new QuadraticSolver();
+                    return solver.Solve(expression, variable, classification);
+                }
+                else if (classification.EquationType == EquationTypes.Trigonometric)
+                {
+                    var solver = new TrigonometricSolver();
+                    return solver.Solve(expression, variable, classification);
+                }
+                else
+                {
+                    return null;
+                }
             }
         }
 
         private static string GetNewVariableForSub(Equation equation)
-		{
-			var goodVars = new List<string>() { "k", "l", "m", "u", "v", "w", "r", "s", "t" };
+        {
+            var goodVars = new List<string>() { "k", "l", "m", "u", "v", "w", "r", "s", "t" };
 
-			foreach (var v in goodVars)
-			{
-				if (!equation.Variables.ContainsKey(v))
-				{
-					return v;
-				}
-			}
+            foreach (var v in goodVars)
+            {
+                if (!equation.Variables.ContainsKey(v))
+                {
+                    return v;
+                }
+            }
 
-			return "dem";
-		}
-	}
+            return "dem";
+        }
+    }
 }

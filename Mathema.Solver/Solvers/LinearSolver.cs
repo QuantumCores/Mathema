@@ -73,8 +73,7 @@ namespace Mathema.Solver.Solvers
                 }
 
                 var sol = new BinaryExpression(new UnaryExpression(Enums.Operators.OperatorTypes.Sign, b), Enums.Operators.OperatorTypes.Divide, a).Execute();
-
-                res.Solutions.Add(sol);
+                res.Solutions.Add(variable, new Tuple<IExpression, List<IExpression>>(classification.SearchResult[variable].Item1, new List<IExpression>() { sol }));
             }
 
             return res;

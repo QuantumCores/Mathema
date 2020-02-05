@@ -26,7 +26,8 @@ namespace SolverTests.LinearEquations
 
             //Assert
             Assert.IsTrue(sut.Solutions.Count == 1);
-            Assert.AreEqual(sut.Solutions[0].Count.Re.ToNumber(), 2);
+            Assert.IsTrue(sut.Solutions["x"].Item2.Count == 1);
+            Assert.AreEqual(sut.Solutions["x"].Item2[0].Count.Re.ToNumber(), 2);
         }
 
         [Test]
@@ -41,11 +42,11 @@ namespace SolverTests.LinearEquations
 
             //Act
             var sut = Solver.Solve(equation, "x");
-            var actual = RPNParser.Parse(sut.Solutions[0].ToString());
+            var actual = RPNParser.Parse(sut.Solutions["x"].Item2[0].ToString());
 
             //Assert
             Assert.IsTrue(sut.Solutions.Count == 1);
-            Assert.IsTrue(RPNComparer.Compare(expected.Output, actual.Output), $"Expected: {expText} but was {sut.Solutions[0].ToString()}");
+            Assert.IsTrue(RPNComparer.Compare(expected.Output, actual.Output), $"Expected: {expText} but was {sut.Solutions["x"].Item2[0].ToString()}");
         }
 
         [Test]
@@ -60,11 +61,11 @@ namespace SolverTests.LinearEquations
 
             //Act
             var sut = Solver.Solve(equation, "x");
-            var actual = RPNParser.Parse(sut.Solutions[0].ToString());
+            var actual = RPNParser.Parse(sut.Solutions["x"].Item2[0].ToString());
 
             //Assert
-            Assert.IsTrue(sut.Solutions.Count == 1);
-            Assert.IsTrue(RPNComparer.Compare(expected.Output, actual.Output), $"Expected: {expText} but was {sut.Solutions[0].ToString()}");
+            Assert.IsTrue(sut.Solutions["x"].Item2.Count == 1);
+            Assert.IsTrue(RPNComparer.Compare(expected.Output, actual.Output), $"Expected: {expText} but was {sut.Solutions["x"].Item2[0].ToString()}");
         }
 
         [Test]
@@ -79,11 +80,11 @@ namespace SolverTests.LinearEquations
 
             //Act
             var sut = Solver.Solve(equation, "x");
-            var actual = RPNParser.Parse(sut.Solutions[0].ToString());
+            var actual = RPNParser.Parse(sut.Solutions["x"].Item2[0].ToString());
 
             //Assert
             Assert.IsTrue(sut.Solutions.Count == 1);
-            Assert.IsTrue(RPNComparer.Compare(expected.Output, actual.Output), $"Expected: {expText} but was {sut.Solutions[0].ToString()}");
+            Assert.IsTrue(RPNComparer.Compare(expected.Output, actual.Output), $"Expected: {expText} but was {sut.Solutions["x"].Item2[0].ToString()}");
         }
     }
 }
